@@ -14,6 +14,9 @@ const carretaSchema = new Schema({
   carretaTipo: {
     type: String
   },
+  carretaPlaca: {
+    type: String
+  },
   carretaStatus: {
     type: String
     // enum: ['Ativo', 'Inativo','Manutenção']

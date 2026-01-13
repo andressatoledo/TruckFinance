@@ -1,4 +1,5 @@
-import { View, Text, Pressable, Animated } from 'react-native';
+
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useRef } from 'react';
 import { styles } from './styles';
@@ -8,16 +9,7 @@ import { Tag } from '../Tag';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/types';
 
-// type NavigationProps = NativeStackNavigationProp<
-//   RootStackParamList,
-//   'ViagemForm'
-// >;
- 
-
-
-
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
-
 
 interface CardViagemProps {
   viagemId: string;
@@ -26,49 +18,45 @@ interface CardViagemProps {
   toneladaValue?: string;
   freteValue?: string;
   dieselValue?: string;
-
 }
-
 
 export function CardViagem(CardViagemProps: CardViagemProps) {
   const { theme } = useTheme();
   const stylesCardViagem = styles(theme);
   const navigation = useNavigation();
-  const rootNavigation = navigation.getParent<RootNav>(); 
+  const rootNavigation = navigation.getParent<RootNav>();
+
   const scale = useRef(new Animated.Value(1)).current;
 
-  const onPressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.97,
-      useNativeDriver: true,
-    }).start();
-  };
+  const handlePress = () => {
+    Animated.sequence([
+      Animated.timing(scale, {
+        toValue: 0.97,
+        duration: 80,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scale, {
+        toValue: 1,
+        duration: 80,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
-  const onPressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 5,
-      useNativeDriver: true,
-    }).start();
+    rootNavigation?.navigate('ViagemForm', {
+      mode: 'edit',
+      viagemId: CardViagemProps.viagemId,
+    });
   };
 
   return (
-    <Pressable
-      onPress={() => {if (!rootNavigation) {
-          console.warn('Root navigation não encontrado');
-          return;
-        }
-         rootNavigation.navigate('ViagemForm', {mode: 'edit', viagemId: CardViagemProps.viagemId})}}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
-    >
+    <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
       <Animated.View
         style={[
           stylesCardViagem.card,
           { transform: [{ scale }] },
         ]}
       >
-        <View style={stylesCardViagem.dateRow}>
+       <View style={stylesCardViagem.dateRow}>
           <MaterialCommunityIcons
             name="calendar"
             size={theme.sizes.iconSizeCard}
@@ -124,6 +112,6 @@ export function CardViagem(CardViagemProps: CardViagemProps) {
           </View>
         </View>
       </Animated.View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }

@@ -3,7 +3,7 @@ import { Viagem } from '../models/index';
 
 
 export async function criarViagem(req: Request, res: Response) {
-  console.log('📥 BODY RECEBIDO:', req.body);
+  
   try {
     const data = req.body;
     const novaViagem = new Viagem(data);

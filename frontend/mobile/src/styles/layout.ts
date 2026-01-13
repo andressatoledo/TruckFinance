@@ -4,7 +4,7 @@ import { ThemeType } from '../theme/ThemeContext';
 export const layout = (theme: ThemeType) => {
   return StyleSheet.create({
     container: {
-      flex: 1,
+      // flex: 1,
       paddingBottom: 16,
       paddingLeft: 16,
       paddingRight: 16,

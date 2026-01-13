@@ -18,7 +18,10 @@ import { connectToDatabase } from './config/db';
 import { seedDatabase } from './config/seed';
 import { seedRotaJacareiItupeva } from './config/seedRotaJacareiItupeva';
 import { viagemDocumentoRoutes } from './routes/viagemDocumentoRoutes';
+
+
 const app = express();
+
 app.use(cors()); // Permite que seu app React Native faça requisições
 app.use(express.json());  
 app.use('/api', abastecimentoRoutes);
@@ -47,3 +50,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+

@@ -3,7 +3,7 @@ export type RootStackParamList = {
     mode: 'create' | 'edit' | 'view';
     viagemId?: string;
   };
-
+  
   Tabs: undefined;
 
 };

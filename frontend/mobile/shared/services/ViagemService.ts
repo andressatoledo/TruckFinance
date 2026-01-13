@@ -5,8 +5,10 @@ import { Viagem, ViagemPayload } from '../types/viagem';
 const ENDPOINT = '/viagens';
 
 export const ViagemService = {
+  
   async buscarTodas(): Promise<Viagem[]> {
     const response = await api.get<Viagem[]>(ENDPOINT);
+    console.log(response.data);
     return response.data;
   },
 
