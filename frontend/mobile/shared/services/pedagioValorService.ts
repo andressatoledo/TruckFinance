@@ -1,0 +1,31 @@
+// src/services/pedagioValorService.ts
+import { api } from './api';
+import { PedagioValor } from '../types/pedagioValor';
+
+const ENDPOINT = '/pedagio-valores';
+
+export const PedagioValorService = {
+  async buscarTodas(): Promise<PedagioValor[]> {
+    const response = await api.get<PedagioValor[]>(ENDPOINT);
+    return response.data;
+  },
+
+  async buscarPorId(id: string): Promise<PedagioValor> {
+    const response = await api.get<PedagioValor>(`${ENDPOINT}/${id}`);
+    return response.data;
+  },
+
+  async criar(dados: PedagioValor): Promise<PedagioValor> {
+    const response = await api.post<PedagioValor>(ENDPOINT, dados);
+    return response.data;
+  },
+
+  async atualizar(id: string, dados: Partial<PedagioValor>): Promise<PedagioValor> {
+    const response = await api.put<PedagioValor>(`${ENDPOINT}/${id}`, dados);
+    return response.data;
+  },
+
+  async excluir(id: string): Promise<void> {
+    await api.delete(`${ENDPOINT}/${id}`);
+  },
+};
