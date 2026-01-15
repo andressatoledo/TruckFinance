@@ -1,10 +1,10 @@
 /** Enum baseado no schema */
 export type ViagemStatus =
-  | 'Aguardando pagamento'
+  | 'AguardandoPagamento'
   | 'Pago';
 
 export const ViagemStatus = [
-  'Aguardando pagamento',
+  'AguardandoPagamento',
   'Pago',
 ] as const;
   

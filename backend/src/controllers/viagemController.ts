@@ -50,13 +50,17 @@ async function buscarViagens(req: Request, res: Response) {
 
 async function buscarViagem(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
-
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    const { id } = req.params;;
+    if (!id) {
+    return res.status(400).json({
+      message: 'É necessário informar o id da viagem.',
+    });
     }
-
-    const viagem = await Viagem.findOne(filtro);  
+    const viagem = await Viagem.findById(id).populate('caminhaoId')
+      .populate('carretaId')
+      .populate('empregadoraId')
+      .populate('motoristaId')
+      .populate('rotaVinculadaId');
 
     if (!viagem) {
       return res.status(404).json({ message: 'Viagem não encontrada com o filtro fornecido.' });

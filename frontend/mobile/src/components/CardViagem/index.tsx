@@ -8,6 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Tag } from '../Tag';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/types';
+import {ViagemStatus } from '../../../shared/types/viagem';
+import { useStatusColors } from './Tag';
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -18,6 +20,7 @@ interface CardViagemProps {
   toneladaValue?: string;
   freteValue?: string;
   dieselValue?: string;
+  viagemStatus: ViagemStatus;
 }
 
 export function CardViagem(CardViagemProps: CardViagemProps) {
@@ -48,6 +51,9 @@ export function CardViagem(CardViagemProps: CardViagemProps) {
     });
   };
 
+  // Status
+  const statusColors = useStatusColors(CardViagemProps.viagemStatus);
+
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
       <Animated.View
@@ -66,9 +72,9 @@ export function CardViagem(CardViagemProps: CardViagemProps) {
           <Text style={stylesCardViagem.date}>{CardViagemProps.data}</Text>
 
           <Tag
-            value="Pago"
-            textColor={theme.colors.success}
-            backgroundColor={theme.colors.success}
+            value={statusColors.value}
+            textColor={ statusColors.textColor}
+            backgroundColor={statusColors.backgroundColor}
           />
         </View>
 

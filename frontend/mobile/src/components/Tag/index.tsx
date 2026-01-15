@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { styles } from './styles';
 import { useTheme } from '../../theme/themeContext';
 
-interface TagProps {
+export interface TagProps {
   textColor: string;
   backgroundColor: string;
   value: string;

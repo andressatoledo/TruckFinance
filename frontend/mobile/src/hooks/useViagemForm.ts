@@ -3,6 +3,8 @@ import { Viagem } from '../../shared/types/Viagem';
 import {
   ViagemService
 } from '../../shared/services/ViagemService';
+import { normalizarId } from './normalizar';
+import { RotaVinculadaService } from '../../shared/services/rotaVinculadaService';
 
 type Mode = 'create' | 'edit' | 'view';
 
@@ -35,7 +37,7 @@ function limparIdsParaEnvio(data: Viagem): Partial<Viagem> {
 
 export function useViagemForm(mode: Mode, viagemId?: string) {
   const [data, setData] = useState<Viagem>({
-    viagemStatus: 'Aguardando pagamento',
+    viagemStatus: 'AguardandoPagamento',
   } as Viagem);
 
   const [loading, setLoading] = useState(false);
@@ -50,16 +52,28 @@ export function useViagemForm(mode: Mode, viagemId?: string) {
           setData({
             ...viagem,
             // garante string vazia para combos
-            caminhaoId: viagem.caminhaoId ?? '',
-            carretaId: viagem.carretaId ?? '',
-            empregadoraId: viagem.empregadoraId ?? '',
-            motoristaId: viagem.motoristaId ?? '',
-            rotaVinculadaId: viagem.rotaVinculadaId ?? '',
+            caminhaoId: normalizarId(viagem.caminhaoId),
+            carretaId: normalizarId(viagem.carretaId),
+            empregadoraId: normalizarId(viagem.empregadoraId),
+            motoristaId: normalizarId(viagem.motoristaId),
+            rotaVinculadaId: normalizarId(viagem.rotaVinculadaId),
           });
         })
         .finally(() => setLoading(false));
     }
   }, [mode, viagemId]);
+
+  useEffect(() => {
+  if (!data.rotaVinculadaId) return;
+
+  RotaVinculadaService.buscarPorId(data.rotaVinculadaId)
+    .then((rota) => {
+      setData((prev) => ({
+        ...prev,
+        viagemValorTonelada: rota.rotaVinculadaValor, 
+      }));
+    });
+}, [data.rotaVinculadaId]);
 
   async function submit() {
     if (!data) return;

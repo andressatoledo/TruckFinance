@@ -18,8 +18,11 @@ import { useCaminhaoCombo } from '../../hooks/useCaminhaoCombo';
 import { useEmpregadoraCombo } from '../../hooks/useEmpregadoraCombo';
 import { useTheme } from '../../theme/themeContext';
 import { Panel } from '../../components/Form/Panel';
+import { calcularValorTonelada } from '../../services/calcularValorTonelada';
+import { useMemo } from 'react';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ViagemForm'>;
+
 
 export function ViagemForm({ route, navigation }: Props) {
   const { mode, viagemId } = route.params;
@@ -41,6 +44,17 @@ export function ViagemForm({ route, navigation }: Props) {
     readOnly,
     loading: loadingViagem,
   } = useViagemForm(mode, viagemId);
+
+  const valorFrete = useMemo(() => {
+  if (!data?.viagemToneladaCarregada || !data?.viagemValorTonelada) {
+    return 0;
+  }
+
+  return calcularValorTonelada(
+    data.viagemToneladaCarregada,
+    data.viagemValorTonelada
+  );
+}, [data?.viagemToneladaCarregada, data?.viagemValorTonelada]);
 
   if (loadingViagem) {
     return <Text>Carregando...</Text>;
@@ -67,10 +81,6 @@ export function ViagemForm({ route, navigation }: Props) {
       <Text style={{ fontSize: 20, fontWeight: '600', marginBottom: 24, color: theme.colors.text }}>
         {mode === 'create' ? 'Nova Viagem' : 'Viagem'}
       </Text>
-
-     
-
-      
 
        {/* Horários de Início e Chegada */}
       <Row>
@@ -267,7 +277,7 @@ export function ViagemForm({ route, navigation }: Props) {
 
         <ValueCard
           label="Frete"
-          value="R$ 1.200,00"
+          value={'R$ ' + valorFrete}
           icon={"currency-usd"}
           color={theme.colors.cardFreteText}
           backgroundColor={theme.colors.cardFrete}

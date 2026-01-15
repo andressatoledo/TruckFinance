@@ -44,7 +44,7 @@ app.use('/api', viagemDocumentoRoutes);
 // Conexão com o MongoDB
 connectToDatabase();
 // seedDatabase();
-// seedRotaJacareiItupeva(); 
+seedRotaJacareiItupeva(); 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

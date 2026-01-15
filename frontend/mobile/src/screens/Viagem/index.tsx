@@ -1,5 +1,8 @@
 import { Text, ScrollView, ActivityIndicator, View } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
 import { layout } from '../../styles/layout';
 import { useTheme } from '../../theme/themeContext';
 import { CardViagem } from '../../components/CardViagem';
@@ -15,11 +18,25 @@ export function Viagem() {
   const [viagens, setViagens] = useState<Viagem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    ViagemService.buscarTodas()
-      .then(setViagens)
-      .finally(() => setLoading(false));
-  }, []);
+  const tabBarHeight = useBottomTabBarHeight();
+  const insets = useSafeAreaInsets();
+
+  //Buscar viagens
+   const buscarViagens = async () => {
+    setLoading(true);
+    try {
+      const data = await ViagemService.buscarTodas();
+      setViagens(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      buscarViagens();
+    }, [])
+  );
+ 
 
   if (loading) {
     return (
@@ -30,7 +47,13 @@ export function Viagem() {
   }
 
   return (
-    <ScrollView style={styleDefault.container}>
+    // <ScrollView style={styleDefault.container}>
+    <ScrollView
+      style={styleDefault.container}
+      contentContainerStyle={{
+        paddingBottom: tabBarHeight + insets.bottom + 50,
+      }}
+    >
       <Text style={styleDefault.title}>Viagens</Text>
 
       {viagens.length === 0 && (
@@ -47,7 +70,8 @@ export function Viagem() {
           rota={formatarRota(viagem)}
           toneladaValue={String(viagem.viagemToneladaCarregada ?? '-')}
           freteValue={formatarValor(viagem.viagemValorTonelada)}
-          dieselValue="—"
+          dieselValue='pendente'
+          viagemStatus={viagem.viagemStatus!}
         />
       ))}
     </ScrollView>
