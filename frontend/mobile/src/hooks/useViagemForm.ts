@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Viagem } from '../../shared/types/Viagem';
 import {
   ViagemService
-} from '../../shared/services/ViagemService';
+} from '../../shared/services/viagemService';
 import { normalizarId } from './normalizar';
 import { RotaVinculadaService } from '../../shared/services/rotaVinculadaService';
 

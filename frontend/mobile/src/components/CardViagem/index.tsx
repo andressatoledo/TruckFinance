@@ -101,7 +101,7 @@ export function CardViagem(CardViagemProps: CardViagemProps) {
             />
             <Text style={stylesCardViagem.label}>Frete</Text>
             <Text style={[stylesCardViagem.value, stylesCardViagem.green]}>
-              R$ {CardViagemProps.freteValue}
+              {CardViagemProps.freteValue}
             </Text>
           </View>
 
@@ -113,7 +113,7 @@ export function CardViagem(CardViagemProps: CardViagemProps) {
             />
             <Text style={stylesCardViagem.label}>Diesel</Text>
             <Text style={[stylesCardViagem.value, stylesCardViagem.yellow]}>
-              R$ {CardViagemProps.dieselValue}
+              {CardViagemProps.dieselValue}
             </Text>
           </View>
         </View>

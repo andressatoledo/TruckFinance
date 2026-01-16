@@ -6,16 +6,19 @@ import { useCallback, useState } from 'react';
 import { layout } from '../../styles/layout';
 import { useTheme } from '../../theme/themeContext';
 import { CardViagem } from '../../components/CardViagem';
-import { ViagemService } from '../../../shared/services/ViagemService';
+import { CarteiraViagemService } from '../../../shared/services/carteiraViagemService';
 import type { Viagem } from '../../../shared/types/Viagem';
+import type { CarteiraViagem } from '../../../shared/types/carteiraViagem';
 import { formatarData } from '../../../shared/utils/formatarData';
 import { formatarRota } from '../../../shared/utils/formatarRota';
 import { formatarValor } from '../../../shared/utils/formatarValor';
+
 export function Viagem() {
   const { theme } = useTheme();
   const styleDefault = layout(theme);
 
-  const [viagens, setViagens] = useState<Viagem[]>([]);
+  // const [viagens, setViagens] = useState<Viagem[]>([]);
+  const [viagens, setCarteira] = useState<CarteiraViagem[]>([]);
   const [loading, setLoading] = useState(true);
 
   const tabBarHeight = useBottomTabBarHeight();
@@ -25,8 +28,8 @@ export function Viagem() {
    const buscarViagens = async () => {
     setLoading(true);
     try {
-      const data = await ViagemService.buscarTodas();
-      setViagens(data);
+      const data = await CarteiraViagemService.buscarViagens();
+      setCarteira(data);
     } finally {
       setLoading(false);
     }
@@ -62,18 +65,24 @@ export function Viagem() {
         </Text>
       )}
 
-      {viagens.map((viagem) => (
-        <CardViagem
-          key={viagem._id}
-          viagemId={viagem._id}
-          data={formatarData(viagem.viagemDataInicio)}
-          rota={formatarRota(viagem)}
-          toneladaValue={String(viagem.viagemToneladaCarregada ?? '-')}
-          freteValue={formatarValor(viagem.viagemValorTonelada)}
-          dieselValue='pendente'
-          viagemStatus={viagem.viagemStatus!}
-        />
-      ))}
+      {viagens.map((item) => {
+        const viagem = item.viagem;
+        const diesel = item.diesel;
+
+        return (
+          <CardViagem
+            key={viagem._id}
+            viagemId={viagem._id}
+            data={formatarData(viagem.viagemDataInicio)}
+            rota={formatarRota(viagem)}
+            toneladaValue={String(viagem.viagemToneladaCarregada ?? '-')}
+            freteValue={formatarValor(viagem.viagemValorTonelada)}
+            dieselValue={formatarValor(diesel.total)}
+            viagemStatus={viagem.viagemStatus!}
+          />
+        );
+      })}
+
     </ScrollView>
   );
 }

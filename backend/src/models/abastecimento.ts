@@ -10,7 +10,11 @@ const abastecimentoSchema = new Schema({
   abastecimentoLitros: {
     type: Number
   },
-
+  
+  caminhaoId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Caminhao'
+  },
 
   abastecimentoValor: {
     type: Number

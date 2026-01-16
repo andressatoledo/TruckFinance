@@ -16,4 +16,5 @@ export interface Abastecimento {
   abastecimentoPrazoPagamento: string;
 
   abastecimentoObservacao?: string;
+  caminhaoId: string;
 }

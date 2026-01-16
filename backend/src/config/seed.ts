@@ -71,75 +71,88 @@ export async function seedDatabase() {
     // =====================
     // EMPREGADORA
     // =====================
-    const empregadora = await Empregadora.create({
-      empregadoraHasAdiantamento: true,
-      empregadoraValorAdiantamento: 1500,
-      empregadoraPrazoPagamento: 'Mensal',
-      empregadoraStatus: 'Ativo',
-    });
+    // const empregadora = await Empregadora.create({
+    //   empregadoraHasAdiantamento: true,
+    //   empregadoraValorAdiantamento: 1500,
+    //   empregadoraPrazoPagamento: 'Mensal',
+    //   empregadoraStatus: 'Ativo',
+    // });
+
+    const abastecimento = await Abastecimento.create({
+      abastecimentoLitros: 150,
+      abastecimentoValor: 5.89,
+      abastecimentoData: "2026-01-30T00:00:00.000Z",
+      abastecimentoKm: 123456,
+      abastecimentoTipoPagamento: "À vista",
+      abastecimentoPrazoPagamento: "Imediato",
+      abastecimentoObservacao: "Abastecimento de teste",
+      caminhaoId: "6965a0c58c7c55732290dff0"
+      });
+
 
     // =====================
     // CARRETA
     // =====================
-    const carreta = await Carreta.create({
-      carretaQuantidadeEixosVazio: 3,
-      carretaQuantidadeEixosCheio: 5,
-      carretaTipo: 'Graneleira',
-      carretaStatus: 'Ativo',
-    });
+    // const carreta = await Carreta.create({
+    //   carretaQuantidadeEixosVazio: 3,
+    //   carretaQuantidadeEixosCheio: 5,
+    //   carretaTipo: 'Graneleira',
+    //   carretaStatus: 'Ativo',
+    // });
 
     // =====================
     // CARGA
     // =====================
-    const carga = await Carga.create({
-      cargaTipo: 'Soja',
-    });
+    // const carga = await Carga.create({
+    //   cargaTipo: 'Soja',
+    // });
 
     // =====================
     // CAMINHÃO
     // =====================
-    const caminhao = await Caminhao.create({
-      caminhaoNome: 'Scania R450',
-      caminhaoAnoFabricacao: 2020,
-      caminhaoPlaca: 'ABC1D23',
-      caminhaoCapacidadeDeCarga: 35000,
-      caminhaoStatus: 'Ativo',
-      caminhaoUltimaManutencao: new Date('2025-10-01'),
-      caminhaoTrocaDeOleo: new Date('2025-11-15'),
+    // const caminhao = await Caminhao.create({
+    //   caminhaoNome: 'Scania R450',
+    //   caminhaoAnoFabricacao: 2020,
+    //   caminhaoPlaca: 'ABC1D23',
+    //   caminhaoCapacidadeDeCarga: 35000,
+    //   caminhaoStatus: 'Ativo',
+    //   caminhaoUltimaManutencao: new Date('2025-10-01'),
+    //   caminhaoTrocaDeOleo: new Date('2025-11-15'),
 
-      caminhaoDocumentos: {
-        ipva: {
-          dataExpiracao: new Date('2026-01-31'),
-        },
-        seguro: {
-          dataExpiracao: new Date('2026-06-30'),
-        },
-        crlv: {
-          dataExpiracao: new Date('2026-03-31'),
-        },
-      },
+    //   caminhaoDocumentos: {
+    //     ipva: {
+    //       dataExpiracao: new Date('2026-01-31'),
+    //     },
+    //     seguro: {
+    //       dataExpiracao: new Date('2026-06-30'),
+    //     },
+    //     crlv: {
+    //       dataExpiracao: new Date('2026-03-31'),
+    //     },
+    //   },
 
-      empregadoraId: empregadora._id,
-    });
+    //   empregadoraId: empregadora._id,
+    // });
 
     // =====================
     // MOTORISTA
     // =====================
-    const motorista = await Motorista.create({
-      motoristaNome: 'João da Silva',
-      motoristaStatus: 'Ativo',
-      motoristaDataVencimentoHabilitacao: new Date('2027-08-20'),
-      caminhaoId: caminhao._id,
-      carretaId: carreta._id,
-    });
+    // const motorista = await Motorista.create({
+    //   motoristaNome: 'João da Silva',
+    //   motoristaStatus: 'Ativo',
+    //   motoristaDataVencimentoHabilitacao: new Date('2027-08-20'),
+    //   caminhaoId: caminhao._id,
+    //   carretaId: carreta._id,
+    // });
 
     console.log('✅ Seed concluído com sucesso!');
     console.log({
-      empregadora,
-      carreta,
-      carga,
-      caminhao,
-      motorista,
+      // empregadora,
+      // carreta,
+      // carga,
+      // caminhao,
+      // motorista,
+      abastecimento
     });
 
   } catch (error) {

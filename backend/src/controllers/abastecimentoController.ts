@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Abastecimento } from '../models/index';
+import { montarFiltroAbastecimento } from '../filters/abastecimento';
 
 async function criarAbastecimento(req: Request, res: Response) {
   try {
@@ -15,31 +16,33 @@ async function criarAbastecimento(req: Request, res: Response) {
 
 
 async function buscarAbastecimentos(req: Request, res: Response) {
-  try {
-    const filtro = req.query; 
+  console.log('🚀 ENTROU NO CONTROLLER buscarAbastecimentos');
+   try {
+    const filtro = montarFiltroAbastecimento(req.query);
 
-    const abastecimentos = await Abastecimento.find(filtro);  
-
-    if (abastecimentos.length === 0) {
-      return res.status(404).json({ message: 'Nenhum abastecimento encontrado com os filtros fornecidos.' });
-    }
-
-    res.status(200).json(abastecimentos); 
+    const abastecimentos = await Abastecimento.find(filtro);
+    return res.status(200).json(abastecimentos);
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    res.status(500).json({ message: `Erro ao buscar abastecimentos. ${errorMessage}` });
+    const errorMessage =
+      error instanceof Error ? error.message : 'Erro desconhecido';
+
+    return res.status(500).json({
+      message: `Erro ao buscar abastecimentos. ${errorMessage}`,
+    });
   }
 }
 
 async function buscarAbastecimento(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id do abastecimento.',
+      });
     }
 
-    const abastecimento = await Abastecimento.findOne(filtro);  
+    const abastecimento = await Abastecimento.findById(id);  
 
     if (!abastecimento) {
       return res.status(404).json({ message: 'Abastecimento não encontrado com o filtro fornecido.' });
