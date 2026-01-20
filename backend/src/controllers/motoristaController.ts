@@ -59,19 +59,22 @@ async function buscarMotoristaCombo(req: Request, res: Response) {
 
 async function buscarMotorista(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
-    }
+    // if (!id) {
+    //   return res.status(400).json({
+    //   message: 'É necessário informar o id do motorista.',
+    // });
+    // }
 
-    const motorista = await Motorista.findOne(filtro);  
+    const motorista = await Motorista.findById(id);  
 
-    if (!motorista) {
-      return res.status(404).json({ message: 'Motorista não encontrado com o filtro fornecido.' });
-    }
+    // if (!motorista) {
+    //   return res.status(404).json({ message: 'Motorista não encontrado com o filtro fornecido.' });
+    // }
 
     res.status(200).json(motorista);  
+
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
     res.status(500).json({ message: `Erro ao buscar motorista. ${errorMessage}` });

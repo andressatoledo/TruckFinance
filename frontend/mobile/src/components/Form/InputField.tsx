@@ -1,6 +1,7 @@
-import { View, Text, TextInput, Pressable , KeyboardTypeOptions} from 'react-native';
+import { View, Text, TextInput, Pressable, KeyboardTypeOptions } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../../theme/themeContext';
+import { FormError } from './FormError';
 
 interface Props {
   label: string;
@@ -11,50 +12,10 @@ interface Props {
   keyboardType?: KeyboardTypeOptions;
   onPress?: () => void;
   onChangeText?: (text: string) => void;
+
+  /** 🔴 mensagem de erro do formulário */
+  error?: string;
 }
-
-// export function InputField({
-//   label,
-//   icon,
-//   value,
-//   placeholder,
-//   editable = true,
-//   onPress,
-// }: Props) {
-//   const { theme } = useTheme();
-//   return (
-//     <View style={{ marginBottom: 16 }}>
-//       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-//         {icon && (
-//         <MaterialCommunityIcons name={icon} size={18} color={theme.colors.detail} />)}
-//         <Text style={{ marginLeft: 6, color: theme.colors.detail, fontSize: theme.sizes.mediumText.fontSize }}>
-//           {label}
-//         </Text>
-//       </View>
-
-//       <Pressable onPress={onPress} disabled={!onPress}>
-//         <TextInput
-//           value={value}
-//           placeholder={placeholder}
-//           editable={editable} // 🔒 impede digitação
-//           pointerEvents="none"
-//           style={{
-//             borderWidth: 1,
-//             borderColor: theme.colors.detail,
-//             borderRadius: 10,
-//             paddingHorizontal: 14,
-//             paddingVertical: 12,
-//             fontSize: theme.sizes.mediumText.fontSize,
-//             backgroundColor: theme.colors.backgroundCard,
-//             color: theme.colors.text,
-//           }}
-//         />
-//       </Pressable>
-//     </View>
-//   );
-// }
-
-
 
 export function InputField({
   label,
@@ -65,32 +26,58 @@ export function InputField({
   onPress,
   onChangeText,
   keyboardType = 'default',
+  error,
 }: Props) {
   const { theme } = useTheme();
   const isPressable = !!onPress && !editable;
 
+  const borderColor = error
+    ? theme.colors.error
+    : theme.colors.detail;
+
   return (
     <View style={{ marginBottom: 16 }}>
-      {icon || label ? (
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-          {icon && <MaterialCommunityIcons name={icon} size={18} color={theme.colors.detail} />}
+      {/* Label */}
+      {(icon || label) && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 6,
+          }}
+        >
+          {icon && (
+            <MaterialCommunityIcons
+              name={icon}
+              size={18}
+              color={theme.colors.detail}
+            />
+          )}
+
           {label && (
-            <Text style={{ marginLeft: 6, color: theme.colors.detail, fontSize: theme.sizes.mediumText.fontSize }}>
+            <Text
+              style={{
+                marginLeft: icon ? 6 : 0,
+                color: theme.colors.detail,
+                fontSize: theme.sizes.mediumText.fontSize,
+              }}
+            >
               {label}
             </Text>
           )}
         </View>
-      ) : null}
+      )}
 
+      {/* Campo */}
       {isPressable ? (
         <Pressable onPress={onPress}>
           <TextInput
             value={value}
             placeholder={placeholder}
-            editable={false} // só para mostrar valor, não digitar
+            editable={false}
             style={{
               borderWidth: 1,
-              borderColor: theme.colors.detail,
+              borderColor,
               borderRadius: 10,
               paddingHorizontal: 14,
               paddingVertical: 12,
@@ -104,12 +91,12 @@ export function InputField({
         <TextInput
           value={value}
           placeholder={placeholder}
-          editable={editable}   
+          editable={editable}
           keyboardType={keyboardType}
           onChangeText={onChangeText}
           style={{
             borderWidth: 1,
-            borderColor: theme.colors.detail,
+            borderColor,
             borderRadius: 10,
             paddingHorizontal: 14,
             paddingVertical: 12,
@@ -119,6 +106,9 @@ export function InputField({
           }}
         />
       )}
+
+      {/* 🔴 Erro padronizado */}
+      <FormError message={error} />
     </View>
   );
 }

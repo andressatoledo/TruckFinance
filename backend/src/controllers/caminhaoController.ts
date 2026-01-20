@@ -53,19 +53,12 @@ async function buscarCaminhaoCombo(req: Request, res: Response) {
 
 async function buscarCaminhao(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
-    }
-
-    const caminhao = await Caminhao.findOne(filtro);  
-
-    if (!caminhao) {
-      return res.status(404).json({ message: 'Caminhão não encontrado com o filtro fornecido.' });
-    }
+    const caminhao = await Caminhao.findById(id);
 
     res.status(200).json(caminhao);  
+
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
     res.status(500).json({ message: `Erro ao buscar caminhão. ${errorMessage}` });

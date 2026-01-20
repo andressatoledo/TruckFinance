@@ -73,14 +73,7 @@ export default function BottomTabs() {
             />
           ),
           tabBarButton: () => (
-            // <BotaoCentral
-            //   styles={styles}
-            //   onPress={() =>
-            //     navigation.navigate('ViagemForm', {
-            //       mode: 'create'
-            //     })
-            //   }
-            // />
+          
             <BotaoCentral
               styles={styles}
               onPress={() =>

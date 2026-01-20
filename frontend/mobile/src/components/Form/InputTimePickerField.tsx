@@ -7,9 +7,9 @@ import { useTheme } from '../../theme/themeContext';
 interface Props {
   label: string;
   icon?: string;
-  value?: string;
+  value?: string; // vem do RHF
   placeholder?: string;
-  onChange?: (time: string) => void;
+  onChange?: (time: string) => void; // do RHF
   editable?: boolean;
 }
 
@@ -23,28 +23,31 @@ export function TimePickerField({
 }: Props) {
   const { theme } = useTheme();
   const [showPicker, setShowPicker] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(value || '');
 
   const handlePress = () => {
     if (editable) setShowPicker(true);
   };
 
-  // 🔹 Corrigido: tipagem segura para Android e iOS
   const handleChange = (event: any, date?: Date) => {
-    if (Platform.OS === 'android') setShowPicker(false); // Android fecha automaticamente
+    if (Platform.OS === 'android') setShowPicker(false); // fecha automaticamente no Android
     if (date) {
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       const formatted = `${hours}:${minutes}`;
-      setSelectedTime(formatted);
-      onChange?.(formatted);
+      onChange?.(formatted); // repassa para o RHF
     }
   };
 
   return (
     <View style={{ marginBottom: 16 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-        {icon && <MaterialCommunityIcons name={icon} size={theme.sizes.mediumText.fontSize} color={theme.colors.detail} />}
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={theme.sizes.mediumText.fontSize}
+            color={theme.colors.detail}
+          />
+        )}
         <Text
           style={{
             marginLeft: icon ? 6 : 0,
@@ -58,7 +61,7 @@ export function TimePickerField({
 
       <Pressable onPress={handlePress}>
         <TextInput
-          value={selectedTime}
+          value={value} // usa o valor do RHF
           placeholder={placeholder}
           editable={false}
           pointerEvents="none"
@@ -77,11 +80,11 @@ export function TimePickerField({
 
       {showPicker && (
         <DateTimePicker
-          value={selectedTime ? new Date(`1970-01-01T${selectedTime}:00`) : new Date()}
+          value={value ? new Date(`1970-01-01T${value}:00`) : new Date()}
           mode="time"
           is24Hour={true}
           display="spinner"
-          onChange={handleChange} 
+          onChange={handleChange}
         />
       )}
     </View>

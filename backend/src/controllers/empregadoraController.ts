@@ -60,19 +60,12 @@ async function buscarEmpregadoraCombo(req: Request, res: Response) {
 
 async function buscarEmpregadora(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
-
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
-    }
-
-    const empregadora = await Empregadora.findOne(filtro);  
-
-    if (!empregadora) {
-      return res.status(404).json({ message: 'Empregadora não encontrada com o filtro fornecido.' });
-    }
+    const { id } = req.params;
+   
+    const empregadora = await Empregadora.findById(id);  
 
     res.status(200).json(empregadora);  
+    
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
     res.status(500).json({ message: `Erro ao buscar empregadora. ${errorMessage}` });

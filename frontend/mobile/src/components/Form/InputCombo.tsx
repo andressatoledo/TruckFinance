@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../../theme/themeContext';
+import { FormError } from './FormError';
 
 type Option<T extends string> = {
   label: string;
@@ -20,9 +21,18 @@ type Props<T extends string> = {
   value?: T;
   options: Option<T>[];
   loading?: boolean;
-  onChange: (value: T) => void;
+  onChange: (value: T | '') => void; // permite vazio
   icon?: string;
   disabled?: boolean;
+
+  /** 🔴 mensagem de erro do formulário */
+  error?: string;
+
+  /** 🔹 Label da opção vazia */
+  emptyLabel?: string;
+
+  /** 🔹 Valor da opção vazia */
+  emptyValue?: T | '';
 };
 
 export function InputCombo<T extends string>({
@@ -32,6 +42,9 @@ export function InputCombo<T extends string>({
   onChange,
   icon,
   disabled,
+  error,
+  emptyLabel = 'Selecione',
+  emptyValue = '' as T,
 }: Props<T>) {
   const ref = useRef<View>(null);
   const [visible, setVisible] = useState(false);
@@ -39,24 +52,45 @@ export function InputCombo<T extends string>({
   const { theme } = useTheme();
 
   const open = () => {
-    if (ref.current) {
-      ref.current.measureInWindow((x, y, width, height) => {
-        setLayout({ x, y, width, height });
-        setVisible(true);
-      });
-    }
+    if (disabled) return;
+
+    ref.current?.measureInWindow((x, y, width, height) => {
+      setLayout({ x, y, width, height });
+      setVisible(true);
+    });
   };
 
   const close = () => setVisible(false);
 
+  const borderColor = error
+    ? theme.colors.error
+    : disabled
+    ? theme.colors.opaco
+    : theme.colors.detail;
+
+  // 🔹 adiciona a opção vazia no início
+  const allOptions: (Option<T | ''>)[] = [
+    { label: emptyLabel, value: emptyValue },
+    ...options,
+  ];
+
   return (
     <>
       <View ref={ref} style={{ marginBottom: 16 }}>
-        <Text style={{ color: theme.colors.detail,  marginBottom: 6 , fontSize: theme.sizes.mediumText.fontSize }}>{label}</Text>
+        <Text
+          style={{
+            color: theme.colors.detail,
+            marginBottom: 6,
+            fontSize: theme.sizes.mediumText.fontSize,
+          }}
+        >
+          {label}
+        </Text>
 
         <TouchableOpacity
           onPress={open}
           disabled={disabled}
+          activeOpacity={0.8}
           style={{
             borderWidth: 1,
             borderRadius: 8,
@@ -64,34 +98,42 @@ export function InputCombo<T extends string>({
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: theme.colors.backgroundCard,
-            borderColor: disabled ? theme.colors.opaco : theme.colors.detail,
-            
+            borderColor,
           }}
         >
           {icon && (
             <MaterialCommunityIcons
               name={icon}
               size={18}
-              color= {theme.colors.destaque}
+              color={disabled ? theme.colors.opaco : theme.colors.destaque}
             />
           )}
 
-          <Text style={{ flex: 1, fontSize: theme.sizes.mediumText.fontSize, marginLeft: icon ? 8 : 0, color: disabled ? theme.colors.opaco : theme.colors.destaque }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: theme.sizes.mediumText.fontSize,
+              marginLeft: icon ? 8 : 0,
+              color: value ? theme.colors.text : theme.colors.opaco,
+            }}
+          >
             {value
-              ? options.find(o => o.value === value)?.label
-              : 'Selecione'}
+              ? allOptions.find(o => o.value === value)?.label
+              : emptyLabel}
           </Text>
 
-          <MaterialCommunityIcons name="chevron-down" size={20} style={{ color: disabled ? theme.colors.opaco : theme.colors.destaque }} />
+          <MaterialCommunityIcons
+            name="chevron-down"
+            size={20}
+            color={disabled ? theme.colors.opaco : theme.colors.destaque}
+          />
         </TouchableOpacity>
+
+        <FormError message={error} />
       </View>
 
       <Modal visible={visible} transparent animationType="fade">
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          activeOpacity={1}
-          onPress={close}
-        >
+        <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={close}>
           {layout && (
             <View
               style={{
@@ -102,12 +144,12 @@ export function InputCombo<T extends string>({
                 backgroundColor: theme.colors.backgroundCard,
                 borderRadius: 8,
                 elevation: 5,
-                maxHeight: 200,
+                maxHeight: 220,
               }}
             >
               <FlatList
-                data={options}
-                keyExtractor={item => item.value}
+                data={allOptions}
+                keyExtractor={item => String(item.value)}
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     onPress={() => {
@@ -116,7 +158,14 @@ export function InputCombo<T extends string>({
                     }}
                     style={{ padding: 12 }}
                   >
-                    <Text style={{ color: theme.colors.text , fontSize: theme.sizes.mediumText.fontSize}}>{item.label}</Text>
+                    <Text
+                      style={{
+                        color: theme.colors.text,
+                        fontSize: theme.sizes.mediumText.fontSize,
+                      }}
+                    >
+                      {item.label}
+                    </Text>
                   </TouchableOpacity>
                 )}
               />

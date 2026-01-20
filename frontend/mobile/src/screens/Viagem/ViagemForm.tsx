@@ -1,75 +1,66 @@
 import { ScrollView, View, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
-import { useViagemForm } from '../../hooks/useViagemForm';
-import { ViagemStatus } from '../../../shared/types/viagem';
+import { Controller } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useState } from 'react';
-import { InputCombo } from '../../components/Form/InputCombo';
+import { useMemo, useState } from 'react';
+import { useWatch } from 'react-hook-form';
+// import { ViagemFormData } from '../../../shared/schemas/viagem.schema';
+import { ViagemStatus } from '../../../shared/types/viagem';
+
 import { InputField } from '../../components/Form/InputField';
+import { InputCombo } from '../../components/Form/InputCombo';
 import { TimePickerField } from '../../components/Form/InputTimePickerField';
 import { ValueCard } from '../../components/Form/ValueCard';
 import { Row } from '../../components/Form/Row';
 import { SubmitButton } from '../../components/Form/SubmitButton';
-import { useRotaVinculadaCombo } from '../../hooks/useRotaVinculadaCombo';
-import { useMotoristaCombo } from '../../hooks/useMotoristaCombo';
-import { useCarretaCombo } from '../../hooks/useCarretaCombo';
-import { useCaminhaoCombo } from '../../hooks/useCaminhaoCombo';
-import { useEmpregadoraCombo } from '../../hooks/useEmpregadoraCombo';
-import { useTheme } from '../../theme/themeContext';
 import { Panel } from '../../components/Form/Panel';
+
+import { useTheme } from '../../theme/themeContext';
 import { calcularValorTonelada } from '../../services/calcularValorTonelada';
-import { useMemo } from 'react';
+import { useViagemForm } from '../../hooks/useViagemForm';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ViagemForm'>;
 
-
 export function ViagemForm({ route, navigation }: Props) {
   const { mode, viagemId } = route.params;
-  const { optionsRotas, loadingRotas } = useRotaVinculadaCombo();
-  const { optionsMotoristas, loadingMotoristas } = useMotoristaCombo();
-  const { optionsCaminhoes, loadingCaminhoes } = useCaminhaoCombo();
-  const { optionsCarretas, loadingCarretas } = useCarretaCombo();
-  const { optionsEmpregadoras, loadingEmpregadoras } = useEmpregadoraCombo();
   const { theme } = useTheme();
 
-  const [showDateInicio, setShowDateInicio] = useState(false);
-  const [showDateFim, setShowDateFim] = useState(false);
-  const [showDatePagamento, setShowDatePagamento] = useState(false);
-  
   const {
-    data,
-    setData,
-    submit,
+    control,
+    errors,
     readOnly,
-    loading: loadingViagem,
-  } = useViagemForm(mode, viagemId);
+    // setValue,
+    handleSubmit,
+    optionsMotoristas,
+    optionsCaminhoes,
+    optionsCarretas,
+    optionsEmpregadoras,
+    optionsRotas,
+    loadingCaminhoes,
+    loadingCarretas,
+    loadingMotoristas,
+    loadingEmpregadoras,
+    loadingRotas,
+  } = useViagemForm(mode, viagemId, navigation);
+
+  const [showInicio, setShowInicio] = useState(false);
+  const [showFim, setShowFim] = useState(false);
+  const [showPagamento, setShowPagamento] = useState(false);
+
+  /* 🔢 Cálculo automático */
+  const toneladas =
+  useWatch({ control, name: 'viagemToneladaCarregada' }) ?? 0;
+  
+  const valorTonelada =
+  useWatch({ control, name: 'viagemValorTonelada' }) ?? 0;
 
   const valorFrete = useMemo(() => {
-  if (!data?.viagemToneladaCarregada || !data?.viagemValorTonelada) {
-    return 0;
-  }
+    return calcularValorTonelada(toneladas, valorTonelada);
+  }, [toneladas, valorTonelada]);
 
-  return calcularValorTonelada(
-    data.viagemToneladaCarregada,
-    data.viagemValorTonelada
-  );
-}, [data?.viagemToneladaCarregada, data?.viagemValorTonelada]);
-
-  if (loadingViagem) {
-    return <Text>Carregando...</Text>;
-  }
-
-  const formatDate = (date?: Date | string) => {
-    if (!date) return '';
-    const d = new Date(date);
-    return d.toLocaleDateString('pt-BR');
-  };
-
-  const handleSubmit = async () => {
-    await submit();
-    navigation.goBack();
-  };
+  const formatDate = (date?: Date) =>
+    date ? date.toLocaleDateString('pt-BR') : '';
 
   return (
     <ScrollView
@@ -85,111 +76,169 @@ export function ViagemForm({ route, navigation }: Props) {
        {/* Horários de Início e Chegada */}
       <Row>
         <View style={{ flex: 1 }}>
-         {/* Data Início */}
-        <InputField
-          label="Início da viagem"
-          icon="calendar"
-          value={formatDate(data?.viagemDataInicio)}
-          placeholder="dd/mm/aaaa"
-          editable={false}
-          onPress={() => !readOnly && setShowDateInicio(true)}
+        <Controller
+          control={control}
+          name="viagemDataInicio"
+          render={({ field }) => (
+            <>
+              <InputField
+                label="Início da viagem"
+                icon="calendar"
+                value={formatDate(field.value)}
+                editable={false}
+                onPress={() => !readOnly && setShowInicio(true)}
+                error={errors.viagemDataInicio?.message}
+                placeholder='Selecione a data'
+              />
+              {showInicio && (
+                <DateTimePicker
+                  value={field.value ?? new Date()}
+                  mode="date"
+                  disabled={readOnly}
+                  onChange={(_, d) => {
+                    setShowInicio(false);
+                    if (d) field.onChange(d);
+                  }}
+                />
+              )}
+            </>
+          )}
         />
-        {showDateInicio && (
-          <DateTimePicker
-            value={data.viagemDataInicio ? new Date(data.viagemDataInicio) : new Date()}
-            mode="date"
-            display="calendar"
-            onChange={(_, selectedDate) => {
-              setShowDateInicio(false);
-              if (selectedDate) setData({ ...data, viagemDataInicio: selectedDate });
-            }}
-          />
-        )}
         </View>
         <View style={{ flex: 1 }}>
-          <TimePickerField
-            label="Hora de início"
-            icon="clock-outline"
-            value={data.viagemHorarioChegada ?? ''}
-            onChange={(time) => setData({ ...data, viagemHorarioChegada: time })}
-          />
+        <Controller
+          control={control}
+          name="viagemHorarioChegada"
+          render={({ field }) => (
+            <TimePickerField
+              label="Hora início"
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
         </View>
-       
       </Row>
 
        {/* Horários de Início e Chegada */}
       <Row>
         <View style={{ flex: 1 }}>
-          {/* Data Fim */}
-          <InputField
-            label="Fim da viagem"
-            icon="calendar"
-            value={formatDate(data.viagemDataFim)}
-            placeholder="dd/mm/aaaa"
-            editable={false}
-            onPress={() => !readOnly && setShowDateFim(true)}
-          />
-          {showDateFim && (
-            <DateTimePicker
-              value={data.viagemDataFim ? new Date(data.viagemDataFim) : new Date()}
-              mode="date"
-              display="calendar"
-              onChange={(_, selectedDate) => {
-                setShowDateFim(false);
-                if (selectedDate) setData({ ...data, viagemDataFim: selectedDate });
-              }}
-            />
+          <Controller
+          control={control}
+          name="viagemDataFim"
+          render={({ field }) => (
+            <>
+              <InputField
+                label="Fim da viagem"
+                icon="calendar"
+                value={formatDate(field.value)}
+                editable={false}
+                onPress={() => !readOnly && setShowFim(true)}
+                error={errors.viagemDataFim?.message}
+                placeholder='Selecione a data'
+              />
+              {showFim && (
+                <DateTimePicker
+                  value={field.value ?? new Date()}
+                  mode="date"
+                  disabled={readOnly}
+                  onChange={(_, d) => {
+                    setShowFim(false);
+                    if (d) field.onChange(d);
+                  }}
+                />
+              )}
+            </>
           )}
-            </View>
-        <View style={{ flex: 1 }}>
-          <TimePickerField
-            label="Hora de fim"
-            icon="clock-outline"
-            value={data.viagemHorarioSaida ?? ''}
-            onChange={(time) => setData({ ...data, viagemHorarioSaida: time })}
-          />
+        />
+        
         </View>
+        <View style={{ flex: 1 }}>
+          <Controller
+            control={control}
+            name="viagemHorarioSaida"
+            render={({ field }) => (
+              <TimePickerField
+                label="Hora saída"
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
+      </View>
+         
       </Row>
 
-      
-      <InputCombo
-        label="Motorista"
-        value={data.motoristaId ?? ''}
-        options={optionsMotoristas}
-        loading={loadingMotoristas}
-        onChange={(value) => setData({ ...data, motoristaId: value })}
+      <Controller
+        control={control}
+        name="motoristaId"
+        render={({ field }) => (
+          <InputCombo
+            label="Motorista"
+            value={field.value}
+            options={optionsMotoristas}
+            loading={loadingMotoristas}
+            onChange={field.onChange}
+            error={errors.motoristaId?.message}
+          />
+        )}
       />
-      
-      {/* Rota */}
-      <InputCombo
-        label="Rota"
-        value={data.rotaVinculadaId ?? ''}
-        options={optionsRotas}
-        loading={loadingRotas}
-        onChange={(value) => setData({ ...data, rotaVinculadaId: value })}
+
+  
+      <Controller
+        control={control}
+        name="rotaVinculadaId"
+        render={({ field }) => (
+          <InputCombo
+            label="Rota"
+            value={field.value}
+            options={optionsRotas}
+            loading={loadingRotas}
+            onChange={field.onChange}
+            error={errors.rotaVinculadaId?.message}
+          />
+        )}
       />
 
       {/* Toneladas / Valor */}
       <Row>
         <View style={{ flex: 1 }}>
-          <InputField
-            label="Toneladas"
-            icon="weight"
-            value={String(data.viagemToneladaCarregada ?? '')}
-            keyboardType="numeric"
-            editable={!readOnly}
-            onChangeText={(v) => setData({ ...data, viagemToneladaCarregada: Number(v) })}
-          />
+          <Controller
+          control={control}
+          name="viagemToneladaCarregada"
+          
+          render={({ field }) => (
+            <InputField
+              label="Toneladas"
+              icon="weight"
+              keyboardType="numeric"
+              value={String(field.value ?? '')}
+              onChangeText={(v) =>
+                field.onChange(v ? Number(v) : 0)
+              }
+              error={errors.viagemToneladaCarregada?.message}
+            />
+          )}
+        />
         </View>
-        <View style={{ flex: 1 }}>
-          <InputField
-            label="Frete (R$)"
-            icon="currency-usd"
-            value={String(data.viagemValorTonelada ?? '')}
-            keyboardType="numeric"
-            editable={!readOnly}
-            onChangeText={(v) => setData({ ...data, viagemValorTonelada: Number(v) })}
-          />
+         <View style={{ flex: 1 }}>
+          <Controller
+          control={control}
+          name="viagemValorTonelada"
+          render={({ field }) => (
+            <InputField
+              label="Frete (R$)"
+              icon="currency-usd"
+              keyboardType="numeric"
+              value={String(field.value ?? '')}
+              onChangeText={(v) =>
+                field.onChange(v ? Number(v) : 0)
+              }
+              error={errors.viagemValorTonelada?.message}
+            />
+          )}
+        />
+        
         </View>
       </Row>
 
@@ -197,72 +246,117 @@ export function ViagemForm({ route, navigation }: Props) {
 
       <Panel title="Detalhamento" defaultExpanded={false}>
       {/* Ocultas com panel */}
-      <InputCombo
-          label="Empregadora"
-          value={data.empregadoraId ?? ''}
-          options={optionsEmpregadoras}
-          loading={loadingEmpregadoras}
-          onChange={(value) => setData({ ...data, empregadoraId: value })}
-        />
-
-        <InputCombo
-          label="Caminhão"
-          value={data.caminhaoId ?? ''}
-          options={optionsCaminhoes}
-          loading={loadingCaminhoes}
-          onChange={(value) => setData({ ...data, caminhaoId: value })}
-        />
-
-        <InputCombo
-          label="Carreta"
-          value={data.carretaId ?? ''}
-          options={optionsCarretas}
-          loading={loadingCarretas}
-          onChange={(value) => setData({ ...data, carretaId: value })}
-        />
-
-        <InputField
-            label="Distância (Km)"
-            icon="map-marker-distance"
-            value={String(data.viagemToneladaCarregada ?? '')}
-            keyboardType="numeric"
-            editable={!readOnly}
-            onChangeText={(v) => setData({ ...data, viagemToneladaCarregada: Number(v) })}
-        />
-
-         {/* Status */}
-        <InputCombo
-          label="Status"
-          icon="check-circle"
-          value={data.viagemStatus}
-          options={[
-            { label: 'Aguardando pagamento', value: 'Aguardando pagamento' },
-            { label: 'Pago', value: 'Pago' },
-          ]}
-          onChange={(v) => setData({ ...data, viagemStatus: v as ViagemStatus })}
-          disabled={readOnly}
-        />
-
-        {/* Data de pagamento */}
-        <InputField
-          label="Data de pagamento"
-          icon="calendar"
-          value={formatDate(data.viagemDataPagamento)}
-          placeholder="dd/mm/aaaa"
-          editable={false}
-          onPress={() => !readOnly && setShowDatePagamento(true)}
-        />
-        {showDatePagamento && (
-          <DateTimePicker
-            value={data.viagemDataPagamento ? new Date(data.viagemDataPagamento) : new Date()}
-            mode="date"
-            display="calendar"
-            onChange={(_, selectedDate) => {
-              setShowDatePagamento(false);
-              if (selectedDate) setData({ ...data, viagemDataPagamento: selectedDate });
-            }}
+      <Controller
+        control={control}
+        name="empregadoraId"
+        render={({ field }) => (
+          <InputCombo
+            label="Empregadora"
+            value={field.value}
+            options={optionsEmpregadoras}
+            loading={loadingEmpregadoras}
+            onChange={field.onChange}
+            error={errors.empregadoraId?.message}
           />
         )}
+      />
+
+      <Controller
+        control={control}
+        name="caminhaoId"
+        render={({ field }) => (
+          <InputCombo
+            label="Caminhão"
+            value={field.value}
+            options={optionsCaminhoes}
+            loading={loadingCaminhoes}
+            onChange={field.onChange}
+            error={errors.caminhaoId?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="carretaId"
+        render={({ field }) => (
+          <InputCombo
+            label="Carreta"
+            value={field.value}
+            options={optionsCarretas}
+            loading={loadingCarretas}
+            onChange={field.onChange}
+            error={errors.carretaId?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="viagemDistancia"
+        render={({ field }) => (
+          <InputField
+              label="Distância (Km)"
+              icon="map-marker-distance"
+              keyboardType="numeric"
+              value={String(field.value ?? '')}
+              onChangeText={(v) =>
+                field.onChange(v ? Number(v) : 0)
+              }
+            />
+
+         
+        )}
+      />
+
+         {/* Status */}
+         <Controller
+          control={control}
+          name="viagemStatus"
+          render={({ field }) => (
+            <InputCombo
+              label="Status"
+              value={field.value}
+              options={[
+                { label: 'Aguardando pagamento', value: 'AguardandoPagamento' },
+                { label: 'Pago', value: 'Pago' },
+              ]}
+              onChange={(v) => field.onChange(v as ViagemStatus)}
+            />
+          )}
+      />
+
+        
+        <Controller
+          control={control}
+          name="viagemDataPagamento"
+          render={({ field }) => (
+            <>
+              <InputField
+                label="Data de pagamento"
+                icon="calendar"
+                value={formatDate(field.value)}
+                editable={false}
+                onPress={() => !readOnly && setShowPagamento(true)}
+                error={errors.viagemDataPagamento?.message}
+                placeholder='Selecione a data'
+              />
+              
+              {showPagamento && (
+                <DateTimePicker
+                  value={field.value ?? new Date()}
+                  mode="date"
+                  disabled={readOnly}
+                  onChange={(_, d) => {
+                    setShowPagamento(false);
+                    if (d) field.onChange(d);
+                  }}
+                />
+              )}
+            </>
+          )}
+        />
+
       </Panel>
 
       {/* <Panel title="Totais da viagem" defaultExpanded> */}
@@ -296,7 +390,9 @@ export function ViagemForm({ route, navigation }: Props) {
         <SubmitButton
           label={mode === 'create' ? 'Salvar' : 'Atualizar'}
           onPress={handleSubmit}
+          // loading={loading}
         />
+
       )}
     </ScrollView>
   );

@@ -1,10 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Viagem } from '../../shared/types/Viagem';
-import {
-  ViagemService
-} from '../../shared/services/viagemService';
-import { normalizarId } from './normalizar';
+// import { Motorista } from '../../shared/types/Motorista';
+
+import { ViagemService } from '../../shared/services/viagemService';
 import { RotaVinculadaService } from '../../shared/services/rotaVinculadaService';
+import { MotoristaService } from '../../shared/services/motoristaService';
+import { viagemSchema, ViagemFormData } from '../../shared/schemas/viagem.schema';
+import { normalizarId } from './normalizar';
+
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/types';
+
+// import { useRotaVinculadaCombo } from '../../src/hooks/useRotaVinculadaCombo';
+import { useMotoristaCombo } from '../../src/hooks/useMotoristaCombo';
+import { useCarretaCombo } from '../../src/hooks/useCarretaCombo';
+import { useCaminhaoCombo } from '../../src/hooks/useCaminhaoCombo';
+import { useEmpregadoraCombo } from '../../src/hooks/useEmpregadoraCombo';
+import { useRotaVinculadaCombo } from '../../src/hooks/useRotaVinculadaCombo';
+import { CaminhaoService } from '../../shared/services/caminhaoService';
+
+type Navigation = NativeStackNavigationProp<RootStackParamList>;
+
 
 type Mode = 'create' | 'edit' | 'view';
 
@@ -15,8 +34,40 @@ type ViagemIdFields =
   | 'motoristaId'
   | 'rotaVinculadaId';
 
-function limparIdsParaEnvio(data: Viagem): Partial<Viagem> {
-  const payload: Partial<Viagem> = { ...data };
+function mapViagemToForm(viagem: Viagem): ViagemFormData {
+  return {
+    viagemDataInicio: viagem.viagemDataInicio
+      ? new Date(viagem.viagemDataInicio)
+      : new Date(),
+
+    viagemHorarioChegada: viagem.viagemHorarioChegada ?? '',
+    viagemDataFim: viagem.viagemDataFim
+      ? new Date(viagem.viagemDataFim)
+      : undefined,
+
+    viagemHorarioSaida: viagem.viagemHorarioSaida ?? '',
+
+    motoristaId: normalizarId(viagem.motoristaId),
+    rotaVinculadaId: normalizarId(viagem.rotaVinculadaId),
+    empregadoraId: normalizarId(viagem.empregadoraId),
+    caminhaoId: normalizarId(viagem.caminhaoId),
+    carretaId: normalizarId(viagem.carretaId),
+
+    viagemToneladaCarregada: Number(viagem.viagemToneladaCarregada ?? 0),
+    viagemValorTonelada: Number(viagem.viagemValorTonelada ?? 0),
+    viagemDistancia: Number(viagem.viagemDistancia ?? 0),
+
+    viagemStatus: viagem.viagemStatus ?? 'AguardandoPagamento',
+
+    viagemDataPagamento: viagem.viagemDataPagamento
+      ? new Date(viagem.viagemDataPagamento)
+      : undefined,
+  };
+}
+
+
+function limparIdsParaEnvio(data: ViagemFormData): Partial<Viagem> {
+  const payload: any = { ...data };
 
   const ids: ViagemIdFields[] = [
     'caminhaoId',
@@ -27,73 +78,222 @@ function limparIdsParaEnvio(data: Viagem): Partial<Viagem> {
   ];
 
   ids.forEach((id) => {
-    if (payload[id] === '') {
-      delete payload[id];
-    }
+    if (!payload[id]) delete payload[id];
   });
 
   return payload;
 }
 
-export function useViagemForm(mode: Mode, viagemId?: string) {
-  const [data, setData] = useState<Viagem>({
-    viagemStatus: 'AguardandoPagamento',
-  } as Viagem);
-
+export function useViagemForm(mode: Mode, viagemId?: string, navigation?: Navigation) {
+  const isUpdate = mode === 'edit';
   const [loading, setLoading] = useState(false);
-
   const readOnly = mode === 'view';
 
-  useEffect(() => {
-    if ((mode === 'edit' || mode === 'view') && viagemId) {
-      setLoading(true);
-      ViagemService.buscarPorId(viagemId)
-        .then((viagem) => {
-          setData({
-            ...viagem,
-            // garante string vazia para combos
-            caminhaoId: normalizarId(viagem.caminhaoId),
-            carretaId: normalizarId(viagem.carretaId),
-            empregadoraId: normalizarId(viagem.empregadoraId),
-            motoristaId: normalizarId(viagem.motoristaId),
-            rotaVinculadaId: normalizarId(viagem.rotaVinculadaId),
-          });
-        })
-        .finally(() => setLoading(false));
+  /* 🔹 FORM */
+  const form = useForm<ViagemFormData>({
+    resolver: zodResolver(viagemSchema),
+    defaultValues: {
+      viagemStatus: 'AguardandoPagamento',
+      viagemToneladaCarregada: 0,
+      viagemValorTonelada: 0,
+      rotaVinculadaId: '',
+      motoristaId: '',
+      empregadoraId: '',
+      caminhaoId: '',
+      carretaId: '',
+      viagemDistancia: 0,
+      viagemDataInicio: new Date(),
+    },
+    shouldUnregister: false,
+  });
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = form;
+
+
+  //Automatização para quando atualizar motorista, popular carretaId e caminhaoId
+
+  const { optionsMotoristas, loadingMotoristas } = useMotoristaCombo();
+  const { optionsCaminhoes, loadingCaminhoes } = useCaminhaoCombo();
+  const { optionsCarretas, loadingCarretas } = useCarretaCombo();
+ 
+  const appliedDefaultsMotorista = useRef<{ caminhaoId?: string; carretaId?: string }>({});
+ 
+  const motoristaId = useWatch({ control, name: 'motoristaId' });
+  const caminhaoId = useWatch({ control, name: 'caminhaoId' });
+  const carretaId = useWatch({ control, name: 'carretaId' });
+  
+   useEffect(() => {
+     if (isUpdate || !motoristaId || loadingMotoristas || loadingCaminhoes || loadingCarretas) return;
+
+    const motorista = optionsMotoristas.find(m => m.value === motoristaId);
+
+    if (!motorista) return;
+
+    MotoristaService.buscarPorId(motorista.value).then((motoristaSelected) => {
+      
+      if (!motoristaSelected) 
+        
+        return;
+   
+      if (!caminhaoId && motoristaSelected.caminhaoId && !appliedDefaultsMotorista.current.caminhaoId) {
+        setValue('caminhaoId', motoristaSelected.caminhaoId);
+        appliedDefaultsMotorista.current.caminhaoId = motoristaSelected.caminhaoId;
+      }
+
+      if (!carretaId && motoristaSelected.carretaId && !appliedDefaultsMotorista.current.carretaId) {
+      setValue('carretaId', motoristaSelected.carretaId);
+      appliedDefaultsMotorista.current.carretaId = motoristaSelected.carretaId;
     }
-  }, [mode, viagemId]);
-
-  useEffect(() => {
-  if (!data.rotaVinculadaId) return;
-
-  RotaVinculadaService.buscarPorId(data.rotaVinculadaId)
-    .then((rota) => {
-      setData((prev) => ({
-        ...prev,
-        viagemValorTonelada: rota.rotaVinculadaValor, 
-      }));
     });
-}, [data.rotaVinculadaId]);
+  },
+   [
+    
+    optionsMotoristas,
+    optionsCaminhoes,
+    optionsCarretas,
+    motoristaId,
+    caminhaoId,
+    carretaId,
+    setValue,
+    isUpdate,
+    loadingMotoristas,
+    loadingCaminhoes,
+    loadingCarretas,
+  ]);
 
-  async function submit() {
-    if (!data) return;
+     // Automatização para quando atualizar rotaVinculadaId, popular empregadoraId
+  const { optionsEmpregadoras, loadingEmpregadoras } = useEmpregadoraCombo();
+  const { optionsRotas, loadingRotas } = useRotaVinculadaCombo(); //Popular empregadora
 
-    const payload = limparIdsParaEnvio(data);
+  const appliedDefaultsCaminhao = useRef<{ empregadoraId?: string}>({});
 
-    if (mode === 'create') {
-      return ViagemService.criar(payload);
-    }
+  const empregadoraId = useWatch({ control, name: 'empregadoraId' });
 
-    if (mode === 'edit' && viagemId) {
-      return ViagemService.atualizar(viagemId, payload);
-    }
+
+   useEffect(() => {
+     if (isUpdate || !caminhaoId || loadingCaminhoes || loadingEmpregadoras) return;
+
+    const caminhao = optionsCaminhoes.find(c => c.value === caminhaoId);
+
+    if (!caminhao) return;
+
+    CaminhaoService.buscarPorId(caminhao.value).then((caminhaoSelected) => {
+      
+      if (!caminhaoSelected) 
+        
+        return;
+      
+        
+      if (!empregadoraId && caminhaoSelected.empregadoraId && !appliedDefaultsCaminhao.current.empregadoraId) {
+        setValue('empregadoraId', caminhaoSelected.empregadoraId);
+        appliedDefaultsCaminhao.current.empregadoraId = caminhaoSelected.empregadoraId;
+      }
+    });
+ 
+
+  }, [
+    optionsCaminhoes,
+    caminhaoId,
+    optionsEmpregadoras,
+    optionsRotas,
+    empregadoraId,
+    setValue,
+    isUpdate,
+    loadingEmpregadoras,
+    loadingRotas,
+    loadingCaminhoes
+  ]);
+
+  useEffect(() => {
+    if (!viagemId || mode === 'create') return;
+
+    let isMounted = true;
+    setLoading(true);
+
+    ViagemService.buscarPorId(viagemId)
+      .then((viagem) => {
+        if (isMounted) {
+          reset(mapViagemToForm(viagem));
+        }
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [mode, viagemId, reset]);
+
+
+  //Popular valor tonelada ao selecionar rota vinculada
+  const rotaVinculadaId = useWatch({ control, name: 'rotaVinculadaId' });
+  const viagemValorTonelada = useWatch({ control, name: 'viagemValorTonelada' });
+
+  // Ref para controlar se o valor já foi setado automaticamente
+  const appliedRotaDefaultRef = useRef<string | null>(null);
+
+  // Preenche valor da rota vinculada
+  useEffect(() => {
+    if (!rotaVinculadaId) return;
+
+    // Se já aplicamos o default para esta rota, não faz nada
+    if (appliedRotaDefaultRef.current === rotaVinculadaId) return;
+
+    // Só preenche se o valor atual estiver vazio ou for 0
+    if (viagemValorTonelada) return;
+
+    RotaVinculadaService.buscarPorId(rotaVinculadaId).then((rota) => {
+      if (!rota) return;
+
+      setValue('viagemValorTonelada', rota.rotaVinculadaValor ?? 0, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+
+      // Marca que já aplicamos o default para essa rota
+      appliedRotaDefaultRef.current = rotaVinculadaId;
+    });
+  }, [rotaVinculadaId, setValue, viagemValorTonelada]);
+
+ 
+  const onSubmit: SubmitHandler<ViagemFormData> = async (data) => {
+  const payload = limparIdsParaEnvio(data);
+  console.log(payload)
+  if (mode === 'create') {
+    await ViagemService.criar(payload);
   }
 
+  if (mode === 'edit' && viagemId) {
+    await ViagemService.atualizar(viagemId, payload);
+  }
+
+  navigation?.goBack();
+};
+
+
   return {
-    data,
-    setData,
-    submit,
+    control,
+    errors,
     loading,
     readOnly,
+    handleSubmit: handleSubmit(onSubmit),
+    setValue,
+    loadingMotoristas,
+    loadingCaminhoes,
+    loadingCarretas,
+    loadingRotas,
+    loadingEmpregadoras,
+    optionsMotoristas,
+    optionsCaminhoes,
+    optionsCarretas,
+    optionsRotas,
+    optionsEmpregadoras,
   };
 }

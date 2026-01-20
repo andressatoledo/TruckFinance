@@ -35,7 +35,7 @@ async function buscarViagens(req: Request, res: Response) {
   try {
     const filtro = req.query; 
 
-    const viagens = await Viagem.find(filtro);  
+    const viagens = await Viagem.find(filtro).populate('rotaVinculadaId','rotaVinculadaNome');  
 
     if (viagens.length === 0) {
       return res.status(404).json({ message: 'Nenhuma viagem encontrada com os filtros fornecidos.' });
@@ -62,9 +62,9 @@ async function buscarViagem(req: Request, res: Response) {
       .populate('motoristaId')
       .populate('rotaVinculadaId');
 
-    if (!viagem) {
-      return res.status(404).json({ message: 'Viagem não encontrada com o filtro fornecido.' });
-    }
+    // if (!viagem) {
+    //   return res.status(404).json({ message: 'Viagem não encontrada com o filtro fornecido.' });
+    // }
 
     res.status(200).json(viagem);  
   } catch (error) {
