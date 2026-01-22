@@ -12,6 +12,8 @@ import type { CarteiraViagem } from '../../../shared/types/carteiraViagem';
 import { formatarData } from '../../../shared/utils/formatarData';
 import { formatarRota } from '../../../shared/utils/formatarRota';
 import { formatarValor } from '../../../shared/utils/formatarValor';
+import { Calendario } from '../../components/Calendario';
+// import {opcoesCalendario } from '../../../shared/types/opcoesCalendario';
 
 export function Viagem() {
   const { theme } = useTheme();
@@ -51,12 +53,18 @@ export function Viagem() {
 
   return (
     // <ScrollView style={styleDefault.container}>
+    //Chame meu componente de calendario aquo
+
+    
+
     <ScrollView
       style={styleDefault.container}
       contentContainerStyle={{
         paddingBottom: tabBarHeight + insets.bottom + 50,
       }}
     >
+      <Calendario />
+
       <Text style={styleDefault.title}>Viagens</Text>
 
       {viagens.length === 0 && (

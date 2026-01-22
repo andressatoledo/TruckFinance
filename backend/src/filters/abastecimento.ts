@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 export function montarFiltroAbastecimento(query: any) {
-  console.log('FILTROCOMEÇO');
+
   function criarDataUTC(data: string, fimDoDia = false): Date {
   const [ano, mes, dia] = data.split('-').map(Number);
 
@@ -37,6 +37,5 @@ export function montarFiltroAbastecimento(query: any) {
     }
   }
 
-  console.log('FILTRO GERADO:', JSON.stringify(filtro, null, 2));
   return filtro;
 }

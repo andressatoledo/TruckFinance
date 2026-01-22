@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { Viagem } from '../models/index';
+import { montarFiltroViagem } from '../filters/viagem';
+
 
 
 export async function criarViagem(req: Request, res: Response) {
@@ -29,13 +31,11 @@ export async function criarViagem(req: Request, res: Response) {
   }
 }
 
-
-
 async function buscarViagens(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
+    const filtro = montarFiltroViagem(req.query);
 
-    const viagens = await Viagem.find(filtro).populate('rotaVinculadaId','rotaVinculadaNome');  
+    const viagens = await Viagem.find(filtro).populate('rotaVinculadaId','rotaVinculadaNome').sort({ viagemDataInicio: -1 });
 
     if (viagens.length === 0) {
       return res.status(404).json({ message: 'Nenhuma viagem encontrada com os filtros fornecidos.' });
@@ -47,6 +47,7 @@ async function buscarViagens(req: Request, res: Response) {
     res.status(500).json({ message: `Erro ao buscar viagens. ${errorMessage}` });
   }
 }
+
 
 async function buscarViagem(req: Request, res: Response) {
   try {
