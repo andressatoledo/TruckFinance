@@ -7,4 +7,8 @@ export type RootStackParamList = {
   
   Tabs: undefined;
 
+  ViagemFilter: {
+    navigation?: undefined;
+  };
+  
 };

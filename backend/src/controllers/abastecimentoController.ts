@@ -16,7 +16,7 @@ async function criarAbastecimento(req: Request, res: Response) {
 
 
 async function buscarAbastecimentos(req: Request, res: Response) {
-  console.log('🚀 ENTROU NO CONTROLLER buscarAbastecimentos');
+  
    try {
     const filtro = montarFiltroAbastecimento(req.query);
 

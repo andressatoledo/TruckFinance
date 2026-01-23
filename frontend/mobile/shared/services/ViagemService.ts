@@ -1,13 +1,14 @@
 // src/services/viagem.service.ts
 import { api } from './api';
 import { Viagem, ViagemPayload } from '../types/viagem';
+import ViagemFiltro from '../types/viagemFiltro';
 
 const ENDPOINT = '/viagens';
 
 export const ViagemService = {
   
-  async buscarTodas(): Promise<Viagem[]> {
-    const response = await api.get<Viagem[]>(ENDPOINT);
+  async buscarTodas(filtro: ViagemFiltro): Promise<Viagem[]> {
+    const response = await api.get<Viagem[]>(ENDPOINT, { params: filtro });
     console.log(response.data);
     return response.data;
   },

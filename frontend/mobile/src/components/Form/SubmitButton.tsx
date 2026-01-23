@@ -1,9 +1,14 @@
-import { TouchableOpacity, Text } from 'react-native';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TouchableOpacity, Text, GestureResponderEvent } from 'react-native';
 import { useTheme } from '../../theme/themeContext';
 
-export function SubmitButton({ label, onPress }: any) {
+interface Props {
+  label: string;
+  onPress: (event: GestureResponderEvent) => void | Promise<void>;
+}
+
+export function SubmitButton({ label, onPress }: Props) {
   const { theme } = useTheme();
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -17,8 +22,13 @@ export function SubmitButton({ label, onPress }: any) {
         marginTop: 24,
       }}
     >
-      {/* <MaterialCommunityIcons name="content-save" size={20} color="#FFF" /> */}
-      <Text style={{ color: theme.colors.text, marginLeft: 8, fontSize: theme.sizes.mediumText.fontSize }}>
+      <Text
+        style={{
+          color: theme.colors.text,
+          marginLeft: 8,
+          fontSize: theme.sizes.mediumText.fontSize,
+        }}
+      >
         {label}
       </Text>
     </TouchableOpacity>

@@ -13,11 +13,26 @@ import { formatarData } from '../../../shared/utils/formatarData';
 import { formatarRota } from '../../../shared/utils/formatarRota';
 import { formatarValor } from '../../../shared/utils/formatarValor';
 import { Calendario } from '../../components/Calendario';
-// import {opcoesCalendario } from '../../../shared/types/opcoesCalendario';
+import { FakeBottomSheet } from '../../components/Form/FakeButtonSheet';
+import { useViagemFilterSheet } from '../../hooks/useViagemFilterSheet';
+// import { ViagemFilter } from '../../components/ViagemFilter';
 
+// import { ViagemFilter } from './/ViagemFilter';
+import { Button } from '../../components/Form/Button';
+import { ViagemFilter } from './ViagemFilter';
+// import { ViagemFilter } from './ViagemFilter';
 export function Viagem() {
+  // const [open, setOpen] = useState(true);
   const { theme } = useTheme();
   const styleDefault = layout(theme);
+
+  const {
+    visible,
+    abrir,
+    fechar,
+  } = useViagemFilterSheet();
+
+
 
   // const [viagens, setViagens] = useState<Viagem[]>([]);
   const [viagens, setCarteira] = useState<CarteiraViagem[]>([]);
@@ -52,11 +67,8 @@ export function Viagem() {
   }
 
   return (
-    // <ScrollView style={styleDefault.container}>
-    //Chame meu componente de calendario aquo
-
-    
-
+  <View style={{ flex: 1 }}>
+    {/* CONTEÚDO DA TELA */}
     <ScrollView
       style={styleDefault.container}
       contentContainerStyle={{
@@ -64,6 +76,12 @@ export function Viagem() {
       }}
     >
       <Calendario />
+
+      <Button
+        icon="filter"
+        label="Filtrar"
+        onPress={abrir}
+      />
 
       <Text style={styleDefault.title}>Viagens</Text>
 
@@ -90,7 +108,17 @@ export function Viagem() {
           />
         );
       })}
-
     </ScrollView>
-  );
+
+    {/* SHEET POR ÚLTIMO, NO MESMO ROOT */}
+    <FakeBottomSheet
+      visible={visible}
+      onClose={fechar}
+    >
+      <ViagemFilter onClose={fechar}></ViagemFilter>
+      
+    </FakeBottomSheet>
+  </View>
+);
+
 }

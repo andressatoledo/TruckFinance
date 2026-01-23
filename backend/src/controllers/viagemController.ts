@@ -32,9 +32,10 @@ export async function criarViagem(req: Request, res: Response) {
 }
 
 async function buscarViagens(req: Request, res: Response) {
+  console.log('🚀 ENTROU NO CONTROLLER buscarViagens');
   try {
     const filtro = montarFiltroViagem(req.query);
-
+    console.log('🚀 Filtro montado:', filtro);
     const viagens = await Viagem.find(filtro).populate('rotaVinculadaId','rotaVinculadaNome').sort({ viagemDataInicio: -1 });
 
     if (viagens.length === 0) {

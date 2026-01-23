@@ -30,18 +30,18 @@ export function Calendario() {
     <View style={stylesCalendario.card}>
       {/* TAGS */}
       <Row>
-        {Object.values(opcoesCalendario).map((item) => (
-            <Tag
-                value={item}
-                isActive={opcao === item}
-                onPress={() => trocarOpcao(item)}
-                textColor={theme.colors.detail}
-                backgroundColor={theme.colors.detail}
-            />
+    {Object.values(opcoesCalendario).map((item) => (
+      <Tag
+        key={item}
+        value={item}
+        isActive={opcao === item}
+        onPress={() => trocarOpcao(item)}
+        textColor={theme.colors.detail}
+        backgroundColor={theme.colors.detail}
+      />
+    ))}
+  </Row>
 
-        ))}
-
-      </Row>
 
      
       {opcao !== opcoesCalendario.personalizado && (
@@ -65,24 +65,7 @@ export function Calendario() {
         </View>
       )}
 
-      {/* PERSONALIZADO */}
       {opcao === opcoesCalendario.personalizado && (
-        // <View>
-        //   {opcao === opcoesCalendario.personalizado && (
-        //     <View style={styles.header}>
-        // <Pressable onPress={voltar}>
-        //     <MaterialCommunityIcons name="chevron-left" />
-        // </Pressable>
-
-        // <Text style={styles.headerTitle}>
-        //     {mesAnoFormatado}
-        // </Text>
-
-        // <Pressable onPress={avancar}>
-        //     <MaterialCommunityIcons name="chevron-right" />
-        // </Pressable>
-        // </View>
-            // 
             <CalendarioPersonalizado
                 dataInicio={dataInicio}
                 dataFim={dataFim}

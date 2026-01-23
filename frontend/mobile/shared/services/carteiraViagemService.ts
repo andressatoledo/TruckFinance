@@ -1,8 +1,9 @@
 import { ViagemService } from './viagemService';
 import { AbastecimentoService } from './abastecimentoService';
-import { AbastecimentoFiltro } from '../types/abastecimentofiltro';
 import { Viagem } from '../types/viagem';
 import { CarteiraViagem } from '../types/carteiraViagem';
+import ViagemFiltro  from '../types/viagemFiltro';
+import { AbastecimentoFiltro } from '../types/abastecimentofiltro';
 
 function extrairData(data?: string | Date) {
   if (!data) return undefined;
@@ -10,8 +11,8 @@ function extrairData(data?: string | Date) {
 }
 
 export const CarteiraViagemService = {
-  async buscarViagens(): Promise<CarteiraViagem[]> {
-    const viagens = await ViagemService.buscarTodas();
+  async buscarViagens(filtros?: ViagemFiltro): Promise<CarteiraViagem[]> {
+    const viagens = await ViagemService.buscarTodas(filtros || {});
 
     const resultado = await Promise.all(
       viagens.map(async (viagem: Viagem) => {
