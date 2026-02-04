@@ -20,10 +20,6 @@ async function buscarCargas(req: Request, res: Response) {
 
     const cargas = await Carga.find(filtro);  
 
-    if (cargas.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma carga encontrada com os filtros fornecidos.' });
-    }
-
     res.status(200).json(cargas); 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
@@ -33,17 +29,14 @@ async function buscarCargas(req: Request, res: Response) {
 
 async function buscarCarga(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id da carga.',
+      });
     }
-
-    const carga = await Carga.findOne(filtro);  
-
-    if (!carga) {
-      return res.status(404).json({ message: 'Carga não encontrada com o filtro fornecido.' });
-    }
+    const carga = await Carga.findById(id);  
 
     res.status(200).json(carga);  
   } catch (error) {

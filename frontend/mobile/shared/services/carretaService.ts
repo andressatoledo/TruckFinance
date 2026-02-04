@@ -17,6 +17,7 @@ export const CarretaService = {
   },
 
   async buscarPorId(id: string): Promise<Carreta> {
+    console.log('id da carreta',id)
     const response = await api.get<Carreta>(`${ENDPOINT}/${id}`);
     return response.data;
   },

@@ -20,9 +20,9 @@ async function buscarCaminhoes(req: Request, res: Response) {
 
     const caminhoes = await Caminhao.find(filtro);  
 
-    if (caminhoes.length === 0) {
-      return res.status(404).json({ message: 'Nenhum caminhão encontrado com os filtros fornecidos.' });
-    }
+    // if (caminhoes.length === 0) {
+    //   return res.status(404).json({ message: 'Nenhum caminhão encontrado com os filtros fornecidos.' });
+    // }
 
     res.status(200).json(caminhoes); 
   } catch (error) {

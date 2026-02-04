@@ -3,6 +3,11 @@ export type ViagemStatus =
   | 'AguardandoPagamento'
   | 'Pago';
 
+  export type origemEixos =
+  | 'Default'
+  | 'Manual';
+
+
 export const ViagemStatus = [
   'AguardandoPagamento',
   'Pago',
@@ -32,7 +37,7 @@ export interface ViagemTotais {
 export interface Viagem {
   /** IDs */
   _id: string;                // MongoDB padrão
-  viagemId?: string;           // auto: true no schema
+  // viagemId?: string;           // auto: true no schema
 
   viagemNumero: number;
   viagemSerial: string;
@@ -57,7 +62,11 @@ export interface Viagem {
 
   caminhaoId: string;
   motoristaId: string;
+
   carretaId: string;
+  viagemEixosIda: number;
+  viagemEixosVolta: number;
+  viagemOrigemEixos: origemEixos;
 
   viagemDistancia?: number;
 

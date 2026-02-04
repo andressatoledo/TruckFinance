@@ -18,9 +18,6 @@ async function buscarViagensDocumento(req: Request, res: Response) {
     const filtro = req.query; 
 
     const viagemDocumentos = await ViagemDocumento.find(filtro);  
-    if (viagemDocumentos.length === 0) {
-      return res.status(404).json({ message: 'Nenhum documento encontrado para viagem com os filtros fornecidos.' });
-    }
 
     res.status(200).json(viagemDocumentos); 
   } catch (error) {
@@ -31,17 +28,15 @@ async function buscarViagensDocumento(req: Request, res: Response) {
 
 async function buscarViagemDocumento(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id do documento da viagem.',
+      });
     }
+    const viagemDocumento = await ViagemDocumento.findById(id);  
 
-    const viagemDocumento = await ViagemDocumento.findOne(filtro);  
-
-    if (!viagemDocumento) {
-      return res.status(404).json({ message: 'Documento da viagem não encontrada com o filtro fornecido.' });
-    }
 
     res.status(200).json(viagemDocumento);  
   } catch (error) {

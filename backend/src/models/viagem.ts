@@ -1,10 +1,10 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const viagemSchema = new Schema({
-  viagemId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // viagemId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
 
   viagemNumero: {
     type: Number
@@ -74,6 +74,20 @@ const viagemSchema = new Schema({
   carretaId: {
     type: Schema.Types.ObjectId,
     ref: 'Carreta'
+  },
+
+  viagemEixosIda: {
+    type: Number
+  },
+
+  viagemEixosVolta: {
+    type: Number
+  },
+
+  viagemOrigemEixos: {
+    type: String,
+    enum: ['Default', 'Manual'],
+    default: 'Default'
   },
 
   viagemDistancia: {

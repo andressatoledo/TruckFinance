@@ -25,7 +25,7 @@ const dateField = z.preprocess(
 
 export const viagemSchema = z.object({
   viagemDataInicio: dateField,
-
+  viagemOrigemEixos: z.enum(['Default', 'Manual']).default('Default'),
   viagemHorarioChegada: z.string().optional(),
 
   viagemDataFim: dateField.optional(),
@@ -49,6 +49,15 @@ export const viagemSchema = z.object({
   viagemDistancia: z.coerce
     .number().optional(),
     
+  viagemEixosIda: z.coerce
+    .number()
+    .positive('Informe a quantidade de eixos na ida'),
+
+
+  viagemEixosVolta: z.coerce
+    .number()
+    .positive('Informe a quantidade de eixos na volta'),
+
 
   viagemStatus: z.enum(viagemStatusEnum)
     .default('AguardandoPagamento'),

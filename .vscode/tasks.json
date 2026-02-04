@@ -1,0 +1,39 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "frontend/mobile",
+			"group": "clean",
+			"problemMatcher": [],
+			"label": "npm: install - frontend/mobile",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "backend/src",
+			"group": "clean",
+			"problemMatcher": [],
+			"label": "npm: install - backend/src",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "android",
+			"path": "frontend/mobile",
+			"problemMatcher": [],
+			"label": "npm: android - frontend/mobile",
+			"detail": "react-native run-android"
+		},
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "backend/src",
+			"problemMatcher": [],
+			"label": "npm: dev - backend/src",
+			"detail": "ts-node server.ts"
+		}
+	]
+}

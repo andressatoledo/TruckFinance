@@ -20,9 +20,9 @@ async function buscarAlertas(req: Request, res: Response) {
 
     const alertas = await Alerta.find(filtro);  
 
-    if (alertas.length === 0) {
-      return res.status(404).json({ message: 'Nenhum alerta encontrado com os filtros fornecidos.' });
-    }
+    // if (alertas.length === 0) {
+    //   return res.status(404).json({ message: 'Nenhum alerta encontrado com os filtros fornecidos.' });
+    // }
 
     res.status(200).json(alertas); 
   } catch (error) {
@@ -35,15 +35,15 @@ async function buscarAlerta(req: Request, res: Response) {
   try {
     const filtro = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
-    }
+    // if (!Object.keys(filtro).length) {
+    //   return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    // }
 
     const alerta = await Alerta.findOne(filtro);  
 
-    if (!alerta) {
-      return res.status(404).json({ message: 'Alerta não encontrado com o filtro fornecido.' });
-    }
+    // if (!alerta) {
+    //   return res.status(404).json({ message: 'Alerta não encontrado com o filtro fornecido.' });
+    // }
 
     res.status(200).json(alerta);  
   } catch (error) {

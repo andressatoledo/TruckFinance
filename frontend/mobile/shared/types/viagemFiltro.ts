@@ -1,6 +1,6 @@
 export default interface ViagemFiltro {
-  dataInicio?: string;
-  dataFim?: string;
+  dataInicio?: Date;
+  dataFim?: Date;
   status?: string;
   empregadoraId?: string;
   motoristaId?: string;
@@ -13,4 +13,6 @@ export default interface ViagemFiltro {
   valorMin?: string;
   valorMax?: string;
   viagemNumero?: string;
+  viagemStatus?: string;
+  
 }

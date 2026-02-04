@@ -1,7 +1,8 @@
-require('dotenv').config();  
+import 'dotenv/config';  
 import mongoose from 'mongoose'; 
 
 const uri = process.env.MONGO_URI;  
+console.log(uri);
 export async function connectToDatabase() {
   try {
     if (!uri) {

@@ -2,10 +2,6 @@ import mongoose, { Schema }  from 'mongoose';
 
 
 const rotaVinculadaSchema = new Schema({
-  rotaVinculadaId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
   rotaVinculadaObservacao: {
     type: String
   },

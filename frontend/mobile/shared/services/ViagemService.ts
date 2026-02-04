@@ -9,7 +9,7 @@ export const ViagemService = {
   
   async buscarTodas(filtro: ViagemFiltro): Promise<Viagem[]> {
     const response = await api.get<Viagem[]>(ENDPOINT, { params: filtro });
-    console.log(response.data);
+    console.log('buscarTodas restorno',response.data);
     return response.data;
   },
 

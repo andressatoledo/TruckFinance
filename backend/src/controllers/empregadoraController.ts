@@ -26,9 +26,9 @@ async function buscarEmpreguradoras(req: Request, res: Response) {
 
     const empreguradoras = await Empregadora.find(filtro);  
 
-    if (empreguradoras.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma empregadora encontrada com os filtros fornecidos.' });
-    }
+    // if (empreguradoras.length === 0) {
+    //   return res.status(404).json({ message: 'Nenhuma empregadora encontrada com os filtros fornecidos.' });
+    // }
 
     res.status(200).json(empreguradoras); 
   } catch (error) {
@@ -61,7 +61,13 @@ async function buscarEmpregadoraCombo(req: Request, res: Response) {
 async function buscarEmpregadora(req: Request, res: Response) {
   try {
     const { id } = req.params;
-   
+
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id da empregadora.',
+      });
+    }
+    
     const empregadora = await Empregadora.findById(id);  
 
     res.status(200).json(empregadora);  

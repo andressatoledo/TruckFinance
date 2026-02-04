@@ -27,11 +27,11 @@ async function buscarRotasVinculadas(req: Request, res: Response) {
       .populate('rotaIdaId', 'rotaNome')
       .populate('rotaVoltaId', 'rotaNome');
 
-    if (rotasVinculadas.length === 0) {
-      return res.status(404).json({
-        message: 'Nenhuma rota vinculada encontrada.',
-      });
-    }
+    // if (rotasVinculadas.length === 0) {
+    //   return res.status(404).json({
+    //     message: 'Nenhuma rota vinculada encontrada.',
+    //   });
+    // }
 
     res.status(200).json(rotasVinculadas);
   } catch (error) {
@@ -75,6 +75,12 @@ async function buscarRotasVinculadasCombo(req: Request, res: Response) {
 async function buscarRotaVinculada(req: Request, res: Response) {
   try {
     const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id da rota de vinculada.',
+      });
+    }
 
     const rotaVinculada = await RotaVinculada.findById(id)
       .populate('rotaIdaId', 'rotaNome')

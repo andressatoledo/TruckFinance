@@ -1,10 +1,75 @@
-import {  Text, ScrollView} from 'react-native';
-import { styles } from './styles';
+import { CardCadastro } from '../../components/CardCadastros';
+import { Form } from '../../components/Form/Form';
 
 export function Cadastros() {
   return (
-    <ScrollView style={styles.container}>
-      <Text>Cadastros Screen</Text>
-    </ScrollView>
+    <Form title="Cadastros">
+      <CardCadastro
+        icon="fuel"
+        title="Abastecimentos"
+        subtitle="Abastecimentos realizados"
+        count={10}
+      />
+      <CardCadastro
+        icon="truck"
+        title="Caminhões"
+        subtitle="Frota de veículos"
+        count={1}
+      />
+      <CardCadastro
+        icon="weight"
+        title="Cargas"
+        subtitle="Tipos de cargas"
+        count={3}
+      />
+      <CardCadastro
+        icon="dump-truck"
+        title="Carretas"
+        subtitle="Carretas cadastradas"
+        count={1}
+      />
+      <CardCadastro
+        icon="office-building"
+        title="Empregadoras"
+        subtitle="Empresas contratantes"
+        count={1}
+      />
+      <CardCadastro
+        icon="wrench"
+        title="Manutenções"
+        subtitle="Registros de manutenções"
+        count={5}
+      />
+      <CardCadastro
+        icon="steering"
+        title="Motoristas"
+        subtitle="Motoristas registrados"
+        count={1}
+      />
+      <CardCadastro
+        icon="boom-gate"
+        title="Pedágios"
+        subtitle="Pedágios da rota"
+        count={6}
+      />
+      <CardCadastro
+        icon="map-marker"
+        title="Rotas"
+        subtitle="Rotas definidas"
+        count={3}
+      />
+      <CardCadastro
+        icon="map-marker-radius"
+        title="Rotas com pedágios"
+        subtitle="Pedágios na rota"
+        count={2}
+      />
+      <CardCadastro
+        icon="map-marker-distance"
+        title="Rotas vinculadas"
+        subtitle="Rotas definidas com ida e volta"
+        count={1}
+      />
+    </Form>
   );
 }

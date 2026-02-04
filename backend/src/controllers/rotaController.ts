@@ -20,9 +20,9 @@ async function buscarRotas(req: Request, res: Response) {
 
     const rotas = await Rota.find(filtro);  
 
-    if (rotas.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma rota encontrada com os filtros fornecidos.' });
-    }
+    // if (rotas.length === 0) {
+    //   return res.status(404).json({ message: 'Nenhuma rota encontrada com os filtros fornecidos.' });
+    // }
 
     res.status(200).json(rotas); 
   } catch (error) {
@@ -33,17 +33,15 @@ async function buscarRotas(req: Request, res: Response) {
 
 async function buscarRota(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+   const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id da rota.',
+      });
     }
 
-    const rota = await Rota.findOne(filtro);  
-
-    if (!rota) {
-      return res.status(404).json({ message: 'Rota não encontrada com o filtro fornecido.' });
-    }
+    const rota = await Rota.findById(id);  
 
     res.status(200).json(rota);  
   } catch (error) {

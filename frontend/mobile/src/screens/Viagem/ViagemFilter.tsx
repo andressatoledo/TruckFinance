@@ -1,37 +1,31 @@
 import { ScrollView, Text, View } from 'react-native';
-// import { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import { RootStackParamList } from '../../navigation/types';
 import { Controller } from 'react-hook-form';
-// import { useMemo } from 'react';
-// import { useWatch } from 'react-hook-form';
-// import { ViagemFormData } from '../../../shared/schemas/viagem.schema';
 import { ViagemStatus } from '../../../shared/types/viagem';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// import { InputField } from '../../components/Form/InputField';
 import { InputCombo } from '../../components/Form/InputCombo';
 import { SubmitButton } from '../../components/Form/SubmitButton';
 
 import {Button } from '../../components/Form/Button';
 
 import { useTheme } from '../../theme/themeContext';
-// import { calcularValorTonelada } from '../../services/calcularValorTonelada';
 import { useViagemFilter } from '../../hooks/useViagemFilter';
+import ViagemFiltro from '../../../shared/types/viagemFiltro';
 
-// type Props = NativeStackScreenProps<RootStackParamList, 'ViagemFilter'>;
 interface Props {
   onClose: () => void;
+  onApplyFiltro: (filtro: ViagemFiltro) => void;
+  filtroAtual: ViagemFiltro;
 }
 
-export function ViagemFilter({ onClose }: Props) {
-
+export function ViagemFilter({ onClose, onApplyFiltro, filtroAtual }: Props) {
+  console.log(filtroAtual.dataFim, filtroAtual.dataInicio)
 //   const { mode, viagemId } = route.params;
   const { theme } = useTheme();
 
   const {
     control,
-    // errors,
-    // readOnly,
-    // setValue,
     handleSubmit,
     optionsMotoristas,
     optionsCaminhoes,
@@ -43,30 +37,24 @@ export function ViagemFilter({ onClose }: Props) {
     loadingMotoristas,
     loadingEmpregadoras,
     loadingRotas,
-  } = useViagemFilter();
+  } = useViagemFilter({ onApplyFiltro, filtroAtual });
 
+  const tabBarHeight = useBottomTabBarHeight();
   
-
-  /* 🔢 Cálculo automático */
-//   const toneladas =
-//   useWatch({ control, name: 'viagemToneladaCarregada' }) ?? 0;
-  
-//   const valorTonelada =
-//   useWatch({ control, name: 'viagemValorTonelada' }) ?? 0;
-
+  const insets = useSafeAreaInsets();
 
   return (
     <ScrollView
       contentContainerStyle={{
         padding: 20,
+        borderRadius: 12,
         backgroundColor: theme.colors.background,
+        paddingBottom: tabBarHeight + insets.bottom + 50
       }}
     >
       <Text style={{ fontSize: 20, fontWeight: '600', marginBottom: 24, color: theme.colors.text }}>
         {'Filtrar viagens'}
       </Text>
-
- 
 
       <Controller
         control={control}
@@ -235,9 +223,6 @@ export function ViagemFilter({ onClose }: Props) {
             label="Aplicar filtros"
             onPress={handleSubmit}
         />
-
-
-
 
         <Button
             label="Cancelar"

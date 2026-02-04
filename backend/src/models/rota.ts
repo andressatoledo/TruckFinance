@@ -2,10 +2,6 @@ import mongoose, { Schema }  from 'mongoose';
 
 
 const rotaSchema = new Schema({
-  rotaId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
   rotaNome: {
     type: String,
     unique: true

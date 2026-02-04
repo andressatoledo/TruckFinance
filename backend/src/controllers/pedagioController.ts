@@ -20,10 +20,6 @@ async function buscarPedagios(req: Request, res: Response) {
 
     const pedagios = await Pedagio.find(filtro);  
 
-    if (pedagios.length === 0) {
-      return res.status(404).json({ message: 'Nenhum pedágio encontrado com os filtros fornecidos.' });
-    }
-
     res.status(200).json(pedagios); 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
@@ -33,17 +29,15 @@ async function buscarPedagios(req: Request, res: Response) {
 
 async function buscarPedagio(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+   const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id do pedágio.',
+      });
     }
 
-    const pedagio = await Pedagio.findOne(filtro);  
-
-    if (!pedagio) {
-      return res.status(404).json({ message: 'Pedágio não encontrado com o filtro fornecido.' });
-    }
+    const pedagio = await Pedagio.findById(id);  
 
     res.status(200).json(pedagio);  
   } catch (error) {

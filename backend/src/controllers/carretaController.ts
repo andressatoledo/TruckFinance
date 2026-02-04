@@ -42,9 +42,9 @@ async function buscarCarretas(req: Request, res: Response) {
 
     const carretas = await Carreta.find(filtro);  
 
-    if (carretas.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma carreta encontrada com os filtros fornecidos.' });
-    }
+    // if (carretas.length === 0) {
+    //   return res.status(404).json({ message: 'Nenhuma carreta encontrada com os filtros fornecidos.' });
+    // }
 
     res.status(200).json(carretas); 
   } catch (error) {
@@ -55,17 +55,15 @@ async function buscarCarretas(req: Request, res: Response) {
 
 async function buscarCarreta(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id da carreta.',
+      });
     }
 
-    const carreta = await Carreta.findOne(filtro);  
-
-    if (!carreta) {
-      return res.status(404).json({ message: 'Carreta não encontrada com o filtro fornecido.' });
-    }
+    const carreta = await Carreta.findById(id);  
 
     res.status(200).json(carreta);  
   } catch (error) {

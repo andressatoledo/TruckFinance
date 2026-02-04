@@ -291,6 +291,47 @@ export function ViagemForm({ route, navigation }: Props) {
         )}
       />
 
+      <Row>
+        <View style={{ flex: 1 }}>
+          <Controller
+          control={control}
+          name="viagemEixosIda"
+          
+          render={({ field }) => (
+            <InputField
+              label="Qntd. eixos na ida"
+              icon="truck"
+              keyboardType="numeric"
+              value={String(field.value ?? '')}
+              onChangeText={(v) =>
+                field.onChange(v ? Number(v) : 0)
+              }
+              error={errors.viagemEixosIda?.message}
+            />
+          )}
+        />
+        </View>
+         <View style={{ flex: 1 }}>
+          <Controller
+          control={control}
+          name="viagemEixosVolta"
+          render={({ field }) => (
+            <InputField
+              label="Qntd. eixos na volta"
+              icon="truck"
+              keyboardType="numeric"
+              value={String(field.value ?? '')}
+              onChangeText={(v) =>
+                field.onChange(v ? Number(v) : 0)
+              }
+              error={errors.viagemEixosVolta?.message}
+            />
+          )}
+        />
+        
+        </View>
+      </Row>
+
       <Controller
         control={control}
         name="viagemDistancia"

@@ -16,4 +16,6 @@ export interface Carreta {
   carretaTipo: string;
   carretaPlaca: string;
   carretaStatus: CarretaStatus;
+  carretaEixosVazio: number;
+  carretaEixosCheio: number;
 }

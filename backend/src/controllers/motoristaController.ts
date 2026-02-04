@@ -25,9 +25,9 @@ async function buscarMotoristas(req: Request, res: Response) {
 
     const motoristas = await Motorista.find(filtro);  
 
-    if (motoristas.length === 0) {
-      return res.status(404).json({ message: 'Nenhum motorista encontrado com os filtros fornecidos.' });
-    }
+    // if (motoristas.length === 0) {
+    //   return res.status(404).json({ message: 'Nenhum motorista encontrado com os filtros fornecidos.' });
+    // }
 
     res.status(200).json(motoristas); 
   } catch (error) {
@@ -61,17 +61,14 @@ async function buscarMotorista(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    // if (!id) {
-    //   return res.status(400).json({
-    //   message: 'É necessário informar o id do motorista.',
-    // });
-    // }
+    if (!id) {
+      return res.status(400).json({
+      message: 'É necessário informar o id do motorista.',
+    });
+    }
 
     const motorista = await Motorista.findById(id);  
 
-    // if (!motorista) {
-    //   return res.status(404).json({ message: 'Motorista não encontrado com o filtro fornecido.' });
-    // }
 
     res.status(200).json(motorista);  
 

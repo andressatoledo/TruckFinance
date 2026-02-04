@@ -2,10 +2,6 @@ import mongoose, { Schema }  from 'mongoose';
 
 
 const rotaPedagioSchema = new Schema({
-  rotaPedagioId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
   rotaPedagioOrdem: {
     type: Number
   },

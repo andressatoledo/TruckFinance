@@ -2,10 +2,6 @@ import mongoose, { Schema }  from 'mongoose';
 
 
 const pedagioSchema = new Schema({
-  pedagioId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
   pedagioNome: {
     type: String,
     unique: true

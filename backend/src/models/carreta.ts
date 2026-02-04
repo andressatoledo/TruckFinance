@@ -19,8 +19,15 @@ const carretaSchema = new Schema({
   },
   carretaStatus: {
     type: String
-    // enum: ['Ativo', 'Inativo','Manutenção']
   },
+
+  carretaEixosVazio: {
+    type: Number
+  },
+
+  carretaEixosCheio: {
+    type: Number
+  }
 });
 
 export const Carreta = mongoose.model('Carreta', carretaSchema);

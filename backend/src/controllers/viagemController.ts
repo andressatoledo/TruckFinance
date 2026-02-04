@@ -32,16 +32,11 @@ export async function criarViagem(req: Request, res: Response) {
 }
 
 async function buscarViagens(req: Request, res: Response) {
-  console.log('🚀 ENTROU NO CONTROLLER buscarViagens');
+ 
   try {
     const filtro = montarFiltroViagem(req.query);
-    console.log('🚀 Filtro montado:', filtro);
     const viagens = await Viagem.find(filtro).populate('rotaVinculadaId','rotaVinculadaNome').sort({ viagemDataInicio: -1 });
-
-    if (viagens.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma viagem encontrada com os filtros fornecidos.' });
-    }
-
+  
     res.status(200).json(viagens); 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
@@ -52,21 +47,19 @@ async function buscarViagens(req: Request, res: Response) {
 
 async function buscarViagem(req: Request, res: Response) {
   try {
-    const { id } = req.params;;
+    const { id } = req.params;
+
     if (!id) {
-    return res.status(400).json({
-      message: 'É necessário informar o id da viagem.',
-    });
+      return res.status(400).json({
+        message: 'É necessário informar o id da viagem.',
+      });
     }
+
     const viagem = await Viagem.findById(id).populate('caminhaoId')
       .populate('carretaId')
       .populate('empregadoraId')
       .populate('motoristaId')
       .populate('rotaVinculadaId');
-
-    // if (!viagem) {
-    //   return res.status(404).json({ message: 'Viagem não encontrada com o filtro fornecido.' });
-    // }
 
     res.status(200).json(viagem);  
   } catch (error) {

@@ -20,9 +20,6 @@ async function buscarRotaPedagios(req: Request, res: Response) {
 
     const rotaPedagios = await RotaPedagio.find(filtro);  
 
-    if (rotaPedagios.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma rota pedágio encontrada com os filtros fornecidos.' });
-    }
 
     res.status(200).json(rotaPedagios); 
   } catch (error) {
@@ -33,17 +30,16 @@ async function buscarRotaPedagios(req: Request, res: Response) {
 
 async function buscarRotaPedagio(req: Request, res: Response) {
   try {
-    const filtro = req.params;  
+    const { id } = req.params;  
 
-    if (!Object.keys(filtro).length) {
-      return res.status(400).json({ message: 'É necessário informar um filtro.' });
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id da rota do pedágio.',
+      });
     }
 
-    const rotaPedagio = await RotaPedagio.findOne(filtro);  
+    const rotaPedagio = await RotaPedagio.findById(id);  
 
-    if (!rotaPedagio) {
-      return res.status(404).json({ message: 'Rota pedágio não encontrada com o filtro fornecido.' });
-    }
 
     res.status(200).json(rotaPedagio);  
   } catch (error) {

@@ -21,7 +21,7 @@ export const layout = (theme: ThemeType) => {
     },
     header: {fontSize: 56, color: theme.colors.text},
     subHeader: {fontSize: 32, color: theme.colors.text},
-    title: {fontSize: 24, fontWeight: '600', marginBottom: 16, color: theme.colors.text},
+    title: {fontSize: 24, fontWeight: '600', marginBottom: 20, color: theme.colors.text},
     subtitle: {fontSize: 20, color: theme.colors.text},
     text: {fontSize: 16, color: theme.colors.text},
     smallText: {fontSize: 14, color: theme.colors.text},

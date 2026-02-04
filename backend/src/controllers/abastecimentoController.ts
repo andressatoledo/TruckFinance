@@ -44,9 +44,9 @@ async function buscarAbastecimento(req: Request, res: Response) {
 
     const abastecimento = await Abastecimento.findById(id);  
 
-    if (!abastecimento) {
-      return res.status(404).json({ message: 'Abastecimento não encontrado com o filtro fornecido.' });
-    }
+    // if (!abastecimento) {
+    //   return res.status(404).json({ message: 'Abastecimento não encontrado com o filtro fornecido.' });
+    // }
 
     res.status(200).json(abastecimento);  
   } catch (error) {
