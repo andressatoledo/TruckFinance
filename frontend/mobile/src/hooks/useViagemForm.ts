@@ -25,10 +25,11 @@ import { useEmpregadoraCombo } from '../../src/hooks/useEmpregadoraCombo';
 import { useRotaVinculadaCombo } from '../../src/hooks/useRotaVinculadaCombo';
 import { CaminhaoService } from '../../shared/services/caminhaoService';
 import { CarretaService } from '../../shared/services/carretaService';
+import {Mode} from '../../shared/types/mode'
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
-type Mode = 'create' | 'edit' | 'view';
+// type Mode = 'create' | 'edit' | 'view';
 
 type ViagemIdFields =
   | 'caminhaoId'
@@ -94,6 +95,7 @@ export function useViagemForm(
   viagemId?: string,
   navigation?: Navigation,
 ) {
+  
   const isUpdate = mode === 'edit';
   const [loading, setLoading] = useState(false);
   const readOnly = mode === 'view';

@@ -1,29 +1,66 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useTheme } from '../theme/themeContext';
 
 import { RootStackParamList } from './types';
 import { ViagemForm } from '../screens/Viagem/ViagemForm';
 import BottomTabs from './bottomTabs';
-
+import { Pedagio } from '../screens/Cadastros/Pedagio';
+import {PedagioForm} from '../screens/Cadastros/Pedagio/PedagioForm'
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function AppStack() {
+  const { theme } = useTheme();
+
   return (
     <Stack.Navigator>
-
-     <Stack.Screen
+      <Stack.Screen
         name="Tabs"
         component={BottomTabs}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          
+        }}
       />
-      
+
       <Stack.Screen
         name="ViagemForm"
         component={ViagemForm}
-        options={{ title: 'Viagem' }}
+        options={{ title: 'Viagem', headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.text,
+          headerShadowVisible:false,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }}}
       />
 
+      <Stack.Screen
+        name="Pedagio"
+        component={Pedagio}
+        options={{ title: 'Pedágio', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="PedagioForm"
+        component={PedagioForm}
+        options={{ title: 'Pedágio', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
     </Stack.Navigator>
   );
 }
-

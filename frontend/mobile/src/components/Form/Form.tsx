@@ -1,12 +1,14 @@
 import { View, Text, ScrollView } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+
+import { useOptionalTabBarHeight } from '../../hooks/useBottomTabBarHeight';
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme/themeContext';
 import { styles } from './formStyles';
 
 interface FormProps {
-  title: string;
+  title?: string;
   children: React.ReactNode;
 }
 
@@ -14,15 +16,9 @@ export function Form({ title, children }: FormProps) {
   const { theme } = useTheme();
   const stylesForm = styles(theme);
 
-  const tabBarHeight = useBottomTabBarHeight();
+  const tabBarHeight = useOptionalTabBarHeight();
   const insets = useSafeAreaInsets();
 
-  /**
-   * Padding calculado automaticamente:
-   * - BottomTab
-   * - SafeArea (gestos / iPhone)
-   * - respiro visual
-   */
   const contentPaddingBottom =
     tabBarHeight +
     insets.bottom +
@@ -30,9 +26,10 @@ export function Form({ title, children }: FormProps) {
 
   return (
     <View style={stylesForm.container}>
+      {title &&(
       <View style={stylesForm.header}>
         <Text style={stylesForm.title}>{title}</Text>
-      </View>
+      </View>)}
 
       <ScrollView
         style={stylesForm.scroll}

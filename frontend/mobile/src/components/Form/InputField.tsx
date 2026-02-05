@@ -6,13 +6,14 @@ import { FormError } from './FormError';
 interface Props {
   label: string;
   icon?: string;
+  iconPosition?: 'top' | 'inside';
   value?: string;
   placeholder?: string;
   editable?: boolean;
   keyboardType?: KeyboardTypeOptions;
   onPress?: () => void;
   onChangeText?: (text: string) => void;
-
+  marginBottom?:number;
   /** 🔴 mensagem de erro do formulário */
   error?: string;
 }
@@ -20,6 +21,7 @@ interface Props {
 export function InputField({
   label,
   icon,
+  iconPosition = 'top',
   value,
   placeholder,
   editable = true,
@@ -27,39 +29,79 @@ export function InputField({
   onChangeText,
   keyboardType = 'default',
   error,
+  marginBottom,
 }: Props) {
   const { theme } = useTheme();
   const isPressable = !!onPress && !editable;
 
   const borderColor = error
     ? theme.colors.error
-    : theme.colors.detail;
+    : theme.colors.primary;
+
+  /* 🔹 Campo reutilizável */
+  const InputContent = (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor,
+        borderRadius: 10,
+        backgroundColor: theme.colors.backgroundCard,
+        paddingHorizontal: 12
+      }}
+    >
+      {/* Ícone dentro do input */}
+      {icon && iconPosition === 'inside' && (
+        <MaterialCommunityIcons
+          name={icon}
+          size={20}
+          color={theme.colors.opaco}
+          style={{ marginRight: 8 }}
+        />
+      )}
+
+      <TextInput
+        value={value}
+        placeholder={placeholder}
+        editable={editable}
+        keyboardType={keyboardType}
+        onChangeText={onChangeText}
+        placeholderTextColor={theme.colors.opaco}
+        style={{
+          flex: 1,
+          paddingVertical: 12,
+          fontSize: theme.sizes.mediumText.fontSize,
+          color: theme.colors.text
+        }}
+      />
+    </View>
+  );
 
   return (
-    <View style={{ marginBottom: 16 }}>
-      {/* Label */}
-      {(icon || label) && (
+    <View  style={{ marginBottom: marginBottom || 16 }}>
+      {(label || (icon && iconPosition === 'top')) && (
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginBottom: 6,
+            marginBottom: 6
           }}
         >
-          {icon && (
+          {icon && iconPosition === 'top' && (
             <MaterialCommunityIcons
               name={icon}
               size={18}
-              color={theme.colors.detail}
+              color={theme.colors.opaco}
             />
           )}
 
           {label && (
             <Text
               style={{
-                marginLeft: icon ? 6 : 0,
-                color: theme.colors.detail,
-                fontSize: theme.sizes.mediumText.fontSize,
+                marginLeft: icon && iconPosition === 'top' ? 6 : 0,
+                color: theme.colors.text,
+                fontSize: theme.sizes.mediumText.fontSize
               }}
             >
               {label}
@@ -68,46 +110,13 @@ export function InputField({
         </View>
       )}
 
-      {/* Campo */}
       {isPressable ? (
-        <Pressable onPress={onPress}>
-          <TextInput
-            value={value}
-            placeholder={placeholder}
-            editable={false}
-            style={{
-              borderWidth: 1,
-              borderColor,
-              borderRadius: 10,
-              paddingHorizontal: 14,
-              paddingVertical: 12,
-              fontSize: theme.sizes.mediumText.fontSize,
-              backgroundColor: theme.colors.backgroundCard,
-              color: theme.colors.text,
-            }}
-          />
-        </Pressable>
+        <Pressable onPress={onPress}>{InputContent}</Pressable>
       ) : (
-        <TextInput
-          value={value}
-          placeholder={placeholder}
-          editable={editable}
-          keyboardType={keyboardType}
-          onChangeText={onChangeText}
-          style={{
-            borderWidth: 1,
-            borderColor,
-            borderRadius: 10,
-            paddingHorizontal: 14,
-            paddingVertical: 12,
-            fontSize: theme.sizes.mediumText.fontSize,
-            backgroundColor: theme.colors.backgroundCard,
-            color: theme.colors.text,
-          }}
-        />
+        InputContent
       )}
 
-      {/* 🔴 Erro padronizado */}
+
       <FormError message={error} />
     </View>
   );

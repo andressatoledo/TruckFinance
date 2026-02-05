@@ -6,13 +6,14 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-
+import { useTheme } from '../../theme/themeContext';
 import { useMemo } from 'react';
 
 const { height } = Dimensions.get('window');
 
 
 // const { height } = Dimensions.get('window');
+
 
 type Props = PropsWithChildren<{
   visible: boolean;
@@ -26,12 +27,15 @@ export function FakeBottomSheet({
   onClose,
   children,
   heightPercent = 0.75,
-  backgroundColor = '#1E1E1E',
 }: Props) {
+  
+
   const sheetHeight = useMemo(
     () => height * heightPercent,
     [heightPercent]
   );
+
+  
 
   const translateY = useRef(
     new Animated.Value(sheetHeight)
@@ -45,6 +49,8 @@ export function FakeBottomSheet({
   }).start();
 }, [visible, sheetHeight, translateY]);
 
+  const { theme } = useTheme();
+   if (!visible) return null;
 
   return (
   <View
@@ -64,7 +70,7 @@ export function FakeBottomSheet({
         styles.sheet,
         {
           height: sheetHeight,
-          backgroundColor,
+          backgroundColor: theme.colors.backgroundCard,
           transform: [{ translateY }],
           zIndex: 10000,
           elevation: 10000,
@@ -82,6 +88,7 @@ export function FakeBottomSheet({
 
 
 const styles = StyleSheet.create({
+  
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -106,7 +113,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 4,
-    backgroundColor: '#777',
+    backgroundColor: '#726c6c',
     alignSelf: 'center',
     marginBottom: 12,
   },

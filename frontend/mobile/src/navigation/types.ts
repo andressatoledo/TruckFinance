@@ -1,6 +1,8 @@
+import { Mode } from '../../shared/types/mode';
+
 export type RootStackParamList = {
   ViagemForm: {
-    mode: 'create' | 'edit' | 'view';
+    mode: Mode;
     viagemId?: string;
     navigation?: undefined;
   };
@@ -8,6 +10,14 @@ export type RootStackParamList = {
   Tabs: undefined;
 
   ViagemFilter: {
+    navigation?: undefined;
+  };
+  
+  Pedagio: {};
+
+  PedagioForm: {
+    mode: Mode;
+    pedagioId?: string;
     navigation?: undefined;
   };
   

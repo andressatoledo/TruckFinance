@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-export function useViagemFilterSheet() {
-  const [visible, setVisible] = useState(true);
+export function useFilterSheet() {
+  const [visible, setVisible] = useState(false);
 
   function abrir() {
     setVisible(true);

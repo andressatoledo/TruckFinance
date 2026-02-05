@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Pedagio } from '../models/index';
+import {montarFiltroPedagio} from '../filters/pedagio'
 
 async function criarPedagio(req: Request, res: Response) {
   try {
@@ -16,10 +17,10 @@ async function criarPedagio(req: Request, res: Response) {
 
 async function buscarPedagios(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
 
-    const pedagios = await Pedagio.find(filtro);  
-
+    const filtro = montarFiltroPedagio(req.query);
+    const pedagios = await Pedagio.find(filtro).sort({ pedagioNome: 1 });
+      
     res.status(200).json(pedagios); 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';

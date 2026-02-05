@@ -17,7 +17,7 @@ import { formatarValor } from '../../../shared/utils/formatarValor';
 
 import { Calendario } from '../../components/Calendario';
 import { FakeBottomSheet } from '../../components/Form/FakeButtonSheet';
-import { useViagemFilterSheet } from '../../hooks/useViagemFilterSheet';
+import { useFilterSheet } from '../../hooks/useFilterSheet';
 import { Button } from '../../components/Form/Button';
 import { ViagemFilter } from './ViagemFilter';
 
@@ -25,7 +25,7 @@ export function Viagem() {
   const { theme } = useTheme();
   const styleDefault = layout(theme);
 
-  const { visible, abrir, fechar } = useViagemFilterSheet();
+  const { visible, abrir, fechar } = useFilterSheet();
 
   const [viagens, setCarteira] = useState<CarteiraViagem[]>([]);
   const [loading, setLoading] = useState(true);

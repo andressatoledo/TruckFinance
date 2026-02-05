@@ -424,14 +424,12 @@ export function ViagemForm({ route, navigation }: Props) {
           color={theme.colors.cardPedagioText}
           backgroundColor={theme.colors.cardPedagio}
         />
-      {/* </Panel>  */}
-      
-      {/* Botão de submit */}
+
       {!readOnly && (
         <SubmitButton
           label={mode === 'create' ? 'Salvar' : 'Atualizar'}
           onPress={handleSubmit}
-          // loading={loading}
+    
         />
 
       )}

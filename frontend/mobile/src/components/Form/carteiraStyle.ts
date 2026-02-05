@@ -14,8 +14,7 @@ export const styles = (theme: ThemeType) => {
     header: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: 16,
+      justifyContent: 'space-between'
     },
 
     title: {

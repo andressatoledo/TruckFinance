@@ -6,6 +6,7 @@ export const styles = (theme: ThemeType) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.surface,
+      
     },
 
     header: {
@@ -30,5 +31,6 @@ export const styles = (theme: ThemeType) =>
     content: {
       padding: 16,
       gap: 12,
+      
     },
   });

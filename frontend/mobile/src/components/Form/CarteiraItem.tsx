@@ -13,7 +13,7 @@ interface CadastroListItemProps {
   onPress?: () => void;
 }
 
-export function CadastroListItem({
+export function CarteiraItem({
   icon,
   title,
   description,

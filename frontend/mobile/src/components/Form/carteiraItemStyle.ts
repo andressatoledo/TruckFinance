@@ -8,7 +8,7 @@ export const styles = (theme: ThemeType) => {
     card: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: theme.colors.surface,
+      backgroundColor: theme.colors.backgroundCard,
       borderRadius: 14,
       padding: 14,
       gap: 12,

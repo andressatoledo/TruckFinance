@@ -1,18 +1,17 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../../theme/themeContext';
 import { styles } from './carteiraStyle';
 
 interface CadastroLayoutProps {
-  title: string;
+  title?: string;
   onAdd?: () => void;
   searchComponent?: React.ReactNode;
   filterComponent?: React.ReactNode;
   children: React.ReactNode;
 }
 
-export function CadastroLayout({
-  title,
+export function Carteira({
   onAdd,
   searchComponent,
   filterComponent,
@@ -21,11 +20,12 @@ export function CadastroLayout({
   const { theme } = useTheme();
   const styleCarteira = styles(theme);
 
+
   return (
     <View style={styleCarteira.container}>
       {/* Header */}
       <View style={styleCarteira.header}>
-        <Text style={styleCarteira.title}>{title}</Text>
+        
 
         {onAdd && (
           <TouchableOpacity style={styleCarteira.addButton} onPress={onAdd}>

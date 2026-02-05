@@ -1,12 +1,14 @@
 // src/services/pedagioService.ts
 import { api } from './api';
-import { Pedagio } from '../types/pedagio';
+import  PedagioFiltro from '../types/pedagioFiltro';
+import { Pedagio} from '../types/pedagio';
+
 
 const ENDPOINT = '/pedagios';
 
 export const PedagioService = {
-  async buscarTodas(): Promise<Pedagio[]> {
-    const response = await api.get<Pedagio[]>(ENDPOINT);
+  async buscarTodas(filtro?: PedagioFiltro): Promise<Pedagio[]> {
+    const response = await api.get<Pedagio[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 
