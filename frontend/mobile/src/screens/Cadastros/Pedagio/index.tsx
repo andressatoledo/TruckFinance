@@ -15,15 +15,30 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../navigation/types'; // ajuste o path
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
+import  {Pedagio as TypePedagio} from '../../../../shared/types/pedagio';
+
+function description(item:TypePedagio){
+  if (item.pedagioLocalizacao && item.pedagioRodovia){
+    return `${item.pedagioRodovia} • ${item.pedagioLocalizacao}`;
+  };
+
+  if (item.pedagioLocalizacao){
+    return item.pedagioLocalizacao;
+  };
+
+   if (item.pedagioRodovia){
+    return item.pedagioRodovia;
+  };
+}
 
 export function Pedagio() {
 
-    type PedagioNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'PedagioForm'
->;
+  
 
-   const navigation = useNavigation<PedagioNavigationProp>();
+
+  type PedagioNavigationProp = NativeStackNavigationProp<RootStackParamList,'PedagioForm'>;
+
+  const navigation = useNavigation<PedagioNavigationProp>();
   const { visible, abrir, fechar } = useFilterSheet();
 
   const {
@@ -35,19 +50,6 @@ export function Pedagio() {
   const { dados, buscarCarteira } = useCarteira();
 
   const [busca, setBusca] = useState('');
-
-
-//   useEffect(() => {
-//     buscarCarteira();
-//   }, [buscarCarteira]);
-
-
-//   useEffect(() => {
-//     buscarCarteira({
-//       ...filters,
-//       pedagioNome: busca,
-//     });
-//   },  [busca, filters, buscarCarteira]);
 
     useFocusEffect(
     useCallback(() => {
@@ -78,7 +80,7 @@ export function Pedagio() {
             key={item._id}
             icon="boom-gate"
             title={item.pedagioNome}
-            description={`${item.pedagioRodovia} - ${item.pedagioLocalizacao}`}
+            description={description(item)}
             onPress={() => {
               navigation.navigate(
                 'PedagioForm',

@@ -53,19 +53,7 @@ export function CardCadastro({
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onPress} style={stylesCardCadastro.container}>
-      {/* <Animated.View
-        style={[
-          // stylesCardViagem.card,
-          // { transform: [{ scale }] },
-        ]}
-      > */}
-        
-      
-    {/* <TouchableOpacity
-      activeOpacity={0.8}
-      onPress={onPress}
-      style={stylesCardCadastro.container}
-    > */}
+
       <View style={stylesCardCadastro.left}>
         <View style={stylesCardCadastro.iconContainer}>
           <MaterialCommunityIcons

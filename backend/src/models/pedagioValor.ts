@@ -1,10 +1,10 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const pedagioValorSchema = new Schema({
-  rotaPedagioValor: {
+  PedagioValor: {
     type: Number
   },
-  rotaPedagioNumeroEixos: {
+  pedagioValorNumeroEixos: {
     type: Number
   },
   pedagioId: {
