@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.100.15:3000/api'; // substitua pelo IP da sua máquina
+const BASE_URL = 'http://192.168.100.14:3000/api'; // substitua pelo IP da sua máquina
 
 export default function Home() {
   const [rotas, setRotas] = useState<any[]>([]);

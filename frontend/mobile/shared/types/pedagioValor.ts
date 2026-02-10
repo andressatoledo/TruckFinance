@@ -1,8 +1,7 @@
 export interface PedagioValor {
   /** IDs */
   _id?: string;               // MongoDB padrão
-  pedagioValor?: number;
-  pedagioValorNumeroEixos?: number;
-
+  pedagioValorPedagio: number;
+  pedagioValorNumeroEixos: number;
   pedagioId?: string;
 }

@@ -13,16 +13,43 @@ async function criarPedagioValor(req: Request, res: Response) {
   }
 }
 
+async function criarPedagioValores(req: Request, res: Response) {
+  try {
+    
+    const { pedagioId, data } = req.body;
+    
+    if (!pedagioId) {
+        return res.status(400).json({ message: 'O pedagioId é obrigatório para salvar.' });
+    }
+
+     await PedagioValor.deleteMany({ pedagioId  });
+
+
+    if (data && data.length > 0) {
+      
+     
+      const valoresFormatados = data.map((item: any) => ({
+        ...item,
+        pedagioId
+      }));
+      
+      const novosValores = await PedagioValor.insertMany(valoresFormatados);
+      return res.status(201).json(novosValores);
+    }
+
+    res.status(200).json({ message: 'Valores removidos e nenhum novo inserido.' });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+    res.status(500).json({ message: `Erro ao sincronizar valores. ${errorMessage}` });
+  }
+}
+
 
 async function buscarPedagioValores(req: Request, res: Response) {
   try {
     const filtro = req.query; 
 
     const pedagioValores = await PedagioValor.find(filtro);  
-
-    // if (pedagioValores.length === 0) {
-    //   return res.status(404).json({ message: 'Nenhum valor de pedágio encontrado com os filtros fornecidos.' });
-    // }
 
     res.status(200).json(pedagioValores); 
   } catch (error) {
@@ -91,5 +118,6 @@ export const pedagioValorController = {
   buscarPedagioValores,
   buscarPedagioValor,
   atualizarPedagioValor,
-  excluirPedagioValor
+  excluirPedagioValor,
+  criarPedagioValores
 };

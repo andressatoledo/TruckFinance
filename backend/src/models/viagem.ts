@@ -110,4 +110,4 @@ const viagemSchema = new Schema({
   }
 });
 
-export const Viagem = mongoose.model('Viagem', viagemSchema);
+export const Viagem = mongoose.model('Viagen', viagemSchema);

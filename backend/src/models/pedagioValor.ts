@@ -1,7 +1,7 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const pedagioValorSchema = new Schema({
-  PedagioValor: {
+  pedagioValorPedagio: {
     type: Number
   },
   pedagioValorNumeroEixos: {
@@ -13,4 +13,4 @@ const pedagioValorSchema = new Schema({
   }
 });
 
-export const PedagioValor =  mongoose.model('PedagioValor', pedagioValorSchema);
+export const PedagioValor =  mongoose.model('PedagioValore', pedagioValorSchema);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Pedagio } from '../../shared/types/Pedagio';
@@ -9,6 +9,7 @@ import {
 } from '../../shared/schemas/pedagio.schema';
 
 import { PedagioService } from '../../shared/services/pedagioService';
+
 import { Mode } from '../../shared/types/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -16,6 +17,8 @@ import { RootStackParamList } from '../navigation/types';
 
 import { useScreenMode } from '../utils/useScreenMode';
 
+import {PedagioValorService} from '../../shared/services/pedagioValorService'
+import {PedagioValor} from '../../shared/types/PedagioValor'
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 function mapPedagioToForm(pedagio: Pedagio): PedagioFormData {
@@ -51,17 +54,40 @@ export function usePedagioForm(
     setValue,
     formState: { errors },
   } = form;
+  
+  const saveAll = async (data: PedagioFormData, valoresGrid: PedagioValor[]) => {
+    setLoading(true);
+    try {
+      let currentId = pedagioId;
+      
+      if (isCreate) {
+        
+        const novo = await PedagioService.criar(data);
+        currentId = novo._id; 
 
-  /**
-   * 🔹 Carregar dados no modo edit/view
-   */
+      } else if (pedagioId) {
+        await PedagioService.atualizar(pedagioId, data);
+      }
+
+      if (currentId) {
+        await PedagioValorService.criarValores(currentId,valoresGrid);
+      }
+
+      navigation?.goBack();
+    } catch (error) {
+      console.error("Erro no salvamento unificado:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
   if (!pedagioId || isCreate) return;
 
   let isMounted = true;
 
  setLoading(true);
-
+  
   PedagioService.buscarPorId(pedagioId)
     .then(pedagio => {
       if (!isMounted) return;
@@ -77,33 +103,13 @@ export function usePedagioForm(
 }, [pedagioId, isCreate, reset, setLoading]);
 
 
-  /**
-   * 🔹 Submit do formulário
-   */
-  const onSubmit: SubmitHandler<PedagioFormData> = async data => {
-  setLoading(true);
-  try {
-    if (isCreate) {
-      await PedagioService.criar(data);
-    }
-
-    if (!isCreate && pedagioId) {
-      await PedagioService.atualizar(pedagioId, data);
-    }
-
-    navigation?.goBack();
-  } finally {
-    setLoading(false);
-  }
-};
-
-
   return {
     control,
     errors,
     loading: screen.loading,
     screen,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit,
+    saveAll,
     setValue,
   };
 }

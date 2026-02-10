@@ -16,6 +16,7 @@ import type { RootStackParamList } from '../../../navigation/types'; // ajuste o
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import  {Pedagio as TypePedagio} from '../../../../shared/types/pedagio';
+import {EmptyCarteira} from '../../../components/Feedback/EmptyCarteira'
 
 function description(item:TypePedagio){
   if (item.pedagioLocalizacao && item.pedagioRodovia){
@@ -47,7 +48,7 @@ export function Pedagio() {
     clearFilters,
   } = useGenericFilter<FiltroPedagio>();
 
-  const { dados, buscarCarteira } = useCarteira();
+  const { dados, buscarCarteira, deletePedagio } = useCarteira();
 
   const [busca, setBusca] = useState('');
 
@@ -74,6 +75,9 @@ export function Pedagio() {
              navigation.navigate('PedagioForm', { mode: 'create' });
           }}
         />
+        {dados.length === 0 && (
+          <EmptyCarteira/>
+        )} :
 
         {dados.map((item) => (
           <CarteiraItem
@@ -87,6 +91,8 @@ export function Pedagio() {
                 { pedagioId: item._id, mode: 'edit' } 
               );
             }}
+            onPressDelete={() => deletePedagio(item._id ?? '')}
+
           />
         ))}
       </Carteira>

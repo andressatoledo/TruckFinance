@@ -11,6 +11,7 @@ interface CadastroListItemProps {
   description?: string;
   badge?: BadgeValue;
   onPress?: () => void;
+  onPressDelete?: () => void;
 }
 
 export function CarteiraItem({
@@ -19,6 +20,7 @@ export function CarteiraItem({
   description,
   badge,
   onPress,
+  onPressDelete,
 }: CadastroListItemProps) {
   const { theme } = useTheme();
   const styleCarteiraItem = styles(theme);
@@ -31,7 +33,8 @@ export function CarteiraItem({
       : theme.colors.detail;
 
   return (
-    <TouchableOpacity style={styleCarteiraItem.card} onPress={onPress}>
+    <View  style={styleCarteiraItem.card} >
+       <TouchableOpacity onPress={onPress} style={styleCarteiraItem.pressableArea}>
       <View style={styleCarteiraItem.icon}>
         <MaterialCommunityIcons
           name={icon as any}
@@ -55,12 +58,21 @@ export function CarteiraItem({
           </Text>
         </View>
       )}
-
+      
       <MaterialCommunityIcons
         name="chevron-right"
         size={22}
         color={theme.colors.opaco}
       />
     </TouchableOpacity>
+
+      <TouchableOpacity onPress={onPressDelete} hitSlop={10}>
+        <MaterialCommunityIcons
+        name="trash-can"
+        size={22}
+        color={theme.colors.opaco}
+      />
+      </TouchableOpacity>
+    </View>
   );
 }

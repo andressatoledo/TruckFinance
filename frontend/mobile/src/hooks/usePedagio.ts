@@ -22,10 +22,25 @@ export function useCarteira() {
   []
 );
 
+   const deletePedagio = useCallback(
+  async (pedagioId: string) => {
+    setLoading(true);
+    try {
+      await PedagioService.excluir(pedagioId);
+      setDados((prev) => prev.filter((p) => p._id !== pedagioId));
+    } finally {
+      setLoading(false);
+    }
+  },
+  []
+);
+
+
 
   return {
     dados,
     loading,
     buscarCarteira,
+    deletePedagio
   };
 }

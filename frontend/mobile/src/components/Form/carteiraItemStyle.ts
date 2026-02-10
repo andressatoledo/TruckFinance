@@ -11,6 +11,7 @@ export const styles = (theme: ThemeType) => {
       backgroundColor: theme.colors.backgroundCard,
       borderRadius: 14,
       padding: 14,
+      
       gap: 12,
     },
 
@@ -21,10 +22,16 @@ export const styles = (theme: ThemeType) => {
       backgroundColor: theme.colors.backgroundCardDestaque,
       alignItems: 'center',
       justifyContent: 'center',
+      
     },
-
+    pressableArea: {
+  flex: 1,
+  flexDirection: 'row',
+  alignItems: 'center',
+},
     content: {
       flex: 1,
+      paddingLeft: 10
     },
 
     title: {

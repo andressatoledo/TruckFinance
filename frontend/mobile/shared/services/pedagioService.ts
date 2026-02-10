@@ -18,6 +18,7 @@ export const PedagioService = {
   },
 
   async criar(dados: Pedagio): Promise<Pedagio> {
+    console.log('Service do pedagio',dados)
     const response = await api.post<Pedagio>(ENDPOINT, dados);
     return response.data;
   },

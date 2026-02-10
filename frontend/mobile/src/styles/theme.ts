@@ -57,7 +57,7 @@ export const darkTheme = {
     primary: '#28bd7738',
     success: '#28bd7738',
     warning: '#FF9800',
-    error: '#EF5350',
+    error: '#aa1f1c',
     activeTab: '#28bd77d2',
     inactiveTab: '#9ca3af',
     backgroundCard: '#1a231f',
