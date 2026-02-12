@@ -19,6 +19,7 @@ import { Panel } from '../../components/Form/Panel';
 import { useTheme } from '../../theme/themeContext';
 import { calcularValorTonelada } from '../../services/calcularValorTonelada';
 import { useViagemForm } from '../../hooks/useViagemForm';
+import {formatDate} from '../../utils/formatDate' 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ViagemForm'>;
 
@@ -59,8 +60,7 @@ export function ViagemForm({ route, navigation }: Props) {
     return calcularValorTonelada(toneladas, valorTonelada);
   }, [toneladas, valorTonelada]);
 
-  const formatDate = (date?: Date) =>
-    date ? date.toLocaleDateString('pt-BR') : '';
+
 
   return (
     <ScrollView
@@ -73,7 +73,7 @@ export function ViagemForm({ route, navigation }: Props) {
         {mode === 'create' ? 'Nova Viagem' : 'Viagem'}
       </Text>
 
-       {/* Horários de Início e Chegada */}
+     
       <Row>
         <View style={{ flex: 1 }}>
         <Controller

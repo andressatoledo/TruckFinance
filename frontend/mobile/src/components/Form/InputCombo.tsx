@@ -11,6 +11,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useTheme } from '../../theme/themeContext';
 import { FormError } from './FormError';
 
+
+
 type Option<T extends string> = {
   label: string;
   value: T;
@@ -21,17 +23,11 @@ type Props<T extends string> = {
   value?: T;
   options: Option<T>[];
   loading?: boolean;
-  onChange: (value: T | '') => void; // permite vazio
+  onChange: (value: T | '') => void; 
   icon?: string;
   disabled?: boolean;
-
-  /** 🔴 mensagem de erro do formulário */
   error?: string;
-
-  /** 🔹 Label da opção vazia */
   emptyLabel?: string;
-
-  /** 🔹 Valor da opção vazia */
   emptyValue?: T | '';
 };
 
@@ -68,7 +64,7 @@ export function InputCombo<T extends string>({
     ? theme.colors.opaco
     : theme.colors.detail;
 
-  // 🔹 adiciona a opção vazia no início
+  
   const allOptions: (Option<T | ''>)[] = [
     { label: emptyLabel, value: emptyValue },
     ...options,
@@ -79,7 +75,7 @@ export function InputCombo<T extends string>({
       <View ref={ref} style={{ marginBottom: 16 }}>
         <Text
           style={{
-            color: theme.colors.detail,
+            color: theme.colors.text,
             marginBottom: 6,
             fontSize: theme.sizes.mediumText.fontSize,
           }}

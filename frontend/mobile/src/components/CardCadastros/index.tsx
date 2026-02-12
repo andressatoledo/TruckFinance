@@ -17,6 +17,7 @@ interface CardCadastroProps {
   count?: number;
   onPress?: () => void;
   icon: string;
+  routeName: keyof RootStackParamList;
 }
 
 export function CardCadastro({
@@ -25,10 +26,11 @@ export function CardCadastro({
   count,
   // onPress,
   icon,
+  routeName
 }: CardCadastroProps) {
 
-  const navigation = useNavigation();
-    const rootNavigation = navigation.getParent<RootNav>();
+  const navigation = useNavigation<RootNav>();
+    
    const scale = useRef(new Animated.Value(1)).current;
 
     const onPress = () => {
@@ -45,7 +47,7 @@ export function CardCadastro({
         }),
       ]).start();
   
-      rootNavigation?.navigate('Pedagio',{});
+       navigation.navigate(routeName as any);
     };
 
   const { theme } = useTheme();

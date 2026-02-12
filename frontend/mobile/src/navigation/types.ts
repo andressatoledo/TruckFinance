@@ -20,5 +20,13 @@ export type RootStackParamList = {
     pedagioId?: string;
     navigation?: undefined;
   };
+
+  Abastecimento: {};
+
+   AbastecimentoForm: {
+    mode: Mode;
+    abastecimentoId?: string;
+    navigation?: undefined;
+  };
   
 };

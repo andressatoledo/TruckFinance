@@ -1,40 +1,102 @@
 import { Types } from 'mongoose';
+// import FilterQuery from 'mongoose'
+// import { Abastecimento } from '../models/abastecimento';
 
-export function montarFiltroAbastecimento(query: any) {
+interface QueryAbastecimento {
+  caminhaoId?: string;
 
-  function criarDataUTC(data: string, fimDoDia = false): Date {
-  const [ano, mes, dia] = data.split('-').map(Number);
+  abastecimentoDataInicio?: string;
+  abastecimentoDataFim?: string;
 
-  if (fimDoDia) {
-    return new Date(Date.UTC(ano, mes - 1, dia, 23, 59, 59, 999));
-  }
+  abastecimentoValorMin?: string;
+  abastecimentoValorMax?: string;
 
-  return new Date(Date.UTC(ano, mes - 1, dia, 0, 0, 0, 0));
+  abastecimentoLitrosMin?: string;
+  abastecimentoLitrosMax?: string;
+
+  abastecimentoKmMin?: string;
+   abastecimentoKmMax?: string;
+
+  abastecimentoTipoPagamento?: string;
+  abastecimentoObservacao?: string;
 }
 
+export function montarFiltroAbastecimento(
+  query: QueryAbastecimento,
+) {
 
   const filtro: any = {};
 
-  // caminhaoId → ObjectId
-  if (
-    query.caminhaoId &&
-    typeof query.caminhaoId === 'string' &&
-    Types.ObjectId.isValid(query.caminhaoId)
-  ) {
+  function criarDataUTC(data: string, fimDoDia = false): Date | null {
+    if (!data) return null;
+
+    const [ano, mes, dia] = data.split('-').map(Number);
+    if (!ano || !mes || !dia) return null;
+
+    return fimDoDia
+      ? new Date(Date.UTC(ano, mes - 1, dia, 23, 59, 59, 999))
+      : new Date(Date.UTC(ano, mes - 1, dia, 0, 0, 0, 0));
+  }
+
+  function criarRangeNumerico(min?: string, max?: string) {
+    const range: any = {};
+
+    if (min && !isNaN(Number(min))) {
+      range.$gte = Number(min);
+    }
+
+    if (max && !isNaN(Number(max))) {
+      range.$lte = Number(max);
+    }
+
+    return Object.keys(range).length > 0 ? range : null;
+  }
+
+  // 🔹 caminhaoId
+  if (query.caminhaoId && Types.ObjectId.isValid(query.caminhaoId)) {
     filtro.caminhaoId = new Types.ObjectId(query.caminhaoId);
   }
 
-  // datas → UTC puro
-  if (query.dataInicio || query.dataFim) {
+  // 🔹 Datas
+  const dataInicio = criarDataUTC(query.abastecimentoDataInicio ?? '');
+  const dataFim = criarDataUTC(query.abastecimentoDataFim ?? '', true);
+
+  if (dataInicio || dataFim) {
     filtro.abastecimentoData = {};
 
-    if (query.dataInicio) {
-      filtro.abastecimentoData.$gte = criarDataUTC(query.dataInicio);
-    }
+    if (dataInicio) filtro.abastecimentoData.$gte = dataInicio;
+    if (dataFim) filtro.abastecimentoData.$lte = dataFim;
+  }
 
-    if (query.dataFim) {
-      filtro.abastecimentoData.$lte = criarDataUTC(query.dataFim, true);
-    }
+  // 🔹 Valor
+  const valorRange = criarRangeNumerico(query.abastecimentoValorMin, query.abastecimentoValorMax);
+  if (valorRange) {
+    filtro.abastecimentoValor = valorRange;
+  }
+
+  // 🔹 Litros
+  const litrosRange = criarRangeNumerico(query.abastecimentoLitrosMin, query.abastecimentoLitrosMax);
+  if (litrosRange) {
+    filtro.abastecimentoLitros = litrosRange;
+  }
+
+  // 🔹 KM
+  const kmRange = criarRangeNumerico(query.abastecimentoKmMin, query.abastecimentoKmMax);
+  if (kmRange) {
+    filtro.abastecimentoKm = kmRange;
+  }
+
+  // 🔹 Tipo de pagamento
+  if (query.abastecimentoTipoPagamento) {
+    filtro.abastecimentoTipoPagamento = query.abastecimentoTipoPagamento;
+  }
+
+  // 🔹 Observação (busca parcial)
+  if (query.abastecimentoObservacao) {
+    filtro.abastecimentoObservacao = {
+      $regex: query.abastecimentoObservacao,
+      $options: 'i',
+    };
   }
 
   return filtro;

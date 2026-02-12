@@ -1,27 +1,11 @@
 import { z } from 'zod';
+import {dateField} from '../types/dateField'
 
-// shared/types/viagem.ts
 export const viagemStatusEnum = [
   'AguardandoPagamento',
   'Pago',
 ] as const;
 
-const dateField = z.preprocess(
-  (value) => {
-    if (value instanceof Date) return value;
-
-    if (typeof value === 'string' || typeof value === 'number') {
-      const d = new Date(value);
-      return isNaN(d.getTime()) ? undefined : d;
-    }
-
-    return undefined;
-  },
-  z.date().refine(
-    (d) => !isNaN(d.getTime()),
-    { message: 'Data inválida' }
-  )
-);
 
 export const viagemSchema = z.object({
   viagemDataInicio: dateField,

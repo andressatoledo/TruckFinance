@@ -29,12 +29,12 @@ export function TimePickerField({
   };
 
   const handleChange = (event: any, date?: Date) => {
-    if (Platform.OS === 'android') setShowPicker(false); // fecha automaticamente no Android
+    if (Platform.OS === 'android') setShowPicker(false); 
     if (date) {
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       const formatted = `${hours}:${minutes}`;
-      onChange?.(formatted); // repassa para o RHF
+      onChange?.(formatted); 
     }
   };
 
@@ -51,7 +51,7 @@ export function TimePickerField({
         <Text
           style={{
             marginLeft: icon ? 6 : 0,
-            color: theme.colors.detail,
+            color: theme.colors.text,
             fontSize: theme.sizes.mediumText.fontSize,
           }}
         >

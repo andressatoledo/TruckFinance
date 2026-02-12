@@ -1,4 +1,4 @@
-import {View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 // import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -41,7 +41,13 @@ export function FilterSheet({
 
   return (
    
-    <View>
+    <ScrollView
+    showsVerticalScrollIndicator={false}
+  showsHorizontalScrollIndicator={false}
+  keyboardShouldPersistTaps="handled"
+  bounces={false}
+  contentContainerStyle={{ paddingBottom: 24 , padding: 10}}
+  >
       {filters.map((field) => (
         <Controller
           key={field.key}
@@ -71,6 +77,6 @@ export function FilterSheet({
             onPress={limpar}
           />
         </View>
-     </View>
+      </ScrollView>
   );
 }

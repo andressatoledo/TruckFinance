@@ -14,7 +14,6 @@ interface Props {
   onPress?: () => void;
   onChangeText?: (text: string) => void;
   marginBottom?:number;
-  /** 🔴 mensagem de erro do formulário */
   error?: string;
 }
 
@@ -38,7 +37,6 @@ export function InputField({
     ? theme.colors.error
     : theme.colors.primary;
 
-  /* 🔹 Campo reutilizável */
   const InputContent = (
     <View
       style={{
@@ -56,7 +54,7 @@ export function InputField({
         <MaterialCommunityIcons
           name={icon}
           size={20}
-          color={theme.colors.opaco}
+          color={theme.colors.detail}
           style={{ marginRight: 8 }}
         />
       )}
@@ -92,7 +90,7 @@ export function InputField({
             <MaterialCommunityIcons
               name={icon}
               size={18}
-              color={theme.colors.opaco}
+              color={theme.colors.detail}
             />
           )}
 

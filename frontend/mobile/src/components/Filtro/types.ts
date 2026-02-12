@@ -3,12 +3,21 @@ export type FilterType =
   | 'select'
   | 'range'
   | 'number'
-  | 'async-select';
+  | 'async-select'
+  | 'combo'
+  | 'date';
 
-export interface FilterOption {
+// export interface FilterOption {
+//   label: string;
+//   value: string | number;
+// }
+
+type Option<T extends string> = {
   label: string;
-  value: string | number;
-}
+  value: T;
+};
+
+
 
 export interface FilterFieldConfig {
   key: string;
@@ -17,9 +26,9 @@ export interface FilterFieldConfig {
   placeholder?: string;
   icon?: string;
 
-  options?: FilterOption[];
+  options?: Option<string>[];
 
-  asyncLoad?: () => Promise<FilterOption[]>;
+  asyncLoad?: () => Promise<Option<string>[]>;
 
   min?: number;
   max?: number;

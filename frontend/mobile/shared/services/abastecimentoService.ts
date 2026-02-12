@@ -2,12 +2,12 @@
 import { api } from './api';
 import { Abastecimento } from '../types/abastecimento';
 import { ComboOption } from '../types/combo';
-import { AbastecimentoFiltro } from '../types/abastecimentofiltro';
+import type AbastecimentoFiltro from '../types/abastecimentofiltro';
 
 const ENDPOINT = '/abastecimentos';
 
 export const AbastecimentoService = {
-  async buscarTodas(filtro: AbastecimentoFiltro): Promise<Abastecimento[]> {
+  async buscarTodas(filtro?: AbastecimentoFiltro): Promise<Abastecimento[]> {
     const response = await api.get<Abastecimento[]>(ENDPOINT, { params: filtro});
     return response.data;
   },

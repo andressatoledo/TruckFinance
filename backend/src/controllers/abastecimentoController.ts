@@ -19,8 +19,9 @@ async function buscarAbastecimentos(req: Request, res: Response) {
   
    try {
     const filtro = montarFiltroAbastecimento(req.query);
-
+    console.log('filtro no backend',filtro)
     const abastecimentos = await Abastecimento.find(filtro);
+    console.log('abastecimentos',abastecimentos)
     return res.status(200).json(abastecimentos);
   } catch (error) {
     const errorMessage =
