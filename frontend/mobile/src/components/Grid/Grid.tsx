@@ -55,7 +55,7 @@ export function Grid<T>({
 
         return (
             
-          <View key={index} style={styleGrid.card}>
+          <View key={(item as any)._id} style={styleGrid.card}>
             
 
             <Row>

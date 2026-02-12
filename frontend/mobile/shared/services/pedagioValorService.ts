@@ -18,6 +18,11 @@ export const PedagioValorService = {
     return response.data;
   },
 
+   async buscarPorPedagioId(id: string): Promise<PedagioValor> {
+    const response = await api.get<PedagioValor>(`${ENDPOINT}/pedagioId/${id}`);
+    return response.data;
+  },
+
   async criar(dados: PedagioValor[]): Promise<PedagioValor[]> {
     const response = await api.post<PedagioValor[]>(ENDPOINT, dados);
     return response.data;

@@ -69,7 +69,7 @@ async function buscarPedagioValor(req: Request, res: Response) {
     }
 
     const pedagioValor = await PedagioValor.findById(id);  
-
+    console.log('pedagioValor no controller',pedagioValor)
 
     res.status(200).json(pedagioValor);  
   } catch (error) {
@@ -77,6 +77,26 @@ async function buscarPedagioValor(req: Request, res: Response) {
     res.status(500).json({ message: `Erro ao buscar valor de pedágio. ${errorMessage}` });
   }
 }
+
+async function buscarPedagioValorByPedagioId(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({
+        message: 'É necessário informar o id do valor do pedágio.',
+      });
+    }
+
+    const pedagioValor = await PedagioValor.find({pedagioId: id});  
+ 
+    res.status(200).json(pedagioValor);  
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+    res.status(500).json({ message: `Erro ao buscar valor de pedágio. ${errorMessage}` });
+  }
+}
+
 
 async function atualizarPedagioValor(req: Request, res: Response) {
   try {
@@ -117,6 +137,7 @@ export const pedagioValorController = {
   criarPedagioValor,
   buscarPedagioValores,
   buscarPedagioValor,
+  buscarPedagioValorByPedagioId,
   atualizarPedagioValor,
   excluirPedagioValor,
   criarPedagioValores
