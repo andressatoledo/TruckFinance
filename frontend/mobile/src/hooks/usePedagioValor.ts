@@ -73,10 +73,10 @@ useEffect(() => {
     setValores(novosValores);
   };
 
-  const removerLinha = (index: number) => {
-    console.log('index',index)
-    setValores(valores.filter((_, i) => i !== index));
-    console.log('depois de deletado',valores)
+  const removerLinha = (id: string) => {
+   
+    setValores(valores.filter((item) => item._id !== id));
+
   };
 
   return {

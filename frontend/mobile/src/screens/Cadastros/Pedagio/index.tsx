@@ -17,8 +17,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Pedagio as TypePedagio } from '../../../../shared/types/pedagio';
 import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
-
-function description(item: TypePedagio) {
+import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
+function description(item: TypePedagio): string {
   if (item.pedagioLocalizacao && item.pedagioRodovia) {
     return `${item.pedagioRodovia} • ${item.pedagioLocalizacao}`;
   }
@@ -30,7 +30,10 @@ function description(item: TypePedagio) {
   if (item.pedagioRodovia) {
     return item.pedagioRodovia;
   }
+
+  return ''
 }
+
 
 export function Pedagio() {
   type PedagioNavigationProp = NativeStackNavigationProp<
@@ -40,7 +43,8 @@ export function Pedagio() {
 
   const navigation = useNavigation<PedagioNavigationProp>();
   const { visible, abrir, fechar } = useFilterSheet();
-
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const { filters, setFilters, clearFilters } =
     useGenericFilter<FiltroPedagio>();
 
@@ -85,11 +89,35 @@ export function Pedagio() {
                   mode: 'edit',
                 });
               }}
-              onPressDelete={() => deletePedagio(item._id ?? '')}
+              onPressDelete={() => {
+                setSelectedId(item._id ?? null);
+                setConfirmVisible(true);
+              }}
+              
             />
           ))
         )}
       </Carteira>
+
+      <ConfirmDialog
+        visible={confirmVisible}
+        title="Excluir pedágio"
+        description="Deseja excluir este pedágio? Essa ação não poderá ser desfeita."
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        danger
+        onCancel={() => {
+          setConfirmVisible(false);
+          setSelectedId(null);
+        }}
+        onConfirm={() => {
+          if (selectedId) {
+            deletePedagio(selectedId);
+          }
+          setConfirmVisible(false);
+          setSelectedId(null);
+        }}
+      />
 
       <FakeBottomSheet visible={visible} onClose={fechar}>
         <FilterSheet
