@@ -7,33 +7,77 @@ interface ButtonProps {
   backgroundColor?: string;
   borderColor?: string;
   borderRadius?: number;
-  paddingVertical?:number;
-  paddingHorizontal?:number;
-  marginTop?:number;
+  paddingVertical?: number;
+  paddingHorizontal?: number;
+  marginTop?: number;
   icon?: string;
   onPress: () => void;
+  disabled?: boolean;
 }
 
-export function Button(props: ButtonProps) {
+export function Button({
+  label,
+  backgroundColor,
+  borderColor,
+  borderRadius = 12,
+  paddingVertical = 16,
+  paddingHorizontal = 0,
+  marginTop = 24,
+  icon,
+  onPress,
+  disabled = false,
+}: ButtonProps) {
   const { theme } = useTheme();
+
+  const bgColor = disabled
+    ? theme.colors.opaco
+    : backgroundColor || theme.colors.primary;
+
+  const brColor = disabled
+    ? theme.colors.opaco
+    : borderColor || theme.colors.primary;
+
+  const textColor = disabled
+    ? theme.colors.detail
+    : theme.colors.text;
+
   return (
     <TouchableOpacity
-      onPress={props.onPress}
+      activeOpacity={0.7}
+      onPress={disabled ? undefined : onPress}
+      disabled={disabled}
       style={{
-        backgroundColor: props.backgroundColor || theme.colors.primary,
-        borderColor: props.borderColor || theme.colors.primary,
-        paddingVertical: props.paddingVertical || 16,
-        paddingHorizontal: props.paddingHorizontal || 0,
-        borderRadius: props.borderRadius || 12,
+        backgroundColor: bgColor,
+        borderColor: brColor,
+        paddingVertical,
+        paddingHorizontal,
+        borderRadius,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: props.marginTop || 24,
+        marginTop,
+        opacity: disabled ? 0.6 : 1,
       }}
     >
-      {props.icon && <MaterialCommunityIcons name={props.icon} size={20} color={theme.colors.text}/>}
-      {props.label && <Text style={{ color: theme.colors.text, marginLeft: 8, fontSize: theme.sizes.mediumText.fontSize }}>{props.label}</Text>}
-      
+      {icon && (
+        <MaterialCommunityIcons
+          name={icon}
+          size={20}
+          color={textColor}
+        />
+      )}
+
+      {label && (
+        <Text
+          style={{
+            color: textColor,
+            marginLeft: icon ? 8 : 0,
+            fontSize: theme.sizes.mediumText.fontSize,
+          }}
+        >
+          {label}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 }

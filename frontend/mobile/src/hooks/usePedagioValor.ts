@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
 import { PedagioValor } from '../../shared/types/PedagioValor';
-// import { PedagioValorFiltro } from '../../shared/types/PedagioValorFiltro';
 import { PedagioValorService } from '../../shared/services/pedagioValorService';
 import { useScreenMode } from '../utils/useScreenMode';
 import { Mode } from '../../shared/types/mode';
 import { ObjectId } from 'bson';
-//Validações
-import { ZodIssue } from 'zod';
-import {pedagioValorSchema} from '../../shared/schemas/pedagioValor.schema'
+import { pedagioValorSchema } from '../../shared/schemas/pedagioValor.schema';
 
 type GridErrors = {
   [index: number]: {
@@ -16,75 +13,113 @@ type GridErrors = {
   };
 };
 
-
 export function usePedagioValores(mode: Mode, pedagioId?: string) {
   const { isCreate } = useScreenMode(mode);
-  const [errors, setErrors] = useState<GridErrors>({});
+
+  const [errorsPedagioValores, setErrors] = useState<GridErrors>({});
   const [valores, setValores] = useState<PedagioValor[]>([]);
-
-useEffect(() => {
-  if (!isCreate && pedagioId) {
-    PedagioValorService.buscarPorPedagioId(pedagioId).then(res => {
-      if (Array.isArray(res)) {
-        setValores(res);
-      }  else {
-        setValores([]);
-      }}
-    );
-  }
-}, [pedagioId, isCreate]);
+  const [autoEditIndex, setAutoEditIndex] = useState<number | null>(null);
+  const [gridIsEditing, setGridIsEditing] = useState(false);
 
 
-  const validarGrid = (): boolean => {
-    const result = pedagioValorSchema.safeParse(valores);
+  useEffect(() => {
+    if (!isCreate && pedagioId) {
+      PedagioValorService.buscarPorPedagioId(pedagioId).then(res => {
+        if (Array.isArray(res)) {
+          setValores(res);
+        } else {
+          setValores([]);
+        }
+      });
+    }
+  }, [pedagioId, isCreate]);
+
+  const validarGrid = (item: PedagioValor, index: number): boolean => {
+    const result = pedagioValorSchema.safeParse(item);
 
     if (result.success) {
-      setErrors({});
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[index];
+        return newErrors;
+      });
       return true;
     }
 
-    const gridErrors: GridErrors = {};
+    const fieldErrors: any = {};
 
-    result.error.errors.forEach((err: ZodIssue) => {
-      
-      const index = err.path[0] as number;
-      const field = err.path[1] as keyof PedagioValor;
-
-      gridErrors[index] = {
-        ...gridErrors[index],
-        [field]: err.message,
-      };
+    result.error.errors.forEach(err => {
+      const field = err.path[0] as keyof PedagioValor;
+      fieldErrors[field] = err.message;
     });
 
-    setErrors(gridErrors);
+    setErrors(prev => ({
+      ...prev,
+      [index]: fieldErrors,
+    }));
+
     return false;
   };
 
+  // 🔹 Adicionar linha nova
   const adicionarLinhaVazia = () => {
-    setValores([
-      ...valores,
-      {_id: new ObjectId().toString(), pedagioValorPedagio: 0, pedagioValorNumeroEixos: 0 },
-    ]);
+    setValores(prev => {
+      const novoArray = [
+        ...prev,
+        {
+          _id: new ObjectId().toString(),
+          pedagioValorNumeroEixos: 0,
+          pedagioValorPedagio: 0,
+          isNew: true,
+        },
+      ];
+
+      setAutoEditIndex(novoArray.length - 1);
+
+      return novoArray;
+    });
   };
 
-  const salvarLinha = (item: PedagioValor, index: number) => {
-    const novosValores = [...valores];
-    novosValores[index] = item;
-    setValores(novosValores);
+  const salvarLinha = (item: PedagioValor, index: number): boolean => {
+  const valido = validarGrid(item, index);
+
+  if (!valido) return false;
+
+  const novosValores = [...valores];
+
+  novosValores[index] = {
+    ...item,
+    pedagioValorNumeroEixos: Number(item.pedagioValorNumeroEixos),
+    pedagioValorPedagio: Number(item.pedagioValorPedagio),
+  
   };
 
+  setValores(novosValores);
+  setAutoEditIndex(null); 
+
+  return true;
+};
+
+
+  // 🔹 Remover linha (corrige erros ao deletar)
   const removerLinha = (id: string) => {
-   
-    setValores(valores.filter((item) => item._id !== id));
+    setValores(prev => {
+      const novoArray = prev.filter(item => item._id !== id);
+      return novoArray;
+    });
 
+    setErrors({});
+    setAutoEditIndex(null);
   };
 
   return {
     valores,
-    errors,
-    validarGrid,
+    errorsPedagioValores,
     adicionarLinhaVazia,
     salvarLinha,
     removerLinha,
+    autoEditIndex,
+    gridIsEditing,
+    setGridIsEditing
   };
 }

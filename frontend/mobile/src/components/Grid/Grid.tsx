@@ -1,11 +1,12 @@
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../theme/themeContext';
 import { useStyles } from './styles';
 import { Row } from '../Form/Row';
 import { ConfirmDialog } from '../../components/Feedback/ConfirmDialog';
 import { ConfirmDialogProps } from '../../components/Feedback/ConfirmDialog';
+import { InputField } from '../Form/InputField';
 
 interface Column<T> {
   key: keyof T;
@@ -16,9 +17,12 @@ interface Column<T> {
 interface EditableGridProps<T> {
   data: T[];
   columns: Column<T>[];
-  onSave: (item: T, index: number) => void;
+  onSave: (item: T, index: number) => boolean;
   onDelete: (id: string) => void;
-  ConfirmDialogProps?: ConfirmDialogProps;
+  ConfirmProps?: ConfirmDialogProps;
+  autoEditIndex?: number | null;
+  errors?: Record<number, Record<string, string>>;
+  onEditingChange?: (isEditing: boolean) => void;
 }
 
 export function Grid<T>({
@@ -26,29 +30,71 @@ export function Grid<T>({
   columns,
   onSave,
   onDelete,
-  ConfirmDialogProps,
+  ConfirmProps,
+  autoEditIndex,
+  errors,
+  onEditingChange,
 }: EditableGridProps<T>) {
   const { theme } = useTheme();
   const styleGrid = useStyles(theme);
+
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [tempData, setTempData] = useState<T | null>(null);
 
+  // 🔹 informa tela se está editando
+  useEffect(() => {
+  onEditingChange?.(editingIndex !== null);
+}, [editingIndex, onEditingChange]);
+  // 🔹 auto edit quando adicionar linha
+  useEffect(() => {
+    if (
+      autoEditIndex !== null &&
+      autoEditIndex !== undefined &&
+      data[autoEditIndex]
+    ) {
+      setEditingIndex(autoEditIndex);
+      setTempData({ ...data[autoEditIndex] });
+    }
+  }, [autoEditIndex, data]);
+
   const handleEdit = (index: number) => {
+    if (editingIndex !== null) return; // bloqueia múltiplas edições
     setEditingIndex(index);
     setTempData({ ...data[index] });
   };
 
   const handleCancel = () => {
+    if (editingIndex === null) return;
+
+    const currentItem = data[editingIndex] as any;
+
+    /**
+     * Se for uma linha recém adicionada
+     * (valores zerados e ainda não persistidos),
+     * remove ao cancelar
+     */
+    const isNewLine =
+      currentItem?.pedagioValorNumeroEixos === 0 &&
+      currentItem?.pedagioValorPedagio === 0;
+
+    if (isNewLine && currentItem?._id) {
+      onDelete(currentItem._id);
+    }
+
     setEditingIndex(null);
     setTempData(null);
   };
 
   const handleSave = () => {
-    if (tempData && editingIndex !== null) {
-      onSave(tempData, editingIndex);
+    if (!tempData || editingIndex === null) return;
+
+    const success = onSave(tempData, editingIndex);
+
+    if (success) {
       setEditingIndex(null);
+      setTempData(null);
     }
   };
 
@@ -56,36 +102,45 @@ export function Grid<T>({
     <View style={styleGrid.container}>
       {data.map((item, index) => {
         const isEditing = editingIndex === index;
+        const id = (item as any)._id;
+
+        if (!id) return null;
 
         return (
-          <View key={(item as any)._id} style={styleGrid.card}>
+          <View key={id} style={styleGrid.card}>
             <Row>
               {columns.map(col => (
-                <View
-                  key={String(col.key)}
-                  style={[styleGrid.field, { flex: 1 }]}
-                >
-                  <Text style={styleGrid.label}>{col.label}</Text>
-
+                <View key={String(col.key)} style={{ flex: 1 }}>
                   {isEditing ? (
-                    <TextInput
-                      style={styleGrid.input}
+                    <InputField
+                      label={col.label}
                       value={String(tempData?.[col.key] ?? '')}
                       keyboardType={col.keyboardType}
                       onChangeText={val =>
-                        setTempData(prev => ({ ...prev!, [col.key]: val }))
+                        setTempData(prev => ({
+                          ...prev!,
+                          [col.key]:
+                            col.keyboardType === 'numeric'
+                              ? Number(val)
+                              : val,
+                        }))
                       }
+                      error={errors?.[index]?.[String(col.key)]}
                     />
                   ) : (
-                    <Text style={styleGrid.value}>
-                      {item[col.key] != null ? String(item[col.key]) : ''}
-                    </Text>
+                    <>
+                      <Text style={styleGrid.label}>{col.label}</Text>
+                      <Text style={styleGrid.value}>
+                        {item[col.key] != null
+                          ? String(item[col.key])
+                          : ''}
+                      </Text>
+                    </>
                   )}
                 </View>
               ))}
             </Row>
 
-            {/* Ações */}
             <View style={styleGrid.actions}>
               {isEditing ? (
                 <>
@@ -108,9 +163,9 @@ export function Grid<T>({
                   <TouchableOpacity
                     style={styleGrid.deleteBtn}
                     onPress={() => {
-                      const id = (item as any)._id;
+                      if (editingIndex !== null) return; // bloqueia delete
 
-                      if (ConfirmDialogProps) {
+                      if (ConfirmProps) {
                         setSelectedId(id);
                         setConfirmVisible(true);
                       } else {
@@ -119,7 +174,7 @@ export function Grid<T>({
                     }}
                   >
                     <MaterialCommunityIcons
-                      name={'trash-can'}
+                      name="trash-can"
                       size={20}
                       color={theme.colors.text}
                     />
@@ -130,7 +185,7 @@ export function Grid<T>({
                     onPress={() => handleEdit(index)}
                   >
                     <MaterialCommunityIcons
-                      name={'square-edit-outline'}
+                      name="square-edit-outline"
                       size={20}
                       color={theme.colors.text}
                     />
@@ -141,9 +196,10 @@ export function Grid<T>({
           </View>
         );
       })}
-      {ConfirmDialogProps && (
+
+      {ConfirmProps && (
         <ConfirmDialog
-          {...ConfirmDialogProps}
+          {...ConfirmProps}
           visible={confirmVisible}
           onCancel={() => {
             setConfirmVisible(false);

@@ -26,8 +26,18 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
     navigation,
   );
 
-  const { valores, adicionarLinhaVazia, salvarLinha, removerLinha } =
-    usePedagioValores(mode, pedagioId);
+  const {
+  valores,
+  adicionarLinhaVazia,
+  salvarLinha,
+  removerLinha,
+  errorsPedagioValores,
+  autoEditIndex,
+  setGridIsEditing,
+  gridIsEditing
+} = usePedagioValores(mode, pedagioId);
+
+
   const colunas: {
     key: keyof PedagioValor;
     label: string;
@@ -45,9 +55,16 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
     },
   ];
 
+  
+
   const onSubmitFinal = (data: PedagioFormData) => {
     saveAll(data, valores);
   };
+
+  
+
+
+
 
   return (
     <Form>
@@ -106,24 +123,31 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
       ) : (
         <View>
           <Grid<PedagioValor>
-            data={valores}
-            columns={colunas}
-            onSave={salvarLinha}
-            onDelete={removerLinha}
-            ConfirmDialogProps={{
-              title: 'Excluir valor de pedágio',
-              description: 'Deseja excluir este valor de pedágio? Essa ação não poderá ser desfeita.',
-              confirmText: 'Excluir',
-              cancelText: 'Cancelar',
-              danger: true,
-            }}
-          />
+  data={valores}
+  columns={colunas}
+  onSave={salvarLinha}
+  onDelete={removerLinha}
+  autoEditIndex={autoEditIndex}
+  errors={errorsPedagioValores}
+
+  onEditingChange={setGridIsEditing}
+  ConfirmProps={{
+    title: 'Excluir valor de pedágio',
+    description:
+      'Deseja excluir este valor de pedágio? Essa ação não poderá ser desfeita.',
+    confirmText: 'Excluir',
+    cancelText: 'Cancelar',
+    danger: true,
+  }}
+/>
+
           <Button
             paddingVertical={10}
             icon="plus"
             borderRadius={10}
             onPress={adicionarLinhaVazia}
             marginTop={-10}
+            disabled={gridIsEditing}
           />
         </View>
       )}

@@ -20,7 +20,7 @@ import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
 import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
 function description(item: TypePedagio): string {
   if (item.pedagioLocalizacao && item.pedagioRodovia) {
-    return `${item.pedagioRodovia} • ${item.pedagioLocalizacao}`;
+    return `Rod.: ${item.pedagioRodovia} • Loc.: ${item.pedagioLocalizacao}`;
   }
 
   if (item.pedagioLocalizacao) {
