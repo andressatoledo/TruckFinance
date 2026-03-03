@@ -107,6 +107,8 @@ export function useViagemForm(
       viagemStatus: 'AguardandoPagamento',
       viagemToneladaCarregada: 0,
       viagemValorTonelada: 0,
+      viagemEixosIda: 0,
+      viagemEixosVolta: 0,
       rotaVinculadaId: '',
       motoristaId: '',
       empregadoraId: '',
@@ -308,7 +310,7 @@ export function useViagemForm(
 
       isApplyingDefaultRef.current = true;
 
-      setValue('viagemEixosIda', carreta.carretaEixosVazio ?? 0, {
+      setValue('viagemEixosIda', carreta.carretaEixosVazio ?? '0', {
         shouldDirty: false,
       });
 

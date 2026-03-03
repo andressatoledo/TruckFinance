@@ -61,11 +61,6 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
     saveAll(data, valores);
   };
 
-  
-
-
-
-
   return (
     <Form>
       <Controller

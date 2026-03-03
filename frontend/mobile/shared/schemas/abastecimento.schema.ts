@@ -1,33 +1,95 @@
 import { z } from 'zod';
-import {dateField} from '../types/dateField'
+import { dateField } from '../types/dateField';
+import { numberBR } from '../utils/zodHelpers';
+import {
+  TipoPagamentoEnum,
+  ParcelamentoEnum,
+} from '../types/financeiroEnum';
 
+export const abastecimentoSchema = z
+  .object({
+    abastecimentoData: dateField(
+      'Data de abastecimento',
+      'obrigatória'
+    ),
 
-export const abastecimentoSchema = z.object({
-  abastecimentoData: dateField,
+    caminhaoId: z.string().min(1, 'Selecione o caminhão'),
 
-  caminhaoId: z.string().min(1, 'Selecione o caminhão'),
+    abastecimentoLitros: numberBR(
+      'Litros abastecidos é obrigatório',
+      0.0001,
+      'Litros abastecidos é obrigatório'
+    ),
 
-  abastecimentoLitros: z.coerce
-    .number()
-    .positive('Informe os litros'),
+    abastecimentoValor: numberBR(
+      'Valor total é obrigatório',
+      0.01,
+      'Valor total é obrigatório'
+    ),
 
-  abastecimentoValor: z.coerce
-    .number()
-    .positive('Informe o valor'),
+    abastecimentoKm: numberBR(
+      'Km inválido',
+      0,
+      'Km deve ser maior ou igual a zero'
+    ).optional(),
 
-  abastecimentoKm: z.coerce
-    .number().optional(),
-  
+    abastecimentoTipoPagamento: z
+      .enum(Object.values(TipoPagamentoEnum) as [string, ...string[]])
+      .optional(),
 
-  abastecimentoTipoPagamento:z.coerce
-    .string().optional(),
+    abastecimentoPrazoPagamento: z
+      .enum(Object.values(ParcelamentoEnum) as [string, ...string[]])
+      .optional(),
 
-    abastecimentoPrazoPagamento:z.coerce
-    .string().optional(),
+    abastecimentoObservacao: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    const tipo = data.abastecimentoTipoPagamento;
+    const prazo = data.abastecimentoPrazoPagamento;
 
-  abastecimentoObservacao:z.coerce
-    .string().optional(),
-});
+    // 🔹 Se informou parcelamento, precisa ter tipo
+    if (prazo && !tipo) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['abastecimentoTipoPagamento'],
+        message: 'Tipo de pagamento é obrigatório para usar parcelamento',
+      });
+    }
 
+    // 🔹 Se tipo for dinheiro ou pix, não pode parcelar
+    if (
+      prazo &&
+      (tipo === TipoPagamentoEnum.DINHEIRO ||
+        tipo === TipoPagamentoEnum.PIX)
+    ) {
+      if (prazo !== ParcelamentoEnum.A_VISTA) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['abastecimentoPrazoPagamento'],
+          message: 'Dinheiro ou PIX não permitem parcelamento',
+        });
+      }
+    }
 
-export type AbastecimentoFormData = z.infer<typeof abastecimentoSchema>;
+    // 🔹 Se parcelamento for maior que 1x
+    if (
+      prazo &&
+      prazo !== ParcelamentoEnum.A_VISTA &&
+      prazo !== '1X'
+    ) {
+      if (
+        tipo !== TipoPagamentoEnum.CARTAO_CREDITO &&
+        tipo !== TipoPagamentoEnum.A_PRAZO
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['abastecimentoTipoPagamento'],
+          message:
+            'Parcelamento só é permitido para Cartão de Crédito ou A Prazo',
+        });
+      }
+    }
+  });
+
+export type AbastecimentoFormData =
+  z.infer<typeof abastecimentoSchema>;

@@ -8,11 +8,11 @@ export const viagemStatusEnum = [
 
 
 export const viagemSchema = z.object({
-  viagemDataInicio: dateField,
+  viagemDataInicio: dateField('Início da viagem','obrigatório'),
   viagemOrigemEixos: z.enum(['Default', 'Manual']).default('Default'),
   viagemHorarioChegada: z.string().optional(),
 
-  viagemDataFim: dateField.optional(),
+  viagemDataFim: dateField().optional(),
 
   viagemHorarioSaida: z.string().optional(),
 
@@ -46,7 +46,7 @@ export const viagemSchema = z.object({
   viagemStatus: z.enum(viagemStatusEnum)
     .default('AguardandoPagamento'),
 
-  viagemDataPagamento: dateField.optional(),
+  viagemDataPagamento: dateField('','').optional(),
 })
 .superRefine((data, ctx) => {
   if (data.viagemStatus === 'Pago' && !data.viagemDataPagamento) {

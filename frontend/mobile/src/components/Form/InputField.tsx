@@ -13,7 +13,7 @@ interface Props {
   keyboardType?: KeyboardTypeOptions;
   onPress?: () => void;
   onChangeText?: (text: string) => void;
-  marginBottom?:number;
+  marginBottom?: number;
   error?: string;
 }
 
@@ -37,6 +37,15 @@ export function InputField({
     ? theme.colors.error
     : theme.colors.primary;
 
+  // const isNumeric = keyboardType === 'numeric';
+
+  // valor exibido no input
+  const displayValue = value ?? '';
+
+function handleChange(text: string) {
+  onChangeText?.(text);
+}
+
   const InputContent = (
     <View
       style={{
@@ -49,7 +58,6 @@ export function InputField({
         paddingHorizontal: 12
       }}
     >
-      {/* Ícone dentro do input */}
       {icon && iconPosition === 'inside' && (
         <MaterialCommunityIcons
           name={icon}
@@ -60,11 +68,11 @@ export function InputField({
       )}
 
       <TextInput
-        value={value}
+        value={displayValue}
         placeholder={placeholder}
         editable={editable}
         keyboardType={keyboardType}
-        onChangeText={onChangeText}
+        onChangeText={handleChange}
         placeholderTextColor={theme.colors.opaco}
         style={{
           flex: 1,
@@ -77,7 +85,7 @@ export function InputField({
   );
 
   return (
-    <View  style={{ marginBottom: marginBottom || 16 }}>
+    <View style={{ marginBottom: marginBottom || 16 }}>
       {(label || (icon && iconPosition === 'top')) && (
         <View
           style={{
@@ -113,7 +121,6 @@ export function InputField({
       ) : (
         InputContent
       )}
-
 
       <FormError message={error} />
     </View>

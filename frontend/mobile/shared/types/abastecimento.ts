@@ -1,10 +1,7 @@
 
-export type AbastecimentoTipoPagamento = string;
 
 export interface Abastecimento {
   _id?: string;                 // MongoDB padrão
-  // abastecimentoId?: string;     // auto: true no schema
-
   abastecimentoLitros: number;
   abastecimentoValor: number;
 
@@ -12,7 +9,7 @@ export interface Abastecimento {
 
   abastecimentoKm?: number;
 
-  abastecimentoTipoPagamento?: AbastecimentoTipoPagamento;
+  abastecimentoTipoPagamento?: string;
   abastecimentoPrazoPagamento?: string;
 
   abastecimentoObservacao?: string;

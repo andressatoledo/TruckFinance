@@ -5,24 +5,39 @@ import { InputField } from '../../../components/Form/InputField';
 import { Button } from '../../../components/Form/Button';
 import { Form } from '../../../components/Form/Form';
 import { useAbastecimentoForm } from '../../../hooks/useAbastecimentoForm';
+import { InputCombo } from '../../../components/Form/InputCombo';
 import { numberToString } from '../../../utils/numberToString';
 import { AbastecimentoFormData } from '../../../../shared/schemas/abastecimento.schema';
 import { safeValue } from '../../../utils/safeValue';
 import { formatDate } from '../../../utils/formatDate';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+  tipoPagamentoOptions,
+  prazoOptions,
+} from '../../../../shared/types/financeiroEnum';
 
 type AbastecimentoFormProps = NativeStackScreenProps<
   RootStackParamList,
   'AbastecimentoForm'
 >;
 
-export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps) {
+export function AbastecimentoForm({
+  route,
+  navigation,
+}: AbastecimentoFormProps) {
   const { mode, abastecimentoId } = route.params;
   const [showDate, setShowDate] = useState(false);
 
-  const { control, errors, screen, handleSubmit, saveAll } =
-    useAbastecimentoForm(mode, abastecimentoId, navigation);
+  const {
+    control,
+    errors,
+    screen,
+    handleSubmit,
+    saveAll,
+    optionsCaminhoes,
+    loadingCaminhoes,
+  } = useAbastecimentoForm(mode, abastecimentoId, navigation);
 
   const onSubmitFinal = (data: AbastecimentoFormData) => {
     saveAll(data);
@@ -30,8 +45,21 @@ export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps)
 
   return (
     <Form>
+      <Controller
+        control={control}
+        name="caminhaoId"
+        render={({ field }) => (
+          <InputCombo
+            label="Caminhão"
+            value={field.value}
+            options={optionsCaminhoes}
+            loading={loadingCaminhoes}
+            onChange={field.onChange}
+            error={errors.caminhaoId?.message}
+          />
+        )}
+      />
 
-      {/* 🔹 Litros */}
       <Controller
         control={control}
         name="abastecimentoLitros"
@@ -47,7 +75,6 @@ export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps)
         )}
       />
 
-      {/* 🔹 KM */}
       <Controller
         control={control}
         name="abastecimentoKm"
@@ -63,37 +90,36 @@ export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps)
         )}
       />
 
-      {/* 🔹 Tipo Pagamento */}
       <Controller
         control={control}
         name="abastecimentoTipoPagamento"
         render={({ field }) => (
-          <InputField
+          <InputCombo
             label="Tipo de pagamento"
-            value={safeValue(field.value)}
-            onChangeText={field.onChange}
-            editable={!screen.readOnly}
+            value={field.value}
+            options={tipoPagamentoOptions}
+            onChange={(value) => field.onChange(value || undefined)}
+            disabled={screen.readOnly}
             error={errors.abastecimentoTipoPagamento?.message}
           />
         )}
       />
 
-      {/* 🔹 Prazo Pagamento */}
       <Controller
-        control={control}
-        name="abastecimentoPrazoPagamento"
-        render={({ field }) => (
-          <InputField
-            label="Prazo de pagamento"
-            value={safeValue(field.value)}
-            onChangeText={field.onChange}
-            editable={!screen.readOnly}
-            error={errors.abastecimentoPrazoPagamento?.message}
-          />
-        )}
-      />
+  control={control}
+  name="abastecimentoPrazoPagamento"
+  render={({ field }) => (
+    <InputCombo
+      label="Parcelamento"
+      value={field.value}
+      options={prazoOptions}
+      onChange={(value) => field.onChange(value || undefined)}
+      disabled={screen.readOnly}
+      error={errors.abastecimentoPrazoPagamento?.message}
+    />
+  )}
+/>
 
-      {/* 🔹 Observação */}
       <Controller
         control={control}
         name="abastecimentoObservacao"
@@ -108,13 +134,12 @@ export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps)
         )}
       />
 
-      {/* 🔹 Valor */}
       <Controller
         control={control}
         name="abastecimentoValor"
         render={({ field }) => (
           <InputField
-            label="Valor (R$)"
+            label="Valor total (R$)"
             value={numberToString(field.value)}
             onChangeText={field.onChange}
             editable={!screen.readOnly}
@@ -124,7 +149,6 @@ export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps)
         )}
       />
 
-      {/* 🔹 Data */}
       <Controller
         control={control}
         name="abastecimentoData"
@@ -157,11 +181,18 @@ export function AbastecimentoForm({ route, navigation }: AbastecimentoFormProps)
       {!screen.isView && (
         <Button
           label={mode === 'create' ? 'Salvar' : 'Atualizar'}
-          onPress={handleSubmit(onSubmitFinal)}
+          onPress={handleSubmit(
+            data => {
+              console.log('SUCESSO', data);
+              onSubmitFinal(data);
+            },
+            errinhos => {
+              console.log('ERROS', errinhos);
+            },
+          )}
           marginTop={2}
         />
       )}
-
     </Form>
   );
 }

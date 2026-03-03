@@ -78,5 +78,6 @@ export const AbastecimentoFiltro: FilterFieldConfig[] = [
     key: 'caminhaoId',
     label: 'Caminhão',
     type: 'combo',
+    source: 'caminhao'
   },
 ];

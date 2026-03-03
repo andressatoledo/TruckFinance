@@ -5,7 +5,6 @@ export function useFilterSheet() {
 
   function abrir() {
     setVisible(true);
-    console.log('abrir filtro');
   }
 
   function fechar() {

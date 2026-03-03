@@ -21,7 +21,6 @@ export function usePedagioValores(mode: Mode, pedagioId?: string) {
   const [autoEditIndex, setAutoEditIndex] = useState<number | null>(null);
   const [gridIsEditing, setGridIsEditing] = useState(false);
 
-
   useEffect(() => {
     if (!isCreate && pedagioId) {
       PedagioValorService.buscarPorPedagioId(pedagioId).then(res => {
@@ -61,47 +60,58 @@ export function usePedagioValores(mode: Mode, pedagioId?: string) {
     return false;
   };
 
-  // 🔹 Adicionar linha nova
   const adicionarLinhaVazia = () => {
-    setValores(prev => {
-      const novoArray = [
-        ...prev,
-        {
-          _id: new ObjectId().toString(),
-          pedagioValorNumeroEixos: 0,
-          pedagioValorPedagio: 0,
-          isNew: true,
-        },
-      ];
+  setValores(prev => {
+    const novoArray = [
+      ...prev,
+      {
+        _id: new ObjectId().toString(),
+        pedagioValorNumeroEixos: '' as any,
+        pedagioValorPedagio: '' as any,
+        isNew: true,
+      },
+    ];
 
-      setAutoEditIndex(novoArray.length - 1);
-
-      return novoArray;
-    });
-  };
-
-  const salvarLinha = (item: PedagioValor, index: number): boolean => {
-  const valido = validarGrid(item, index);
-
-  if (!valido) return false;
-
-  const novosValores = [...valores];
-
-  novosValores[index] = {
-    ...item,
-    pedagioValorNumeroEixos: Number(item.pedagioValorNumeroEixos),
-    pedagioValorPedagio: Number(item.pedagioValorPedagio),
-  
-  };
-
-  setValores(novosValores);
-  setAutoEditIndex(null); 
-
-  return true;
+    setAutoEditIndex(novoArray.length - 1);
+    return novoArray;
+  });
 };
 
+  const salvarLinha = (item: PedagioValor, index: number): boolean => {
+    const valido = validarGrid(item, index);
 
-  // 🔹 Remover linha (corrige erros ao deletar)
+    if (!valido) return false;
+
+    const numeroEixosString = String(item.pedagioValorNumeroEixos).replace(
+      ',',
+      '.',
+    );
+    const valorPedagioString = String(item.pedagioValorPedagio).replace(
+      ',',
+      '.',
+    );
+
+    const numeroEixos = Number(numeroEixosString);
+    const valorPedagio = Number(valorPedagioString);
+
+    if (isNaN(numeroEixos) || isNaN(valorPedagio)) {
+      return false;
+    }
+
+    const novosValores = [...valores];
+
+    novosValores[index] = {
+      ...item,
+      pedagioValorNumeroEixos: numeroEixos,
+      pedagioValorPedagio: valorPedagio,
+    };
+
+    setValores(novosValores);
+    setAutoEditIndex(null);
+
+    return true;
+  };
+
   const removerLinha = (id: string) => {
     setValores(prev => {
       const novoArray = prev.filter(item => item._id !== id);
@@ -120,6 +130,6 @@ export function usePedagioValores(mode: Mode, pedagioId?: string) {
     removerLinha,
     autoEditIndex,
     gridIsEditing,
-    setGridIsEditing
+    setGridIsEditing,
   };
 }

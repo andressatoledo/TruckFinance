@@ -18,6 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Abastecimento as TypeAbastecimento } from '../../../../shared/types/abastecimento';
 import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
 import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
+
 function description(item: TypeAbastecimento): string {
   if (item.caminhaoId && item.abastecimentoLitros && item.abastecimentoValor ) {
     return `${item.abastecimentoLitros} L • R$ ${item.abastecimentoValor}`;
@@ -72,7 +73,11 @@ export function Abastecimento() {
             <CarteiraItem
               key={item._id}
               icon="fuel"
-              title={item.abastecimentoData?.toString()}
+             title={new Date(item.abastecimentoData).toLocaleString('pt-BR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            })}
               description={description(item)}
               onPress={() => {
                 navigation.navigate('AbastecimentoForm', {

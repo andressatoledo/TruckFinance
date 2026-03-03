@@ -105,6 +105,7 @@ export function Grid<T>({
         const id = (item as any)._id;
 
         if (!id) return null;
+        console.log('tempData', tempData);
 
         return (
           <View key={id} style={styleGrid.card}>
@@ -119,10 +120,7 @@ export function Grid<T>({
                       onChangeText={val =>
                         setTempData(prev => ({
                           ...prev!,
-                          [col.key]:
-                            col.keyboardType === 'numeric'
-                              ? Number(val)
-                              : val,
+                          [col.key]: val,
                         }))
                       }
                       error={errors?.[index]?.[String(col.key)]}

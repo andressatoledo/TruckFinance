@@ -1,3 +1,5 @@
+import { ComboSource } from '../../../shared/types/comboOptions';
+
 export type FilterType =
   | 'text'
   | 'select'
@@ -25,9 +27,7 @@ export interface FilterFieldConfig {
   type: FilterType;
   placeholder?: string;
   icon?: string;
-
-  options?: Option<string>[];
-
+  source?: ComboSource;
   asyncLoad?: () => Promise<Option<string>[]>;
 
   min?: number;

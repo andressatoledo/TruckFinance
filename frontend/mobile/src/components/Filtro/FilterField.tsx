@@ -2,6 +2,7 @@ import { View, Text, TextInput } from 'react-native';
 import { FilterFieldConfig } from './types';
 import { InputField } from '../Form/InputField';
 import { InputCombo } from '../Form/InputCombo';
+import {useComboOptions} from '../../hooks/combo/useComboOptions'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 
@@ -12,8 +13,10 @@ interface Props {
 }
 
 function DateFilterField({ field, value, onChange }: Props) {
+ 
   const [showDate, setShowDate] = useState(false);
 
+  
   function formatDate(date?: Date) {
     if (!date) return '';
     return date.toLocaleDateString('pt-BR');
@@ -47,6 +50,10 @@ function DateFilterField({ field, value, onChange }: Props) {
 }
 
 export function FilterField({ field, value, onChange }: Props) {
+  console.log(field.source)
+  const { options, loading } = useComboOptions(field.source ?? undefined);
+  console.log('options',options)
+
   switch (field.type) {
     case 'text':
       return (
@@ -86,9 +93,10 @@ export function FilterField({ field, value, onChange }: Props) {
           <InputCombo
             label={field.label}
             icon={field.icon}
-            value={String(value || '')}
-            onChange={v => onChange(Number(v))}
-            options={field.options ?? []}
+            value={value ?? ''}
+            onChange={v => onChange(v)}
+            options={options}
+            loading={loading}
           />
         </View>
       );

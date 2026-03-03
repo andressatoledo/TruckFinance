@@ -15,6 +15,8 @@ import { Mode } from '../../shared/types/mode';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useScreenMode } from '../utils/useScreenMode';
+import { useCaminhaoCombo } from '../hooks/useCaminhaoCombo';
+import { convertUndefinedToNull } from '../../shared/utils/convertUndefinedToNull';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
@@ -26,8 +28,8 @@ function mapAbastecimentoToForm(abastecimento: Abastecimento): AbastecimentoForm
     abastecimentoKm: abastecimento.abastecimentoKm ?? 0,
     abastecimentoLitros: abastecimento.abastecimentoLitros ?? '',
     abastecimentoObservacao: abastecimento.abastecimentoObservacao ?? '',
-    abastecimentoPrazoPagamento: abastecimento.abastecimentoPrazoPagamento ?? '',
-    abastecimentoTipoPagamento: abastecimento.abastecimentoTipoPagamento ?? '',
+    abastecimentoPrazoPagamento: abastecimento.abastecimentoPrazoPagamento ?? undefined,
+    abastecimentoTipoPagamento: abastecimento.abastecimentoTipoPagamento ?? undefined,
     abastecimentoValor: abastecimento.abastecimentoValor ?? '',
     caminhaoId: abastecimento.caminhaoId ?? '',
   };
@@ -40,13 +42,19 @@ export function useAbastecimentoForm(
 ) {
   const screen = useScreenMode(mode);
   const { isCreate, setLoading } = screen;
+  const { optionsCaminhoes, loadingCaminhoes } = useCaminhaoCombo();
 
   const form = useForm<AbastecimentoFormData>({
     resolver: zodResolver(abastecimentoSchema),
     defaultValues: {
-      abastecimentoKm: 0,
+       abastecimentoKm: 0,
       abastecimentoLitros: 0,
       abastecimentoValor: 0,
+      caminhaoId: '',
+      abastecimentoTipoPagamento: undefined,
+      abastecimentoPrazoPagamento: undefined,
+      abastecimentoObservacao: '',
+      abastecimentoData: new Date(),
     },
     shouldUnregister: false,
   });
@@ -62,14 +70,13 @@ export function useAbastecimentoForm(
   const saveAll = async (data: AbastecimentoFormData) => {
     setLoading(true);
     try {
-
+      const dataTratada = convertUndefinedToNull(data);
       if (isCreate) {
-        
-       await AbastecimentoService.criar(data);
+       await AbastecimentoService.criar(dataTratada);
        
 
       } else if (abastecimentoId) {
-        await AbastecimentoService.atualizar(abastecimentoId, data);
+        await AbastecimentoService.atualizar(abastecimentoId, dataTratada);
       }
 
       navigation?.goBack();
@@ -107,6 +114,8 @@ export function useAbastecimentoForm(
     errors,
     loading: screen.loading,
     screen,
+    optionsCaminhoes,
+    loadingCaminhoes,
     handleSubmit,
     saveAll,
     setValue,
