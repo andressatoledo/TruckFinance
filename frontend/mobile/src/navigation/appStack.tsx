@@ -15,6 +15,10 @@ import {AbastecimentoForm} from '../screens/Cadastros/Abastecimento/Abasteciment
 import { Pedagio } from '../screens/Cadastros/Pedagio';
 import {PedagioForm} from '../screens/Cadastros/Pedagio/PedagioForm'
 
+//Caminhão
+import { Caminhao } from '../screens/Cadastros/Caminhao';
+import {CaminhaoForm} from '../screens/Cadastros/Caminhao/CaminhaoForm'
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -96,6 +100,34 @@ export function AppStack() {
             fontWeight: 'bold'
           },}}
       />
+
+      <Stack.Screen
+        name="Caminhao"
+        component={Caminhao}
+        options={{ title: 'Caminhão', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="CaminhaoForm"
+        component={CaminhaoForm}
+        options={{ title: 'Caminhão', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      
     </Stack.Navigator>
   );
 }

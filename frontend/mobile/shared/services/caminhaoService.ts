@@ -1,26 +1,29 @@
 // src/services/CaminhaoService.ts
 import { api } from './api';
-import { Caminhao } from '../types/caminhao';
+import { Caminhao } from '../types/Caminhao/caminhao';
 import { ComboOption } from '../types/combo';
+import CaminhaoFiltro from '../types/Caminhao/caminhaoFiltro';
 
 const ENDPOINT = '/caminhoes';
 
 export const CaminhaoService = {
-  async buscarTodas(): Promise<Caminhao[]> {
-    const response = await api.get<Caminhao[]>(ENDPOINT);
-    return response.data;
-  },
-
-  async buscarCombo(): Promise<ComboOption[]> {
+    async buscarTodas(filtro?: CaminhaoFiltro): Promise<Caminhao[]> {
+      const response = await api.get<Caminhao[]>(ENDPOINT, { params: filtro});
+      console.log('buscar',response.data);
+      return response.data;
+    },
+  
+    async buscarCombo(): Promise<ComboOption[]> {
       const response = await api.get<ComboOption[]>(`${ENDPOINT}/combo`);
       return response.data;
   },
 
-  async buscarPorId(id: string): Promise<Caminhao> {
-    const response = await api.get<Caminhao>(`${ENDPOINT}/${id}`);
-    return response.data;
-  },
 
+    async buscarPorId(id: string): Promise<Caminhao> {
+      const response = await api.get<Caminhao>(`${ENDPOINT}/${id}`);
+      return response.data;
+    },
+  
   async criar(dados: Caminhao): Promise<Caminhao> {
     const response = await api.post<Caminhao>(ENDPOINT, dados);
     return response.data;

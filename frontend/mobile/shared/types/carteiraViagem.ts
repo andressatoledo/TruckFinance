@@ -1,5 +1,5 @@
 import { Viagem } from './viagem';
-import { Abastecimento } from './abastecimento';
+import { Abastecimento } from './Abastecimento/abastecimento';
 
 export interface CarteiraViagem {
   viagem: Viagem;

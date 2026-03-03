@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Caminhao } from '../models/index';
+import { montarFiltroCaminhao } from '../filters/caminhao';
 
 async function criarCaminhao(req: Request, res: Response) {
   try {
@@ -16,8 +17,8 @@ async function criarCaminhao(req: Request, res: Response) {
 
 async function buscarCaminhoes(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
-
+    const filtro = montarFiltroCaminhao(req.query);
+   
     const caminhoes = await Caminhao.find(filtro);  
 
     // if (caminhoes.length === 0) {

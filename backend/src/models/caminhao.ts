@@ -32,8 +32,7 @@ const caminhaoSchema = new Schema({
     },
     seguro: {
       dataExpiracao: {
-        type: Date,
-        required: true
+        type: Date
       },
       status: {
         type: String,
@@ -44,8 +43,7 @@ const caminhaoSchema = new Schema({
     
     crlv: {
       dataExpiracao: {
-        type: Date,
-        required: true
+        type: Date
       },
       status: {
         type: String,

@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import { InputField } from '../../../components/Form/InputField';
 import { Button } from '../../../components/Form/Button';
 import { Form } from '../../../components/Form/Form';
-import { useAbastecimentoForm } from '../../../hooks/useAbastecimentoForm';
+import { useAbastecimentoForm } from '../../../hooks/Abastecimento/useAbastecimentoForm';
 import { InputCombo } from '../../../components/Form/InputCombo';
 import { numberToString } from '../../../utils/numberToString';
 import { AbastecimentoFormData } from '../../../../shared/schemas/abastecimento.schema';

@@ -3,7 +3,7 @@ import { AbastecimentoService } from './abastecimentoService';
 import { Viagem } from '../types/viagem';
 import { CarteiraViagem } from '../types/carteiraViagem';
 import ViagemFiltro  from '../types/viagemFiltro';
-import { AbastecimentoFiltro } from '../types/abastecimentofiltro';
+import { AbastecimentoFiltro } from '../types/Abastecimento/abastecimentoFiltro';
 
 function extrairData(data?: string | Date) {
   if (!data) return undefined;

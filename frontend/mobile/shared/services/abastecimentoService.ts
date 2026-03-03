@@ -1,8 +1,8 @@
 // src/services/AbastecimentoService.ts
 import { api } from './api';
-import { Abastecimento } from '../types/abastecimento';
+import { Abastecimento } from '../types/Abastecimento/abastecimento';
 import { ComboOption } from '../types/combo';
-import type AbastecimentoFiltro from '../types/abastecimentofiltro';
+import type AbastecimentoFiltro from '../types/Abastecimento/abastecimentoFiltro';
 
 const ENDPOINT = '/abastecimentos';
 

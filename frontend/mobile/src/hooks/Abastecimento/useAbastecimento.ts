@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
-import { AbastecimentoService } from '../../shared/services/abastecimentoService';
-import  type FiltroAbastecimento  from '../../shared/types/abastecimentoFiltro';
-import  {Abastecimento} from '../../shared/types/abastecimento';
+import { AbastecimentoService } from '../../../shared/services/abastecimentoService';
+import  type FiltroAbastecimento  from '../../../shared/types/Abastecimento/abastecimentoFiltro';
+import  {Abastecimento} from '../../../shared/types/Abastecimento/abastecimento';
 
 export function useCarteira() {
   const [dados, setDados] = useState<Abastecimento[]>([]);

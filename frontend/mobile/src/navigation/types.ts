@@ -29,4 +29,11 @@ export type RootStackParamList = {
     navigation?: undefined;
   };
   
+  Caminhao: {};
+
+   CaminhaoForm: {
+    mode: Mode;
+    caminhaoId?: string;
+    navigation?: undefined;
+  };
 };

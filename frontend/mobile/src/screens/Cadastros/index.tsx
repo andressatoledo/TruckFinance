@@ -16,7 +16,7 @@ export function Cadastros() {
         title="Caminhões"
         subtitle="Frota de veículos"
         count={1}
-         routeName='Pedagio'
+         routeName='Caminhao'
       />
       <CardCadastro
         icon="weight"

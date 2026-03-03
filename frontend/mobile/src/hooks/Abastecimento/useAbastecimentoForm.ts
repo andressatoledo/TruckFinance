@@ -2,38 +2,24 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Abastecimento } from '../../shared/types/Abastecimento';
 import {
   abastecimentoSchema,
   AbastecimentoFormData,
-} from '../../shared/schemas/abastecimento.schema';
+} from '../../../shared/schemas/abastecimento.schema';
 
-import { AbastecimentoService } from '../../shared/services/abastecimentoService';
+import { AbastecimentoService } from '../../../shared/services/abastecimentoService';
 
-import { Mode } from '../../shared/types/mode';
+import { Mode } from '../../../shared/types/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/types';
-import { useScreenMode } from '../utils/useScreenMode';
-import { useCaminhaoCombo } from '../hooks/useCaminhaoCombo';
-import { convertUndefinedToNull } from '../../shared/utils/convertUndefinedToNull';
+import { RootStackParamList } from '../../navigation/types';
+import { useScreenMode } from '../../utils/useScreenMode';
+import { useCaminhaoCombo } from '../useCaminhaoCombo';
+import { convertUndefinedToNull } from '../../../shared/utils/convertUndefinedToNull';
+import {mapAbastecimentoToForm} from '../../../shared/mappers/abastecimentoMapper';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
-function mapAbastecimentoToForm(abastecimento: Abastecimento): AbastecimentoFormData {
-  return {
-     abastecimentoData: abastecimento.abastecimentoData
-      ? new Date(abastecimento.abastecimentoData)
-      : new Date(),
-    abastecimentoKm: abastecimento.abastecimentoKm ?? 0,
-    abastecimentoLitros: abastecimento.abastecimentoLitros ?? '',
-    abastecimentoObservacao: abastecimento.abastecimentoObservacao ?? '',
-    abastecimentoPrazoPagamento: abastecimento.abastecimentoPrazoPagamento ?? undefined,
-    abastecimentoTipoPagamento: abastecimento.abastecimentoTipoPagamento ?? undefined,
-    abastecimentoValor: abastecimento.abastecimentoValor ?? '',
-    caminhaoId: abastecimento.caminhaoId ?? '',
-  };
-}
 
 export function useAbastecimentoForm(
   mode: Mode,

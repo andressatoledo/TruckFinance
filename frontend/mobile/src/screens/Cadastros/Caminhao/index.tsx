@@ -4,44 +4,44 @@ import { Carteira } from '../../../components/Form/Carteira';
 import { CarteiraItem } from '../../../components/Form/CarteiraItem';
 import { FilterSheet } from '../../../components/Filtro/FilterSheet';
 import { FakeBottomSheet } from '../../../components/Form/FakeButtonSheet';
-import { useCarteira } from '../../../hooks/Abastecimento/useAbastecimento';
+import { useCarteira } from '../../../hooks/Caminhao/useCaminhao';
 import { useFilterSheet } from '../../../hooks/useFilterSheet';
 import { useGenericFilter } from '../../../hooks/useGenericFilter';
-import { AbastecimentoFiltro } from './filtro';
-import type FiltroAbastecimento  from '../../../../shared/types/Abastecimento/abastecimentoFiltro';
+import { CaminhaoFiltro } from './filtro';
+import type FiltroCaminhao  from '../../../../shared/types/Caminhao/caminhaoFiltro';
 import { CarteiraHeader } from '../../../components/Form/CarteiraHeader';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../navigation/types'; // ajuste o path
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Abastecimento as TypeAbastecimento } from '../../../../shared/types/Abastecimento/abastecimento';
+import { Caminhao as TypeCaminhao } from '../../../../shared/types/Caminhao/caminhao';
 import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
 import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
 
-function description(item: TypeAbastecimento): string {
-  if (item.caminhaoId && item.abastecimentoLitros && item.abastecimentoValor ) {
-    return `${item.abastecimentoLitros} L • R$ ${item.abastecimentoValor}`;
+function description(item: TypeCaminhao): string {
+  if (item.caminhaoPlaca && item.caminhaoStatus ) {
+    return `${item.caminhaoPlaca} • ${item.caminhaoStatus}`;
   }
 
   return ''
 }
 
 
-export function Abastecimento() {
-  type AbastecimentoNavigationProp = NativeStackNavigationProp<
+export function Caminhao() {
+  type CaminhaoNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
-    'Abastecimento'
+    'Caminhao'
   >;
 
-  const navigation = useNavigation<AbastecimentoNavigationProp>();
+  const navigation = useNavigation<CaminhaoNavigationProp>();
   const { visible, abrir, fechar } = useFilterSheet();
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { filters, setFilters, clearFilters } =
-    useGenericFilter<FiltroAbastecimento>();
+    useGenericFilter<FiltroCaminhao>();
 
-  const { dados, buscarCarteira, deleteAbastecimento } = useCarteira();
+  const { dados, buscarCarteira, deleteCaminhao } = useCarteira();
 
   const [busca, setBusca] = useState('');
 
@@ -49,21 +49,21 @@ export function Abastecimento() {
     useCallback(() => {
       buscarCarteira({
         ...filters,
-        abastecimentoObservacao: busca,
+        caminhaoNome: busca,
       });
     }, [buscarCarteira, filters, busca]),
   );
 
   return (
     <View style={{ flex: 1 }}>
-      <Carteira title="Abastecimento">
+      <Carteira title="Caminhao">
         <CarteiraHeader
-          placeholder="Buscar abastecimento..."
+          placeholder="Buscar caminhao..."
           searchValue={busca}
           onSearchChange={setBusca}
           onFilterPress={abrir}
           onAddPress={() => {
-            navigation.navigate('AbastecimentoForm', { mode: 'create' });
+            navigation.navigate('CaminhaoForm', { mode: 'create' });
           }}
         />
         {dados.length === 0 ? (
@@ -73,15 +73,11 @@ export function Abastecimento() {
             <CarteiraItem
               key={item._id}
               icon="fuel"
-             title={new Date(item.abastecimentoData).toLocaleString('pt-BR', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric'
-            })}
+             title={item.caminhaoNome}
               description={description(item)}
               onPress={() => {
-                navigation.navigate('AbastecimentoForm', {
-                  abastecimentoId: item._id,
+                navigation.navigate('CaminhaoForm', {
+                  caminhaoId: item._id,
                   mode: 'edit',
                 });
               }}
@@ -97,8 +93,8 @@ export function Abastecimento() {
 
       <ConfirmDialog
         visible={confirmVisible}
-        title="Excluir abastecimento"
-        description="Deseja excluir este abastecimento? Essa ação não poderá ser desfeita."
+        title="Excluir caminhão"
+        description="Deseja excluir este caminhão? Essa ação não poderá ser desfeita."
         confirmText="Excluir"
         cancelText="Cancelar"
         danger
@@ -108,7 +104,7 @@ export function Abastecimento() {
         }}
         onConfirm={() => {
           if (selectedId) {
-            deleteAbastecimento(selectedId);
+            deleteCaminhao(selectedId);
           }
           setConfirmVisible(false);
           setSelectedId(null);
@@ -117,19 +113,19 @@ export function Abastecimento() {
 
       <FakeBottomSheet visible={visible} onClose={fechar}>
         <FilterSheet
-          filters={AbastecimentoFiltro}
+          filters={CaminhaoFiltro}
           filtroAtual={filters}
           onApply={data => {
             setFilters(data);
             buscarCarteira({
               ...data,
-              abastecimentoObservacao: busca,
+              caminhaoNome: busca,
             });
             fechar();
           }}
           onClear={() => {
             clearFilters();
-            buscarCarteira({ abastecimentoObservacao: busca });
+            buscarCarteira({ caminhaoNome: busca });
             fechar();
           }}
         />
