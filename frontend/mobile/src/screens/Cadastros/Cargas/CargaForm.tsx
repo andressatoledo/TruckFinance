@@ -35,7 +35,7 @@ export function CargaForm({ route, navigation }: CargaFormProps) {
         name="cargaTipo"
         render={({ field }) => (
           <InputField
-            label="Tipo de carga"
+            label="Tipo de carga *"
             value={field.value}
             onChangeText={field.onChange}
             editable={!screen.readOnly}

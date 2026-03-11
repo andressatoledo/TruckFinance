@@ -5,12 +5,12 @@ import { InputField } from '../../../components/Form/InputField';
 import { EmptyGrid } from '../../../components/Feedback/EmptyGrid';
 import { Button } from '../../../components/Form/Button';
 import { Form } from '../../../components/Form/Form';
-import { usePedagioForm } from '../../../hooks/usePedagioForm';
+import { usePedagioForm } from '../../../hooks/Pedagio/usePedagioForm';
 import { safeValue } from '../../../utils/safeValue';
 import { View } from 'react-native';
 import { Grid } from '../../../components/Grid/Grid';
 import { PedagioValor } from '../../../../shared/types/PedagioValor';
-import { usePedagioValores } from '../../../hooks/usePedagioValor';
+import { usePedagioValores } from '../../../hooks/Pedagio/usePedagioValor';
 import { Divider } from '../../../components/Divider';
 import { PedagioFormData } from '../../../../shared/schemas/pedagio.schema';
 type PedagioFormProps = NativeStackScreenProps<
@@ -68,10 +68,11 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
         name="pedagioNome"
         render={({ field }) => (
           <InputField
-            label="Nome do pedágio"
+            label="Nome do pedágio *"
             value={safeValue(field.value)}
             onChangeText={field.onChange}
             editable={!screen.readOnly}
+            placeholder='Jacareí'
             error={errors.pedagioNome?.message}
           />
         )}
@@ -87,6 +88,7 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
             onChangeText={field.onChange}
             editable={!screen.readOnly}
             error={errors.pedagioLocalizacao?.message}
+            placeholder='BR-116'
           />
         )}
       />
@@ -101,6 +103,7 @@ export function PedagioForm({ route, navigation }: PedagioFormProps) {
             onChangeText={field.onChange}
             editable={!screen.readOnly}
             error={errors.pedagioRodovia?.message}
+            placeholder='Presidente Dutra'
           />
         )}
       />

@@ -30,12 +30,12 @@ export const caminhaoSchema = z.object({
   caminhaoUltimaManutencao: dateField(
     'Data da última manutenção',
     'obrigatória'
-  ).optional(),
+  ).nullable().optional(),
 
   caminhaoTrocaDeOleo: dateField(
     'Data da última troca de óleo',
     'obrigatória'
-  ).optional(),
+  ).nullable().optional(),
 
   caminhaoStatus: z.enum(['Ativo', 'Inativo', 'Manutenção'], {
     required_error: 'Selecione o status do caminhão',
@@ -48,21 +48,21 @@ export const caminhaoSchema = z.object({
   caminhaoDocumentos: z.object({
     ipva: z
       .object({
-        dataExpiracao: dateField('Data do IPVA', 'obrigatória').optional(),
-        status: z.enum(['Válido', 'A vencer', 'Vencido']).optional(),
+        dataExpiracao: dateField('Data do IPVA', 'obrigatória').nullable().optional(),
+        status: z.enum(['Válido', 'A vencer', 'Vencido']).nullable().optional(),
       })
       ,
 
     seguro: z.object({
-      dataExpiracao: dateField('Data do seguro', 'obrigatória').optional(),
-      status: z.enum(['Válido', 'Expirado']).optional(),
+      dataExpiracao: dateField('Data do seguro', 'obrigatória').nullable().optional(),
+      status: z.enum(['Válido', 'Expirado']).nullable().optional(),
     }),
 
     crlv: z.object({
-      dataExpiracao: dateField('Data do CRLV', 'obrigatória').optional(),
-      status: z.enum(['Válido', 'Em processo', 'Vencido']).optional(),
+      dataExpiracao: dateField('Data do CRLV', 'obrigatória').nullable().optional(),
+      status: z.enum(['Válido', 'Em processo', 'Vencido']).nullable().optional(),
     }),
-  }).optional(),
+  })
 });
 
 export type CaminhaoFormData = z.infer<typeof caminhaoSchema>;

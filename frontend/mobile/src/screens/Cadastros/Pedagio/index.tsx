@@ -4,7 +4,7 @@ import { Carteira } from '../../../components/Form/Carteira';
 import { CarteiraItem } from '../../../components/Form/CarteiraItem';
 import { FilterSheet } from '../../../components/Filtro/FilterSheet';
 import { FakeBottomSheet } from '../../../components/Form/FakeButtonSheet';
-import { useCarteira } from '../../../hooks/usePedagio';
+import { useCarteira } from '../../../hooks/Pedagio/usePedagio';
 import { useFilterSheet } from '../../../hooks/useFilterSheet';
 import { useGenericFilter } from '../../../hooks/useGenericFilter';
 import { PedagioFiltro } from './filtro';

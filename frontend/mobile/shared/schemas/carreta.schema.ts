@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { numberBR } from '../utils/zodHelpers';
+import { CarretaStatusOptions, CarretaTipos } from '../types/Carreta/carreta';
 
 export const carretaSchema = z.object({
-
   carretaPlaca: z
     .string()
     .min(7, 'Placa é obrigatória e inválida')
@@ -21,27 +21,19 @@ export const carretaSchema = z.object({
     'Quantidade de eixos vazio deve ser maior que 0'
   ),
 
-    carretaStatus: z.enum(['Ativo', 'Inativo', 'Manutenção'], {
+ carretaStatus: z.preprocess(
+  (val) => val === '' ? undefined : val,
+  z.enum(CarretaStatusOptions, {
     required_error: 'Selecione o status da carreta',
-  }),
+  })
+),
 
-  carretaTipo: z.enum(
-  [
-    'Sider',
-    'Baú',
-    'Graneleira',
-    'Porta contêiner',
-    'Cegonha',
-    'Tanque',
-    'Prancha',
-    'Bitrem',
-    'Rodotrem',
-  ],
-  {
+carretaTipo: z.preprocess(
+  (val) => val === '' ? undefined : val,
+  z.enum(CarretaTipos, {
     required_error: 'Selecione o tipo da carreta',
-  }
-)
-
+  })
+),
 });
 
 export type CarretaFormData = z.infer<typeof carretaSchema>;

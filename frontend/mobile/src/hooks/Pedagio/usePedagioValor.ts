@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { PedagioValor } from '../../shared/types/PedagioValor';
-import { PedagioValorService } from '../../shared/services/pedagioValorService';
-import { useScreenMode } from '../utils/useScreenMode';
-import { Mode } from '../../shared/types/mode';
+import { PedagioValor } from '../../../shared/types/PedagioValor';
+import { PedagioValorService } from '../../../shared/services/pedagioValorService';
+import { useScreenMode } from '../../utils/useScreenMode';
+import { Mode } from '../../../shared/types/mode';
 import { ObjectId } from 'bson';
-import { pedagioValorSchema } from '../../shared/schemas/pedagioValor.schema';
+import { pedagioValorSchema } from '../../../shared/schemas/pedagioValor.schema';
 
 type GridErrors = {
   [index: number]: {

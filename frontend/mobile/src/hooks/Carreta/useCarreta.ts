@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { CarretaService } from '../../../shared/services/CarretaService';
+import { CarretaService } from '../../../shared/services/carretaService';
 import  type FiltroCarreta  from '../../../shared/types/Carreta/CarretaFiltro';
 import  {Carreta} from '../../../shared/types/Carreta/Carreta';
 

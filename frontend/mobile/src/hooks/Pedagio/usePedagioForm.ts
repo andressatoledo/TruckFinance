@@ -2,23 +2,23 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Pedagio } from '../../shared/types/Pedagio';
+import { Pedagio } from '../../../shared/types/Pedagio';
 import {
   pedagioSchema,
   PedagioFormData,
-} from '../../shared/schemas/pedagio.schema';
+} from '../../../shared/schemas/pedagio.schema';
 
-import { PedagioService } from '../../shared/services/pedagioService';
+import { PedagioService } from '../../../shared/services/pedagioService';
 
-import { Mode } from '../../shared/types/mode';
+import { Mode } from '../../../shared/types/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/types';
+import { RootStackParamList } from '../../navigation/types';
 
-import { useScreenMode } from '../utils/useScreenMode';
+import { useScreenMode } from '../../utils/useScreenMode';
 
-import {PedagioValorService} from '../../shared/services/pedagioValorService'
-import {PedagioValor} from '../../shared/types/PedagioValor'
+import {PedagioValorService} from '../../../shared/services/pedagioValorService'
+import {PedagioValor} from '../../../shared/types/PedagioValor'
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 function mapPedagioToForm(pedagio: Pedagio): PedagioFormData {
@@ -60,6 +60,11 @@ export function usePedagioForm(
     try {
       let currentId = pedagioId;
       
+      if (valoresGrid.length <= 0) {
+        console.error("É necessário inserir ao menos um valor de pedágio.");
+        return
+      }
+
       if (isCreate) {
         
         const novo = await PedagioService.criar(data);

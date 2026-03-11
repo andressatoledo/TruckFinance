@@ -2,10 +2,10 @@ import mongoose, { Schema }  from 'mongoose';
 
 
 const manutencaoSchema = new Schema({
-  manutencaoId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // manutencaoId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
   manutencaoDescricao: {
     type: String
   },

@@ -30,7 +30,7 @@ export function DateField<TFormValues extends FieldValues>({
           <InputField
             label={label}
             icon="calendar"
-            value={formatDate(field.value)}
+            value={field.value ? formatDate(field.value) : ''}
             editable={false}
             placeholder="Selecione a data"
             onPress={() => !readOnly && setShowPicker(true)}
@@ -39,7 +39,7 @@ export function DateField<TFormValues extends FieldValues>({
 
           {showPicker && (
             <DateTimePicker
-              value={field.value ? new Date(field.value) : new Date()}
+              value={field.value ? new Date(field.value as Date) : new Date()}
               mode="date"
               onChange={(_, date) => {
                 setShowPicker(false);

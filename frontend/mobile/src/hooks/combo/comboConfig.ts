@@ -13,4 +13,8 @@ export const comboConfig = {
     hook: comboOptions.motorista,
     optionsKey: 'optionsMotoristas',
   },
+  carretaTipo: {
+    hook: comboOptions.carretaTipo,
+    optionsKey: 'optionsCarretaTipos',
+  },
 };

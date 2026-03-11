@@ -6,6 +6,7 @@ export const CarretaFiltro: FilterFieldConfig[] = [
     key: 'carretaTipo',
     label: 'Tipo da carreta',
     type: 'combo',
+    source: 'carretaTipo',
     placeholder: 'Buscar por tipo da carreta',
   },
 

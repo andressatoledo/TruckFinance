@@ -2,10 +2,10 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const abastecimentoSchema = new Schema({
-  abastecimentoId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // abastecimentoId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
   
   abastecimentoLitros: {
     type: Number

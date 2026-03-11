@@ -1,10 +1,10 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const carretaSchema = new Schema({
-  carretaId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // carretaId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
   carretaQuantidadeEixosVazio: {
     type: Number
   },

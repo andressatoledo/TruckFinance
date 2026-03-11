@@ -32,7 +32,7 @@ export function useCarretaForm(
     resolver: zodResolver(carretaSchema),
     defaultValues: {
       carretaPlaca: '',
-      carretaTipo: undefined,
+      // carretaTipo: '',
       carretaStatus: 'Ativo',
     },
     shouldUnregister: false,

@@ -40,7 +40,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
         name="empregadoraId"
         render={({ field }) => (
           <InputCombo
-            label="Empregadora"
+            label="Empregadora *"
             value={field.value}
             options={optionsEmpregadoras}
             loading={loadingEmpregadoras}
@@ -55,7 +55,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
         name="caminhaoNome"
         render={({ field }) => (
           <InputField
-            label="Nome do caminhão"
+            label="Nome do caminhão *"
             value={field.value}
             onChangeText={field.onChange}
             editable={!screen.readOnly}
@@ -69,7 +69,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
         name="caminhaoAnoFabricacao"
         render={({ field }) => (
           <InputField
-            label="Ano de fabricação"
+            label="Ano de fabricação *"
             keyboardType="numeric"
             value={field.value?.toString() ?? ''}
             onChangeText={field.onChange}
@@ -84,7 +84,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
         name="caminhaoPlaca"
         render={({ field }) => (
           <InputField
-            label="Placa"
+            label="Placa *"
             value={field.value}
             onChangeText={text => field.onChange(text.toUpperCase())}
             editable={!screen.readOnly}
@@ -98,7 +98,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
         name="caminhaoCapacidadeDeCarga"
         render={({ field }) => (
           <InputField
-            label="Capacidade de carga (ton)"
+            label="Capacidade de carga (ton) *"
             keyboardType="numeric"
             value={field.value?.toString() ?? ''}
             onChangeText={field.onChange}
@@ -114,7 +114,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
         name="caminhaoStatus"
         render={({ field }) => (
           <InputCombo
-            label="Status do caminhão"
+            label="Status do caminhão *"
             value={field.value}
             options={[
               { label: 'Ativo', value: 'Ativo' },
@@ -122,6 +122,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
               { label: 'Manutenção', value: 'Manutenção' },
             ]}
             onChange={field.onChange}
+            error={errors.caminhaoStatus?.message}
           />
         )}
       />
@@ -169,7 +170,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
           render={({ field }) => (
             <InputCombo
               label="Status"
-              value={field.value}
+              value={field.value ?? ''}
               options={[
                 { label: 'Válido', value: 'Válido' },
                 { label: 'Expirado', value: 'Expirado' },
@@ -195,7 +196,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
           render={({ field }) => (
             <InputCombo
               label="Status"
-              value={field.value}
+              value={field.value ?? ''}
               options={[
                 { label: 'Válido', value: 'Válido' },
                 { label: 'Em processo', value: 'Em processo' },

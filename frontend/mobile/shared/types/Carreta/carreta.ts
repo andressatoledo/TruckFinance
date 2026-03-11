@@ -1,10 +1,8 @@
-
-export const CarretaStatus = [
+export const CarretaStatusOptions = [
   'Ativo',
   'Inativo',
   'Manutenção'
 ] as const;
-
 
 export const CarretaTipos = [
   'Sider',
@@ -19,20 +17,16 @@ export const CarretaTipos = [
 ] as const;
 
 export type CarretaTipo = typeof CarretaTipos[number];
-export type CarretaStatus = typeof CarretaStatus[number];
-
+export type CarretaStatus = typeof CarretaStatusOptions[number];
 
 export interface Carreta {
   /** IDs */
-  _id?: string;          // MongoDB padrão
-  carretaId?: string;    // auto: true
+  _id?: string; // MongoDB padrão
+
+  carretaPlaca: string;
+  carretaTipo: CarretaTipo;
+  carretaStatus: CarretaStatus;
 
   carretaQuantidadeEixosVazio: number;
   carretaQuantidadeEixosCheio: number;
-
-  carretaTipo: CarretaTipo;
-  carretaPlaca: string;
-  carretaStatus: CarretaStatus;
-  carretaEixosVazio: number;
-  carretaEixosCheio: number;
 }

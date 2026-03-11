@@ -1,10 +1,10 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const empregadoraSchema = new Schema({
-  empregadoraId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // empregadoraId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
 
   empregadoraNome: {
     type: String
@@ -22,8 +22,7 @@ const empregadoraSchema = new Schema({
     type: String
   },
   empregadoraStatus: {
-      type: String,
-      enum: ['Ativo', 'Inativo']
+      type: String
     },
 });
 

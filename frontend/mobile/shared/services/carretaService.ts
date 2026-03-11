@@ -9,6 +9,7 @@ const ENDPOINT = '/carretas';
 export const CarretaService = {
 
   async buscarTodas(filtro?: CarretaFiltro): Promise<Carreta[]> {
+    console.log('Buscando carretas com filtro:', filtro);
     const response = await api.get<Carreta[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
@@ -19,7 +20,6 @@ export const CarretaService = {
   },
 
   async buscarPorId(id: string): Promise<Carreta> {
-    console.log('id da carreta',id)
     const response = await api.get<Carreta>(`${ENDPOINT}/${id}`);
     return response.data;
   },

@@ -2,10 +2,10 @@ import mongoose, { Schema }  from 'mongoose';
 
 
 const motoristaSchema = new Schema({
-  motoristaId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // motoristaId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
   motoristaNome: {
     type: String
   },

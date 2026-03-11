@@ -1,5 +1,7 @@
 import { Caminhao } from "../types/Caminhao/caminhao";
 import { CaminhaoFormData } from "../schemas/caminhao.schema";
+import {mapDate} from "../utils/mapDate";
+
 export function mapCaminhaoToForm(
   caminhao: Caminhao
 ): CaminhaoFormData {
@@ -9,38 +11,31 @@ export function mapCaminhaoToForm(
     caminhaoPlaca: caminhao.caminhaoPlaca,
 
     caminhaoCapacidadeDeCarga: caminhao.caminhaoCapacidadeDeCarga,
+
     caminhaoUltimaManutencao: caminhao.caminhaoUltimaManutencao
       ? new Date(caminhao.caminhaoUltimaManutencao)
-      : new Date(),
+      : undefined,
+
     caminhaoTrocaDeOleo: caminhao.caminhaoTrocaDeOleo
       ? new Date(caminhao.caminhaoTrocaDeOleo)
-      : new Date(),
+      : undefined,
 
     caminhaoStatus: caminhao.caminhaoStatus,
     empregadoraId: caminhao.empregadoraId,
 
     caminhaoDocumentos: {
-      ipva: {
-        dataExpiracao:
-          caminhao.caminhaoDocumentos.ipva?.dataExpiracao
-      ? new Date(caminhao.caminhaoDocumentos.ipva?.dataExpiracao)
-      : new Date(),
-        status: caminhao.caminhaoDocumentos?.ipva?.status,
-      },
-      seguro: {
-        dataExpiracao:
-         caminhao.caminhaoDocumentos.seguro?.dataExpiracao
-      ? new Date(caminhao.caminhaoDocumentos.seguro?.dataExpiracao)
-      : new Date(),
-        status: caminhao.caminhaoDocumentos?.seguro?.status,
-      },
-      crlv: {
-        dataExpiracao:
-          caminhao.caminhaoDocumentos.crlv?.dataExpiracao
-      ? new Date(caminhao.caminhaoDocumentos.crlv?.dataExpiracao)
-      : new Date(),
-        status: caminhao.caminhaoDocumentos?.crlv?.status,
-      },
-    },
+  ipva: {
+    dataExpiracao: mapDate(caminhao.caminhaoDocumentos?.ipva?.dataExpiracao),
+    status: caminhao.caminhaoDocumentos?.ipva?.status ?? undefined,
+  },
+  seguro: {
+    dataExpiracao: mapDate(caminhao.caminhaoDocumentos?.seguro?.dataExpiracao),
+    status: caminhao.caminhaoDocumentos?.seguro?.status ?? undefined,
+  },
+  crlv: {
+    dataExpiracao: mapDate(caminhao.caminhaoDocumentos?.crlv?.dataExpiracao),
+    status: caminhao.caminhaoDocumentos?.crlv?.status ?? undefined,
+  },
+}
   };
 }

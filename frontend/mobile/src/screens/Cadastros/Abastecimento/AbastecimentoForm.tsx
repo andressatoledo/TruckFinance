@@ -50,7 +50,7 @@ export function AbastecimentoForm({
         name="caminhaoId"
         render={({ field }) => (
           <InputCombo
-            label="Caminhão"
+            label="Caminhão *"
             value={field.value}
             options={optionsCaminhoes}
             loading={loadingCaminhoes}
@@ -65,7 +65,7 @@ export function AbastecimentoForm({
         name="abastecimentoLitros"
         render={({ field }) => (
           <InputField
-            label="Litros abastecidos"
+            label="Litros abastecidos *"
             value={numberToString(field.value)}
             onChangeText={field.onChange}
             editable={!screen.readOnly}
@@ -139,7 +139,7 @@ export function AbastecimentoForm({
         name="abastecimentoValor"
         render={({ field }) => (
           <InputField
-            label="Valor total (R$)"
+            label="Valor total (R$) *"
             value={numberToString(field.value)}
             onChangeText={field.onChange}
             editable={!screen.readOnly}

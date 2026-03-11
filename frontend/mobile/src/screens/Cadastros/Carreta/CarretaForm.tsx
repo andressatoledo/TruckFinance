@@ -7,7 +7,7 @@ import { Form } from '../../../components/Form/Form';
 import { InputCombo } from '../../../components/Form/InputCombo';
 import { CarretaFormData } from '../../../../shared/schemas/carreta.schema';
 import { useCarretaForm } from '../../../hooks/Carreta/useCarretaForm';
-import {CarretaTipos,CarretaStatus} from '../../../../shared/types/Carreta/carreta';
+import {CarretaTipos, CarretaStatusOptions} from '../../../../shared/types/Carreta/carreta';
 
 type CarretaFormProps = NativeStackScreenProps<
   RootStackParamList,
@@ -38,7 +38,7 @@ export function CarretaForm({ route, navigation }: CarretaFormProps) {
         name="carretaPlaca"
         render={({ field }) => (
           <InputField
-            label="Placa"
+            label="Placa *"
             value={field.value}
             onChangeText={text => field.onChange(text.toUpperCase())}
             editable={!screen.readOnly}
@@ -52,7 +52,7 @@ export function CarretaForm({ route, navigation }: CarretaFormProps) {
         name="carretaQuantidadeEixosVazio"
         render={({ field }) => (
           <InputField
-            label="Quantidade de eixos vazio"
+            label="Quantidade de eixos vazio *"
             keyboardType="numeric"
             value={field.value?.toString() ?? ''}
             onChangeText={field.onChange}
@@ -68,7 +68,7 @@ export function CarretaForm({ route, navigation }: CarretaFormProps) {
         name="carretaQuantidadeEixosCheio"
         render={({ field }) => (
           <InputField
-            label="Quantidade de eixos cheio"
+            label="Quantidade de eixos cheio *"
             keyboardType="numeric"
             value={field.value?.toString() ?? ''}
             onChangeText={field.onChange}
@@ -78,40 +78,40 @@ export function CarretaForm({ route, navigation }: CarretaFormProps) {
         )}
       />
 
-
-    
-        <Controller
-        control={control}
-        name="carretaStatus"
-        render={({ field }) => (
-          <InputCombo
-            label="Status da carreta"
-            value={field.value}
-            options={CarretaStatus.map(status => ({
-              label: status,
-              value: status,
-            }))}
-            onChange={field.onChange}
-          />
-        )}
-      />
-
       <Controller
         control={control}
         name="carretaTipo"
         render={({ field }) => (
           <InputCombo
-            label="Tipo da carreta"
+            label="Tipo da carreta *"
             value={field.value}
             options={CarretaTipos.map(tipo => ({
               label: tipo,
               value: tipo,
             }))}
             onChange={field.onChange}
+            error={errors.carretaTipo?.message}
           />
         )}
       />
 
+      
+        <Controller
+        control={control}
+        name="carretaStatus"
+        render={({ field }) => (
+          <InputCombo
+            label="Status da carreta *"
+            value={field.value}
+            options={CarretaStatusOptions.map(status => ({
+              label: status,
+              value: status,
+            }))}
+            onChange={field.onChange}
+            error={errors.carretaStatus?.message}
+          />
+        )}
+      />
      
 
       {!screen.isView && (

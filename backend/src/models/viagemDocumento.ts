@@ -47,8 +47,8 @@ const viagemDocumentoSchema = new Schema(
 
     viagemDocumentoStatus: {
       type: String,
-      enum: ['Ativo', 'Inativo'],
-      default: 'Ativo'
+      // enum: ['Ativo', 'Inativo'],
+      // default: 'Ativo'
     }
   },
   {

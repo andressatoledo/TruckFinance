@@ -1,10 +1,10 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const caminhaoSchema = new Schema({
-  caminhaoId: {
-    type: Schema.Types.ObjectId,
-    auto: true
-  },
+  // caminhaoId: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true
+  // },
   
   caminhaoNome: {
     type: String

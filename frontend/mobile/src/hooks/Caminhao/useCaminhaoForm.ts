@@ -36,7 +36,25 @@ export function useCaminhaoForm(
         empregadoraId: '',
       caminhaoPlaca: '',
       caminhaoStatus: 'Ativo',
-      caminhaoNome:''
+      caminhaoNome:'',
+      caminhaoTrocaDeOleo: null,
+      caminhaoUltimaManutencao: null,
+   caminhaoDocumentos: {
+      ipva: {
+        dataExpiracao: null,
+        status: null,
+      },
+      seguro: {
+        dataExpiracao: null,
+        status: null,
+      },
+      crlv: {
+        dataExpiracao: null,
+        status: null,
+      },
+    },
+
+
     },
     shouldUnregister: false,
   });
@@ -52,7 +70,13 @@ export function useCaminhaoForm(
   const saveAll = async (data: CaminhaoFormData) => {
     setLoading(true);
     try {
+      console.log(
+  "DATA IPVA:",
+  data.caminhaoDocumentos?.ipva?.dataExpiracao,
+  typeof data.caminhaoDocumentos?.ipva?.dataExpiracao
+);
       const dataTratada = convertUndefinedToNull(data);
+      console.log("DATA ENVIADA PARA API:", JSON.stringify(dataTratada, null, 2));
       if (isCreate) {
        await CaminhaoService.criar(dataTratada);
        
