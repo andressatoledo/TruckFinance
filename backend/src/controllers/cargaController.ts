@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Carga } from '../models/index';
+import {montarFiltroCarga}  from '../filters/carga';
 
 async function criarCarga(req: Request, res: Response) {
   try {
@@ -14,10 +15,10 @@ async function criarCarga(req: Request, res: Response) {
 }
 
 
+
 async function buscarCargas(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
-
+    const filtro = montarFiltroCarga(req.query);
     const cargas = await Carga.find(filtro);  
 
     res.status(200).json(cargas); 

@@ -5,7 +5,7 @@ import { InputField } from '../../../components/Form/InputField';
 import { Button } from '../../../components/Form/Button';
 import { Form } from '../../../components/Form/Form';
 import { InputCombo } from '../../../components/Form/InputCombo';
-// import { CaminhaoFormData } from '../../../../shared/schemas/caminhao.schema';
+import { CaminhaoFormData } from '../../../../shared/schemas/caminhao.schema';
 import { useCaminhaoForm } from '../../../hooks/Caminhao/useCaminhaoForm';
 import { Panel } from '../../../components/Form/Panel';
 import { SectionTitle } from '../../../components/Form/SectionTitle';
@@ -29,11 +29,9 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
     loadingEmpregadoras,
   } = useCaminhaoForm(mode, caminhaoId, navigation);
 
-  //   const [dateField, setDateField] = useState<string | null>(null);
-
-//   const onSubmitFinal = (data: CaminhaoFormData) => {
-//     saveAll(data);
-//   };
+  const onSubmitFinal = (data: CaminhaoFormData) => {
+    saveAll(data);
+  };
 
   return (
     <Form>
@@ -130,7 +128,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
 
       <Panel title="Documentos">
       
-        <SectionTitle title="IPVA" />
+        <SectionTitle title="IPVA" subtitle='Imposto sobre a Propriedade de Veículos Automotores'/>
 
         <DateField
           name="caminhaoDocumentos.ipva.dataExpiracao"
@@ -145,7 +143,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
           render={({ field }) => (
             <InputCombo
               label="Status"
-              value={field.value}
+              value={field.value ?? ''}
               options={[
                 { label: 'Válido', value: 'Válido' },
                 { label: 'A vencer', value: 'A vencer' },
@@ -156,7 +154,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
           )}
         />
 
-        <SectionTitle title="Seguro" />
+        <SectionTitle title="Seguro" subtitle='Proteção financeira contra riscos como roubo, furto, colisão, incêndio e danos a terceiros'/>
         <DateField
           name="caminhaoDocumentos.seguro.dataExpiracao"
           label="Data de expiração"
@@ -181,7 +179,7 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
           )}
         />
 
-        <SectionTitle title="CRLV" />
+        <SectionTitle title="CRLV" subtitle='Documento de porte obrigatório que legaliza a circulação de um veículo no Brasil' />
 
         <DateField
           name="caminhaoDocumentos.crlv.dataExpiracao"
@@ -231,24 +229,24 @@ export function CaminhaoForm({ route, navigation }: CaminhaoFormProps) {
       </Panel>
 
       {!screen.isView && (
-        // <Button
-        //   label={mode === 'create' ? 'Salvar' : 'Atualizar'}
-        //   onPress={handleSubmit(onSubmitFinal)}
-        //   marginTop={3}
-        // />
         <Button
-            label={mode === 'create' ? 'Salvar' : 'Atualizar'}
-            onPress={handleSubmit(
-                (data) => {
-                saveAll(data).catch(err => {
-                    console.error("Erro no saveAll:", err);
-                });
-                },
-                (errinhos) => {
-                console.log("Erros de validação do form:", errinhos);
-                }
-            )}
-            />
+          label={mode === 'create' ? 'Salvar' : 'Atualizar'}
+          onPress={handleSubmit(onSubmitFinal)}
+          marginTop={3}
+        />
+      //   <Button
+      //       label={mode === 'create' ? 'Salvar' : 'Atualizar'}
+      //       onPress={handleSubmit(
+      //           (data) => {
+      //           saveAll(data).catch(err => {
+      //               console.error("Erro no saveAll:", err);
+      //           });
+      //           },
+      //           (errinhos) => {
+      //           console.log("Erros de validação do form:", errinhos);
+      //           }
+      //       )}
+      //       />
       )}
     </Form>
   );

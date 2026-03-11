@@ -19,6 +19,14 @@ import {PedagioForm} from '../screens/Cadastros/Pedagio/PedagioForm'
 import { Caminhao } from '../screens/Cadastros/Caminhao';
 import {CaminhaoForm} from '../screens/Cadastros/Caminhao/CaminhaoForm'
 
+//Carga
+import { Carga } from '../screens/Cadastros/Cargas';
+import {CargaForm} from '../screens/Cadastros/Cargas/CargaForm';
+
+//Carreta
+import { Carreta } from '../screens/Cadastros/Carreta';
+import {CarretaForm} from '../screens/Cadastros/Carreta/CarretaForm';
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -127,7 +135,57 @@ export function AppStack() {
           },}}
       />
 
-      
+      <Stack.Screen
+        name="Carga"
+        component={Carga}
+        options={{ title: 'Carga', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="CargaForm"
+        component={CargaForm}
+        options={{ title: 'Carga', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="Carreta"
+        component={Carreta}
+        options={{ title: 'Carreta', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="CarretaForm"
+        component={CarretaForm}
+        options={{ title: 'Carreta', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
     </Stack.Navigator>
   );
 }

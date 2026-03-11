@@ -25,9 +25,7 @@ const caminhaoSchema = new Schema({
         type: Date
       },
       status: {
-        type: String,
-        enum: ['Válido', 'A vencer', 'Vencido'],
-        default: 'Válido'
+        type: String
       }
     },
     seguro: {
@@ -35,9 +33,7 @@ const caminhaoSchema = new Schema({
         type: Date
       },
       status: {
-        type: String,
-        enum: ['Válido', 'Expirado'],
-        default: 'Válido'
+        type: String
         }
       },
     
@@ -46,9 +42,8 @@ const caminhaoSchema = new Schema({
         type: Date
       },
       status: {
-        type: String,
-        enum: ['Válido', 'Em processo', 'Vencido'],
-        default: 'Válido'
+        type: String
+        
       }
     }
   },
@@ -65,8 +60,7 @@ const caminhaoSchema = new Schema({
     type: Date
   },
   caminhaoStatus: {
-      type: String,
-      enum: ['Ativo', 'Inativo', 'Manutenção']
+      type: String
   },
   empregadoraId: {
     type: Schema.Types.ObjectId,

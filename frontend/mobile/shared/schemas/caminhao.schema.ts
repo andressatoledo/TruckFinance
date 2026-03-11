@@ -30,12 +30,12 @@ export const caminhaoSchema = z.object({
   caminhaoUltimaManutencao: dateField(
     'Data da última manutenção',
     'obrigatória'
-  ),
+  ).optional(),
 
   caminhaoTrocaDeOleo: dateField(
     'Data da última troca de óleo',
     'obrigatória'
-  ),
+  ).optional(),
 
   caminhaoStatus: z.enum(['Ativo', 'Inativo', 'Manutenção'], {
     required_error: 'Selecione o status do caminhão',
@@ -48,21 +48,21 @@ export const caminhaoSchema = z.object({
   caminhaoDocumentos: z.object({
     ipva: z
       .object({
-        dataExpiracao: dateField('Data do IPVA', 'obrigatória'),
-        status: z.enum(['Válido', 'A vencer', 'Vencido']),
+        dataExpiracao: dateField('Data do IPVA', 'obrigatória').optional(),
+        status: z.enum(['Válido', 'A vencer', 'Vencido']).optional(),
       })
       ,
 
     seguro: z.object({
-      dataExpiracao: dateField('Data do seguro', 'obrigatória'),
-      status: z.enum(['Válido', 'Expirado']),
+      dataExpiracao: dateField('Data do seguro', 'obrigatória').optional(),
+      status: z.enum(['Válido', 'Expirado']).optional(),
     }),
 
     crlv: z.object({
-      dataExpiracao: dateField('Data do CRLV', 'obrigatória'),
-      status: z.enum(['Válido', 'Em processo', 'Vencido']),
+      dataExpiracao: dateField('Data do CRLV', 'obrigatória').optional(),
+      status: z.enum(['Válido', 'Em processo', 'Vencido']).optional(),
     }),
-  }),
+  }).optional(),
 });
 
 export type CaminhaoFormData = z.infer<typeof caminhaoSchema>;

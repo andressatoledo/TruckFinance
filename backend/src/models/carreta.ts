@@ -21,13 +21,6 @@ const carretaSchema = new Schema({
     type: String
   },
 
-  carretaEixosVazio: {
-    type: Number
-  },
-
-  carretaEixosCheio: {
-    type: Number
-  }
 });
 
 export const Carreta = mongoose.model('Carreta', carretaSchema);

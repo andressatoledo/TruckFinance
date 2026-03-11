@@ -62,7 +62,7 @@ export function InputCombo<T extends string>({
     ? theme.colors.error
     : disabled
     ? theme.colors.opaco
-    : theme.colors.detail;
+    : theme.colors.primary;
 
   
   const allOptions: (Option<T | ''>)[] = [

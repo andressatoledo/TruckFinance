@@ -16,7 +16,6 @@ export function Panel({ title, children, defaultExpanded = false }: PanelProps) 
   const [expanded, setExpanded] = useState(defaultExpanded);
 
   const toggle = () => {
-    // Animação suave ao expandir/colapsar
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   };
@@ -25,7 +24,7 @@ export function Panel({ title, children, defaultExpanded = false }: PanelProps) 
     <View
       style={[
         styles.container,
-        { backgroundColor: theme.colors.backgroundCard, borderColor: theme.colors.detail },
+        { backgroundColor: theme.colors.backgroundCard, borderColor: theme.colors.primary },
       ]}
     >
       {/* Header clicável */}
@@ -34,7 +33,7 @@ export function Panel({ title, children, defaultExpanded = false }: PanelProps) 
         <MaterialCommunityIcons
           name={expanded ? 'chevron-up' : 'chevron-down'}
           size={24}
-          color={theme.colors.detail}
+          color={theme.colors.text}
         />
       </Pressable>
 
@@ -62,8 +61,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   content: {
-    padding: 16,
-    // borderTopWidth: 1,
-    // borderTopColor: '#ddd',
+    padding: 12,
   },
 });

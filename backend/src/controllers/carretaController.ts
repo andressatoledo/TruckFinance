@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Carreta } from '../models/index';
+import { montarFiltroCarreta} from '../filters/carreta';
 
 async function criarCarreta(req: Request, res: Response) {
   try {
@@ -38,7 +39,7 @@ async function buscarCarretaCombo(req: Request, res: Response) {
 
 async function buscarCarretas(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
+    const filtro = montarFiltroCarreta(req.query);
 
     const carretas = await Carreta.find(filtro);  
 

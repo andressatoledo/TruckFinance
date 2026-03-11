@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { useTheme } from '../../theme/themeContext';
 
 interface Props {
   title: string;
@@ -6,24 +7,32 @@ interface Props {
 }
 
 export function SectionTitle({ title, subtitle }: Props) {
+  const { theme } = useTheme();
+
+
   return (
     <View
       style={{
-        marginTop: 24,
         marginBottom: 12,
         paddingVertical: 10,
         paddingHorizontal: 12,
-        backgroundColor: '#F4F6FA',
+
         borderRadius: 12,
-        borderLeftWidth: 4,
-        borderLeftColor: '#2563EB', // azul moderno
+        // borderLeftWidth: 4,
+        // borderLeftColor: theme.colors.primary, 
+
+        // borderColor: theme.colors.primary,
+        // borderWidth: 1,
+
+        borderBottomWidth: 2,
+        borderBottomColor: theme.colors.primary, 
       }}
     >
       <Text
         style={{
           fontSize: 16,
           fontWeight: '700',
-          color: '#1F2937',
+          color: theme.colors.text, 
         }}
       >
         {title}
@@ -33,7 +42,7 @@ export function SectionTitle({ title, subtitle }: Props) {
         <Text
           style={{
             fontSize: 13,
-            color: '#6B7280',
+            color: theme.colors.opaco,
             marginTop: 4,
           }}
         >

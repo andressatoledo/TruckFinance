@@ -6,13 +6,13 @@ export type RootStackParamList = {
     viagemId?: string;
     navigation?: undefined;
   };
-  
+
   Tabs: undefined;
 
   ViagemFilter: {
     navigation?: undefined;
   };
-  
+
   Pedagio: {};
 
   PedagioForm: {
@@ -23,17 +23,33 @@ export type RootStackParamList = {
 
   Abastecimento: {};
 
-   AbastecimentoForm: {
+  AbastecimentoForm: {
     mode: Mode;
     abastecimentoId?: string;
     navigation?: undefined;
   };
-  
+
   Caminhao: {};
 
-   CaminhaoForm: {
+  CaminhaoForm: {
     mode: Mode;
     caminhaoId?: string;
+    navigation?: undefined;
+  };
+
+  Carga: {};
+
+  CargaForm: {
+    mode: Mode;
+    cargaId?: string;
+    navigation?: undefined;
+  };
+
+  Carreta: {};
+
+  CarretaForm: {
+    mode: Mode;
+    carretaId?: string;
     navigation?: undefined;
   };
 };

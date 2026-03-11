@@ -4,44 +4,35 @@ import { Carteira } from '../../../components/Form/Carteira';
 import { CarteiraItem } from '../../../components/Form/CarteiraItem';
 import { FilterSheet } from '../../../components/Filtro/FilterSheet';
 import { FakeBottomSheet } from '../../../components/Form/FakeButtonSheet';
-import { useCarteira } from '../../../hooks/Caminhao/useCaminhao';
+import { useCarteira } from '../../../hooks/Carga/useCarga';
 import { useFilterSheet } from '../../../hooks/useFilterSheet';
 import { useGenericFilter } from '../../../hooks/useGenericFilter';
-import { CaminhaoFiltro } from './filtro';
-import type FiltroCaminhao  from '../../../../shared/types/Caminhao/caminhaoFiltro';
+import { CargaFiltro } from './filtro';
+import type FiltroCarga  from '../../../../shared/types/Carga/cargaFiltro';
 import { CarteiraHeader } from '../../../components/Form/CarteiraHeader';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../navigation/types'; // ajuste o path
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Caminhao as TypeCaminhao } from '../../../../shared/types/Caminhao/caminhao';
 import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
 import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
 
-function description(item: TypeCaminhao): string {
-  if (item.caminhaoPlaca && item.caminhaoStatus ) {
-    return `${item.caminhaoPlaca} • ${item.caminhaoStatus}`;
-  }
 
-  return ''
-}
-
-
-export function Caminhao() {
-  type CaminhaoNavigationProp = NativeStackNavigationProp<
+export function Carga() {
+  type CargaNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
-    'Caminhao'
+    'Carga'
   >;
 
-  const navigation = useNavigation<CaminhaoNavigationProp>();
+  const navigation = useNavigation<CargaNavigationProp>();
   const { visible, abrir, fechar } = useFilterSheet();
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { filters, setFilters, clearFilters } =
-    useGenericFilter<FiltroCaminhao>();
+    useGenericFilter<FiltroCarga>();
 
-  const { dados, buscarCarteira, deleteCaminhao } = useCarteira();
+  const { dados, buscarCarteira, deleteCarga } = useCarteira();
 
   const [busca, setBusca] = useState('');
 
@@ -49,21 +40,21 @@ export function Caminhao() {
     useCallback(() => {
       buscarCarteira({
         ...filters,
-        caminhaoNome: busca,
+        cargaTipo: busca,
       });
     }, [buscarCarteira, filters, busca]),
   );
 
   return (
     <View style={{ flex: 1 }}>
-      <Carteira title="Caminhao">
+      <Carteira title="Carga">
         <CarteiraHeader
-          placeholder="Buscar caminhao..."
+          placeholder="Buscar tipo de carga..."
           searchValue={busca}
           onSearchChange={setBusca}
-          onFilterPress={abrir}
+          onFilterPress={(abrir)}
           onAddPress={() => {
-            navigation.navigate('CaminhaoForm', { mode: 'create' });
+            navigation.navigate('CargaForm', { mode: 'create' });
           }}
         />
         {dados.length === 0 ? (
@@ -72,12 +63,12 @@ export function Caminhao() {
           dados.map(item => (
             <CarteiraItem
               key={item._id}
-              icon="truck"
-             title={item.caminhaoNome}
-              description={description(item)}
+              icon="weight"
+             title={item.cargaTipo}
+              description={''}
               onPress={() => {
-                navigation.navigate('CaminhaoForm', {
-                  caminhaoId: item._id,
+                navigation.navigate('CargaForm', {
+                  cargaId: item._id,
                   mode: 'edit',
                 });
               }}
@@ -93,8 +84,8 @@ export function Caminhao() {
 
       <ConfirmDialog
         visible={confirmVisible}
-        title="Excluir caminhão"
-        description="Deseja excluir este caminhão? Essa ação não poderá ser desfeita."
+        title="Excluir carga"
+        description="Deseja excluir esta carga? Essa ação não poderá ser desfeita."
         confirmText="Excluir"
         cancelText="Cancelar"
         danger
@@ -104,7 +95,7 @@ export function Caminhao() {
         }}
         onConfirm={() => {
           if (selectedId) {
-            deleteCaminhao(selectedId);
+            deleteCarga(selectedId);
           }
           setConfirmVisible(false);
           setSelectedId(null);
@@ -113,19 +104,19 @@ export function Caminhao() {
 
       <FakeBottomSheet visible={visible} onClose={fechar}>
         <FilterSheet
-          filters={CaminhaoFiltro}
+          filters={CargaFiltro}
           filtroAtual={filters}
           onApply={data => {
             setFilters(data);
             buscarCarteira({
               ...data,
-              caminhaoNome: busca,
+              cargaTipo: busca,
             });
             fechar();
           }}
           onClear={() => {
             clearFilters();
-            buscarCarteira({ caminhaoNome: busca });
+            buscarCarteira({ cargaTipo: busca });
             fechar();
           }}
         />

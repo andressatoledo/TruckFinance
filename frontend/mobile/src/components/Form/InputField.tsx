@@ -62,7 +62,7 @@ function handleChange(text: string) {
         <MaterialCommunityIcons
           name={icon}
           size={20}
-          color={theme.colors.detail}
+          color={theme.colors.primary}
           style={{ marginRight: 8 }}
         />
       )}

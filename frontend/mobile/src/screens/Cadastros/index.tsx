@@ -23,14 +23,14 @@ export function Cadastros() {
         title="Cargas"
         subtitle="Tipos de cargas"
         count={3}
-        routeName='Pedagio'
+        routeName='Carga'
       />
       <CardCadastro
         icon="dump-truck"
         title="Carretas"
         subtitle="Carretas cadastradas"
         count={1}
-         routeName='Pedagio'
+         routeName='Carreta'
       />
       <CardCadastro
         icon="office-building"

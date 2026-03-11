@@ -1,13 +1,15 @@
 // src/services/carretaService.ts
 import { api } from './api';
-import { Carreta } from '../types/carreta';
+import { Carreta } from '../types/Carreta/carreta';
 import { ComboOption } from '../types/combo';
+import CarretaFiltro from '../types/Carreta/carretaFiltro';
 
 const ENDPOINT = '/carretas';
 
 export const CarretaService = {
-  async buscarTodas(): Promise<Carreta[]> {
-    const response = await api.get<Carreta[]>(ENDPOINT);
+
+  async buscarTodas(filtro?: CarretaFiltro): Promise<Carreta[]> {
+    const response = await api.get<Carreta[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

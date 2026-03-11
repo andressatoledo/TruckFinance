@@ -1,14 +1,17 @@
 // src/services/cargaService.ts
 import { api } from './api';
-import { Carga } from '../types/carga';
+import { Carga } from '../types/carga/carga';
+import CargaFiltro from '../types/Carga/cargaFiltro';
 
 const ENDPOINT = '/cargas';
 
 export const CargaService = {
-  async buscarTodas(): Promise<Carga[]> {
-    const response = await api.get<Carga[]>(ENDPOINT);
+  async buscarTodas(filtro?: CargaFiltro): Promise<Carga[]>{
+    const response = await api.get<Carga[]>(ENDPOINT, { params: filtro});
     return response.data;
   },
+
+
 
   async buscarPorId(id: string): Promise<Carga> {
     const response = await api.get<Carga>(`${ENDPOINT}/${id}`);
