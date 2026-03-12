@@ -27,6 +27,10 @@ Assim, o usuário consegue ter **maior controle financeiro e operacional das via
 
 ---
 
+## 💡 Motivação
+
+O TruckFinance surgiu ao observar minha mãe registrando todas as informações das viagens em um caderno. Com o tempo, percebi que consultar dados antigos ou encontrar informações específicas se tornava difícil e demorado. A partir dessa realidade, nasceu a ideia de desenvolver uma aplicação que ajudasse a organizar os custos das viagens de caminhão e tornasse o controle financeiro do transporte rodoviário mais simples, rápido e eficiente.
+
 # 🛠 Tecnologias Utilizadas
 
 O projeto utiliza tecnologias modernas para garantir escalabilidade e facilidade de manutenção.
