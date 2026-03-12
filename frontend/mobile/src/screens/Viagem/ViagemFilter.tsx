@@ -1,6 +1,6 @@
 import { ScrollView, Text, View } from 'react-native';
 import { Controller } from 'react-hook-form';
-import { ViagemStatus } from '../../../shared/types/viagem';
+import { ViagemStatus } from '../../../shared/types/Viagem/viagem';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,8 +10,8 @@ import { SubmitButton } from '../../components/Form/SubmitButton';
 import {Button } from '../../components/Form/Button';
 
 import { useTheme } from '../../theme/themeContext';
-import { useViagemFilter } from '../../hooks/useViagemFilter';
-import ViagemFiltro from '../../../shared/types/viagemFiltro';
+import { useViagemFilter } from '../../hooks/Viagem/useViagemFilter';
+import ViagemFiltro from '../../../shared/types/Viagem/viagemFiltro';
 
 interface Props {
   onClose: () => void;

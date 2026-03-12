@@ -1,7 +1,7 @@
 // src/services/viagem.service.ts
 import { api } from './api';
-import { Viagem, ViagemPayload } from '../types/viagem';
-import ViagemFiltro from '../types/viagemFiltro';
+import { Viagem, ViagemPayload } from '../types/Viagem/viagem';
+import {ViagemFiltro} from '../types/Viagem/viagemFiltro';
 
 const ENDPOINT = '/viagens';
 

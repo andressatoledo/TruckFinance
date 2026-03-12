@@ -9,7 +9,7 @@ import {
 
 import { CarretaService } from '../../../shared/services/carretaService';
 
-import { Mode } from '../../../shared/types/mode';
+import { Mode } from '../../../shared/types/Outros/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';

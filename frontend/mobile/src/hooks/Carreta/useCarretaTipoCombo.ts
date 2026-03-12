@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CarretaTipos } from '../../../shared/types/Carreta/carreta';
+import { CarretaTipos } from '../../../shared/types/Carreta/carretaTipo';
 
 interface ComboOption {
   label: string;

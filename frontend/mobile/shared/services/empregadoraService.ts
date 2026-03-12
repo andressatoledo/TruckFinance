@@ -1,13 +1,14 @@
 // src/services/empregadoraService.ts
 import { api } from './api';
-import { Empregadora } from '../types/empregadora';
-import { ComboOption } from '../types/combo';
+import { Empregadora } from '../types/Empregadora/empregadora';
+import { ComboOption } from '../types/Outros/combo';
+import {EmpregadoraFiltro} from '../types/Empregadora/empregadoraFiltro';
 
 const ENDPOINT = '/empregadoras';
 
 export const EmpregadoraService = {
-  async buscarTodas(): Promise<Empregadora[]> {
-    const response = await api.get<Empregadora[]>(ENDPOINT);
+  async buscarTodas(filtro?: EmpregadoraFiltro): Promise<Empregadora[]> {
+    const response = await api.get<Empregadora[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

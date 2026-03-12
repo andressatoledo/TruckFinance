@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 // import { ViagemFormData } from '../../../shared/schemas/viagem.schema';
-import { ViagemStatus } from '../../../shared/types/viagem';
+import { ViagemStatus } from '../../../shared/types/Viagem/viagem';
 
 import { InputField } from '../../components/Form/InputField';
 import { InputCombo } from '../../components/Form/InputCombo';
@@ -18,7 +18,7 @@ import { Panel } from '../../components/Form/Panel';
 
 import { useTheme } from '../../theme/themeContext';
 import { calcularValorTonelada } from '../../services/calcularValorTonelada';
-import { useViagemForm } from '../../hooks/useViagemForm';
+import { useViagemForm } from '../../hooks/Viagem/useViagemForm';
 import {formatDate} from '../../utils/formatDate' 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ViagemForm'>;

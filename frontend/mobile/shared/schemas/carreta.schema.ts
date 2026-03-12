@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { numberBR } from '../utils/zodHelpers';
-import { CarretaStatusOptions, CarretaTipos } from '../types/Carreta/carreta';
+import { CarretaStatusOptions } from '../types/Carreta/carretaStatus';
+import {CarretaTipos} from '../types/Carreta/carretaTipo';
 
 export const carretaSchema = z.object({
   carretaPlaca: z

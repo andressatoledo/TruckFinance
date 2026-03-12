@@ -1,12 +1,13 @@
 // src/services/rotaService.ts
 import { api } from './api';
-import { Rota } from '../types/rota';
+import { Rota } from '../types/Rota/rota';
+import {RotaFiltro} from '../types/Rota/rotaFiltro';
 
 const ENDPOINT = '/rotas';
 
 export const RotaService = {
-  async buscarTodas(): Promise<Rota[]> {
-    const response = await api.get<Rota[]>(ENDPOINT);
+  async buscarTodas(filtro?: RotaFiltro): Promise<Rota[]> {
+    const response = await api.get<Rota[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

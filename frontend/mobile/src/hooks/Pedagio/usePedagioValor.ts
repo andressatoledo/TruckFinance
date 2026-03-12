@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { PedagioValor } from '../../../shared/types/PedagioValor';
+import { PedagioValor } from '../../../shared/types/Pedagio/pedagioValor';
 import { PedagioValorService } from '../../../shared/services/pedagioValorService';
 import { useScreenMode } from '../../utils/useScreenMode';
-import { Mode } from '../../../shared/types/mode';
+import { Mode } from '../../../shared/types/Outros/mode';
 import { ObjectId } from 'bson';
 import { pedagioValorSchema } from '../../../shared/schemas/pedagioValor.schema';
 

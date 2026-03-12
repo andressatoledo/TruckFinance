@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native';
 
-import { useOptionalTabBarHeight } from '../../hooks/useBottomTabBarHeight';
+import { useOptionalTabBarHeight } from '../../hooks/Outros/useBottomTabBarHeight';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

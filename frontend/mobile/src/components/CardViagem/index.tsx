@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Tag } from '../Tag';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/types';
-import {ViagemStatus } from '../../../shared/types/viagem';
+import {ViagemStatus } from '../../../shared/types/Viagem/viagem';
 import { useStatusColors } from './Tag';
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;

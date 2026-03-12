@@ -1,6 +1,6 @@
 // src/services/viagem.service.ts
 import { api } from './api';
-import { ViagemDocumento } from '../types/viagemDocumento';
+import { ViagemDocumento } from '../types/Viagem/viagemDocumento';
 
 const ENDPOINT = '/viagens-documentos';
 

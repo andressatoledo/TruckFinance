@@ -15,7 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   tipoPagamentoOptions,
   prazoOptions,
-} from '../../../../shared/types/financeiroEnum';
+} from '../../../../shared/types/Outros/financeiroEnum';
 
 type AbastecimentoFormProps = NativeStackScreenProps<
   RootStackParamList,

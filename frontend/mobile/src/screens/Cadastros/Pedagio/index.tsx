@@ -5,17 +5,17 @@ import { CarteiraItem } from '../../../components/Form/CarteiraItem';
 import { FilterSheet } from '../../../components/Filtro/FilterSheet';
 import { FakeBottomSheet } from '../../../components/Form/FakeButtonSheet';
 import { useCarteira } from '../../../hooks/Pedagio/usePedagio';
-import { useFilterSheet } from '../../../hooks/useFilterSheet';
-import { useGenericFilter } from '../../../hooks/useGenericFilter';
+import { useFilterSheet } from '../../../hooks/Filter/useFilterSheet';
+import { useGenericFilter } from '../../../hooks/Filter/useGenericFilter';
 import { PedagioFiltro } from './filtro';
-import type FiltroPedagio from '../../../../shared/types/pedagioFiltro';
+import type FiltroPedagio from '../../../../shared/types/Pedagio/pedagioFiltro';
 import { CarteiraHeader } from '../../../components/Form/CarteiraHeader';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../navigation/types'; // ajuste o path
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Pedagio as TypePedagio } from '../../../../shared/types/pedagio';
+import { Pedagio as TypePedagio } from '../../../../shared/types/Pedagio/pedagio';
 import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
 import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
 function description(item: TypePedagio): string {

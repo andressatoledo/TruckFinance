@@ -1,13 +1,14 @@
 // src/services/rotaVinculadaService.ts
 import { api } from './api';
-import { RotaVinculada } from '../types/rotaVinculada';
-import { ComboOption } from '../types/combo';
+import { RotaVinculada } from '../types/Rota/rotaVinculada';
+import { ComboOption } from '../types/Outros/combo';
+import {RotaVinculadaFiltro} from '../types/Rota/rotaVinculadaFiltro';
 
 const ENDPOINT = '/rotas-vinculadas';
 console.log('api',api);
 export const RotaVinculadaService = {
-  async buscarTodas(): Promise<RotaVinculada[]> {
-    const response = await api.get<RotaVinculada[]>(ENDPOINT);
+  async buscarTodas(filtro?: RotaVinculadaFiltro): Promise<RotaVinculada[]> {
+    const response = await api.get<RotaVinculada[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

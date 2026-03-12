@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { dateField } from '../types/dateField';
+import { dateField } from '../types/Outros/dateField';
 import { numberBR } from '../utils/zodHelpers';
 
 export const caminhaoSchema = z.object({

@@ -1,4 +1,4 @@
-import { ViagemStatus } from '../../../shared/types/Viagem';
+import { ViagemStatus } from '../../../shared/types/Viagem/viagem';
 import { useTheme } from '../../theme/themeContext';
 import { useMemo } from 'react';
 

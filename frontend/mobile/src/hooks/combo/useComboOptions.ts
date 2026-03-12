@@ -1,5 +1,5 @@
 // useComboOptions.ts
-import {  ComboSource } from '../../../shared/types/comboOptions';
+import {  ComboSource } from '../../../shared/types/Outros/comboOptions';
 
 
 

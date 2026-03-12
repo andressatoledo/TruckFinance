@@ -1,7 +1,7 @@
 // src/services/pedagioValorService.ts
 import { api } from './api';
-import { PedagioValor } from '../types/pedagioValor';
-import { PedagioValorFiltro } from '../types/pedagioValorFiltro';
+import { PedagioValor } from '../types/Pedagio/pedagioValor';
+import { PedagioValorFiltro } from '../types/Pedagio/pedagioValorFiltro';
 
 const ENDPOINT = '/pedagio-valores';
 

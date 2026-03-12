@@ -1,4 +1,3 @@
-
 export interface Carga {
 
   _id?: string;             

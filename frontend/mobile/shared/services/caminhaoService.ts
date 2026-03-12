@@ -1,7 +1,7 @@
 // src/services/CaminhaoService.ts
 import { api } from './api';
 import { Caminhao } from '../types/Caminhao/caminhao';
-import { ComboOption } from '../types/combo';
+import { ComboOption } from '../types/Outros/combo';
 import CaminhaoFiltro from '../types/Caminhao/caminhaoFiltro';
 
 const ENDPOINT = '/caminhoes';

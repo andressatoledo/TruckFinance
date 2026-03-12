@@ -14,7 +14,7 @@ import { Mode } from '../../../shared/types/mode';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { useScreenMode } from '../../utils/useScreenMode';
-import { useCaminhaoCombo } from '../useCaminhaoCombo';
+import { useCaminhaoCombo } from '../Caminhao/useCaminhaoCombo';
 import { convertUndefinedToNull } from '../../../shared/utils/convertUndefinedToNull';
 import {mapAbastecimentoToForm} from '../../../shared/mappers/abastecimentoMapper';
 

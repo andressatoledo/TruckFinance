@@ -6,7 +6,7 @@ import { opcoesCalendario } from '../../../shared/types/opcoesCalendario';
 import { Tag } from '../Tag';
 import { Row } from '../Form/Row';
 import { styles } from './styles';
-import { useCalendario } from '../../hooks/useCalendario';
+import { useCalendario } from '../../hooks/Calendario/useCalendario';
 import { ArrowButton } from '../Form/Seta';
 import { CalendarioPersonalizado } from '../CalendarioPersonalizado';
 

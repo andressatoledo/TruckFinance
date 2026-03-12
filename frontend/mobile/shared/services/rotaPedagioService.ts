@@ -1,12 +1,13 @@
 // src/services/rotaPedagioService.ts
 import { api } from './api';
-import { RotaPedagio } from '../types/rotaPedagio';
+import { RotaPedagio } from '../types/Rota/rotaPedagio';
+import {RotaPedagioFiltro} from '../types/Rota/rotaPedagioFiltro';
 
 const ENDPOINT = '/rota-pedagios';
 
 export const RotaPedagioService = {
-  async buscarTodas(): Promise<RotaPedagio[]> {
-    const response = await api.get<RotaPedagio[]>(ENDPOINT);
+  async buscarTodas(filtro?: RotaPedagioFiltro): Promise<RotaPedagio[]> {
+    const response = await api.get<RotaPedagio[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

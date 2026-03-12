@@ -1,7 +1,7 @@
 // src/services/pedagioService.ts
 import { api } from './api';
-import  PedagioFiltro from '../types/pedagioFiltro';
-import { Pedagio} from '../types/pedagio';
+import  {PedagioFiltro} from '../types/Pedagio/pedagioFiltro';
+import { Pedagio} from '../types/Pedagio/pedagio';
 
 
 const ENDPOINT = '/pedagios';

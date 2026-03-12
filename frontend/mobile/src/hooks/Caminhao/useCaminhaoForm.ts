@@ -9,12 +9,12 @@ import {
 
 import { CaminhaoService } from '../../../shared/services/caminhaoService';
 
-import { Mode } from '../../../shared/types/mode';
+import { Mode } from '../../../shared/types/Outros/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { useScreenMode } from '../../utils/useScreenMode';
-import { useEmpregadoraCombo } from '../useEmpregadoraCombo';
+import { useEmpregadoraCombo } from '../Empregadora/useEmpregadoraCombo';
 import { convertUndefinedToNull } from '../../../shared/utils/convertUndefinedToNull';
 import {mapCaminhaoToForm} from '../../../shared/mappers/caminhaoMapper';
 

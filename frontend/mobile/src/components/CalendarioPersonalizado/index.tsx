@@ -3,7 +3,7 @@ import { Calendar } from 'react-native-calendars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ThemeType, useTheme } from '../../theme/themeContext';
 import { styles } from './styles';
-import { useCalendarioPersonalizado } from '../../hooks/useCalendarioPersonalizado';
+import { useCalendarioPersonalizado } from '../../hooks/Calendario/useCalendarioPersonalizado';
 
 interface Props {
   dataInicio: Date | null;

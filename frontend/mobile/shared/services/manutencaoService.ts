@@ -1,12 +1,13 @@
 // src/services/manutencaoService.ts
 import { api } from './api';
-import { Manutencao } from '../types/manutencao';
+import { Manutencao } from '../types/Manutencao/manutencao';
+import {ManutencaoFiltro} from '../types/Manutencao/manutencaoFiltro';
 
 const ENDPOINT = '/manutencoes';
 
 export const ManutencaoService = {
-  async buscarTodas(): Promise<Manutencao[]> {
-    const response = await api.get<Manutencao[]>(ENDPOINT);
+  async buscarTodas(filtro?: ManutencaoFiltro): Promise<Manutencao[]> {
+    const response = await api.get<Manutencao[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

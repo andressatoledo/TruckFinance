@@ -1,7 +1,7 @@
 // src/services/carretaService.ts
 import { api } from './api';
 import { Carreta } from '../types/Carreta/carreta';
-import { ComboOption } from '../types/combo';
+import { ComboOption } from '../types/Outros/combo';
 import CarretaFiltro from '../types/Carreta/carretaFiltro';
 
 const ENDPOINT = '/carretas';

@@ -1,11 +1,6 @@
 import mongoose, { Schema }  from 'mongoose';
 
 const empregadoraSchema = new Schema({
-  // empregadoraId: {
-  //   type: Schema.Types.ObjectId,
-  //   auto: true
-  // },
-
   empregadoraNome: {
     type: String
   },

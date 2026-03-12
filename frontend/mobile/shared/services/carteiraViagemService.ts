@@ -1,8 +1,8 @@
 import { ViagemService } from './viagemService';
 import { AbastecimentoService } from './abastecimentoService';
-import { Viagem } from '../types/viagem';
-import { CarteiraViagem } from '../types/carteiraViagem';
-import ViagemFiltro  from '../types/viagemFiltro';
+import { Viagem } from '../types/Viagem/viagem';
+import { CarteiraViagem } from '../types/Viagem/carteiraViagem';
+import ViagemFiltro  from '../types/Viagem/viagemFiltro';
 import { AbastecimentoFiltro } from '../types/Abastecimento/abastecimentoFiltro';
 
 function extrairData(data?: string | Date) {

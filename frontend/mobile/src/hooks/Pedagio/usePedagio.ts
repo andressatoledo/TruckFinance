@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { PedagioService } from '../../../shared/services/pedagioService';
-import  PedagioFiltro from '../../../shared/types/pedagioFiltro';
-import  {Pedagio} from '../../../shared/types/pedagio';
+import  PedagioFiltro from '../../../shared/types/Pedagio/pedagioFiltro';
+import  {Pedagio} from '../../../shared/types/Pedagio/pedagio';
 
 export function useCarteira() {
   const [dados, setDados] = useState<Pedagio[]>([]);

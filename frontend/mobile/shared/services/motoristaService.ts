@@ -1,12 +1,13 @@
 import { api } from './api';
-import { Motorista } from '../types/motorista';
-import { ComboOption } from '../types/combo';
+import { Motorista } from '../types/Motorista/motorista';
+import { ComboOption } from '../types/Outros/combo';
+import {MotoristaFiltro} from '../types/Motorista/motoristaFiltro';
 
 const ENDPOINT = '/motoristas';
 
 export const MotoristaService = {
-  async buscarTodas(): Promise<Motorista[]> {
-    const response = await api.get<Motorista[]>(ENDPOINT);
+  async buscarTodas(filtro?: MotoristaFiltro): Promise<Motorista[]> {
+    const response = await api.get<Motorista[]>(ENDPOINT, { params: filtro });
     return response.data;
   },
 

@@ -9,7 +9,7 @@ import { usePedagioForm } from '../../../hooks/Pedagio/usePedagioForm';
 import { safeValue } from '../../../utils/safeValue';
 import { View } from 'react-native';
 import { Grid } from '../../../components/Grid/Grid';
-import { PedagioValor } from '../../../../shared/types/PedagioValor';
+import { PedagioValor } from '../../../../shared/types/Pedagio/pedagioValor';
 import { usePedagioValores } from '../../../hooks/Pedagio/usePedagioValor';
 import { Divider } from '../../../components/Divider';
 import { PedagioFormData } from '../../../../shared/schemas/pedagio.schema';

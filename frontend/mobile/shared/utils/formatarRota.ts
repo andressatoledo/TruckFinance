@@ -1,4 +1,4 @@
-import { Viagem } from '../../shared/types/Viagem';
+import { Viagem } from '../types/Viagem/viagem';
 
 export function formatarRota(viagem: Viagem) {
   // ajuste conforme seu backend

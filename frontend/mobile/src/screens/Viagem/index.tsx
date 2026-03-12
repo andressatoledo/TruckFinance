@@ -8,8 +8,8 @@ import { layout } from '../../styles/layout';
 import { useTheme } from '../../theme/themeContext';
 import { CardViagem } from '../../components/CardViagem';
 import { CarteiraViagemService } from '../../../shared/services/carteiraViagemService';
-import type { CarteiraViagem } from '../../../shared/types/carteiraViagem';
-import type ViagemFiltro from '../../../shared/types/viagemFiltro';
+import type { CarteiraViagem } from '../../../shared/types/Viagem/carteiraViagem';
+import type ViagemFiltro from '../../../shared/types/Viagem/viagemFiltro';
 
 import { formatarData } from '../../../shared/utils/formatarData';
 import { formatarRota } from '../../../shared/utils/formatarRota';
@@ -17,7 +17,7 @@ import { formatarValor } from '../../../shared/utils/formatarValor';
 
 import { Calendario } from '../../components/Calendario';
 import { FakeBottomSheet } from '../../components/Form/FakeButtonSheet';
-import { useFilterSheet } from '../../hooks/useFilterSheet';
+import { useFilterSheet } from '../../hooks/Filter/useFilterSheet';
 import { Button } from '../../components/Form/Button';
 import { ViagemFilter } from './ViagemFilter';
 

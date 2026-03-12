@@ -1,4 +1,4 @@
-import { comboOptions } from '../../../shared/types/comboOptions';
+import { comboOptions } from '../../../shared/types/Outros/comboOptions';
 
 export const comboConfig = {
   caminhao: {
@@ -16,5 +16,21 @@ export const comboConfig = {
   carretaTipo: {
     hook: comboOptions.carretaTipo,
     optionsKey: 'optionsCarretaTipos',
+  },
+  empregadoraStatus: {
+    hook: comboOptions.empregadoraStatus,
+    optionsKey: 'optionsEmpregadoraStatus',
+  },
+  manutencaoTipo: {
+    hook: comboOptions.manutencaoTipo,
+    optionsKey: 'optionsManutencaoTipos',
+  },
+  manutencaoCategoria: {
+    hook: comboOptions.manutencaoCategoria,
+    optionsKey: 'optionsManutencaoCategorias',
+  },
+  empregadoraPrazoPagamento: {
+    hook: comboOptions.empregadoraPrazoPagamento,
+    optionsKey: 'optionsEmpregadoraPrazoPagamentos',
   },
 };

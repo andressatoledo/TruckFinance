@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Pedagio } from '../../../shared/types/Pedagio';
+import { Pedagio } from '../../../shared/types/Pedagio/pedagio';
 import {
   pedagioSchema,
   PedagioFormData,
@@ -10,7 +10,7 @@ import {
 
 import { PedagioService } from '../../../shared/services/pedagioService';
 
-import { Mode } from '../../../shared/types/mode';
+import { Mode } from '../../../shared/types/Outros/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
@@ -18,7 +18,7 @@ import { RootStackParamList } from '../../navigation/types';
 import { useScreenMode } from '../../utils/useScreenMode';
 
 import {PedagioValorService} from '../../../shared/services/pedagioValorService'
-import {PedagioValor} from '../../../shared/types/PedagioValor'
+import {PedagioValor} from '../../../shared/types/Pedagio/pedagioValor'
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 function mapPedagioToForm(pedagio: Pedagio): PedagioFormData {
