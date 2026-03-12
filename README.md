@@ -1,6 +1,6 @@
 # 🚛 TruckFinance
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Status](https://img.shields.io/badge/Status-Em%20desenvolvimento-yellow)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 O **TruckFinance** é um aplicativo de gestão financeira desenvolvido para auxiliar caminhoneiros no controle de **viagens, fretes, despesas e lucros**.
