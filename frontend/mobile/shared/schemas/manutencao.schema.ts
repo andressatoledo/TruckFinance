@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { numberBR } from '../utils/zodHelpers';
+import { numberBR, File } from '../utils/zodHelpers';
 import { ManutencaoTipoOptions } from '../types/Manutencao/manutencaoTipo';
 import { ManutencaoCategoriaOptions } from '../types/Manutencao/manutencaoCategoria';
 import { dateField } from '../types/Outros/dateField';
@@ -34,7 +34,7 @@ export const manutencaoSchema = z
       'KM é obrigatório',
       0.01,
       'KM deve ser maior ou igual a 0',
-    ),
+    ).optional(),
 
     manutencaoValor: numberBR(
         'Valor inválido',
@@ -46,28 +46,34 @@ export const manutencaoSchema = z
     'Km inválido',
     0,
     'Km deve ser maior ou igual a 0',
-  ),
+  ).optional(),
 
     manutencaoProximaData: dateField(
         'Data da próxima manutenção',
         'obrigatória'
       ).nullable().optional(),
 
-    caminhaoId: z.string().optional(),
+    caminhaoId: z.preprocess(
+  (val) => (val === null ? undefined : val),
+      z.string().optional().transform(val => val?.trim())
+    ),
 
-    carretaId: z.string().optional(),
+    carretaId: z.preprocess(
+  (val) => (val === null ? undefined : val),
+      z.string().optional().transform(val => val?.trim())
+    ),
 
-    manutencaoLocal: z
-      .string()
-      .optional()
-      .transform(val => val?.trim()),
+      manutencaoLocal: z.preprocess(
+  (val) => (val === null ? undefined : val),
+      z.string().optional().transform(val => val?.trim())
+    ),
 
     manutencaoObservacao: z.preprocess(
   (val) => (val === null ? undefined : val),
       z.string().optional().transform(val => val?.trim())
     ),
 
-    manutencaoDocumentos: z.array(z.string()).optional(),
+    manutencaoDocumentos: z.array(File()).default([]),
   })
   .superRefine((data, ctx) => {
     if (!data.caminhaoId && !data.carretaId) {

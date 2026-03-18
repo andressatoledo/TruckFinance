@@ -11,6 +11,12 @@ import {ManutencaoTipoOptions} from '../../../../shared/types/Manutencao/manuten
 import { ManutencaoCategoriaOptions } from '../../../../shared/types/Manutencao/manutencaoCategoria';
 import { DateField } from '../../../components/Form/InputDate';
 
+//Upload
+// import {FileViewer} from '../../../components/Upload/FileViewer';
+// import { Upload } from '../../../components/Upload/Upload';
+// import { View } from 'react-native';
+// import { StoredFile } from '../../../../shared/types/Upload/upload';
+
 type ManutencaoFormProps = NativeStackScreenProps<
   RootStackParamList,
   'ManutencaoForm'
@@ -36,6 +42,8 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
   };
 
   return (
+
+    <>
     <Form>
       
 
@@ -90,6 +98,7 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
        <Controller
         control={control}
         name="caminhaoId"
+        
         render={({ field }) => (
           <InputCombo
             label="Caminhão"
@@ -98,6 +107,8 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
             loading={loadingCaminhoes}
             onChange={field.onChange}
             error={errors.caminhaoId?.message}
+            
+
           />
         )}
       />
@@ -124,6 +135,7 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
           <InputField
             label="Valor (R$)"
             keyboardType="numeric"
+            placeholder='Valor da manutenção com serviço embutido'
             value={field.value?.toString() ?? ''}
             onChangeText={field.onChange}
             editable={!screen.readOnly}
@@ -132,35 +144,6 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
         )}
       />
 
-
-      {/* <Controller
-        control={control}
-        name="manutencaoData"
-        render={({ field }) => (
-          <>
-            <InputField
-              label="Data da manutenção"
-              icon="calendar"
-              value={formatDate(field.value)}
-              editable={false}
-              placeholder="Selecione a data"
-              onPress={() => !screen.readOnly && setShowDateManutencao(true)}
-              error={errors.manutencaoData?.message}
-            />
-
-            {showDateManutencao && (
-              <DateTimePicker
-                value={field.value ? new Date(field.value) : new Date()}
-                mode="date"
-                onChange={(_, d) => {
-                  setShowDateManutencao(false);
-                  if (d) field.onChange(d);
-                }}
-              />
-            )}
-          </>
-        )}
-      /> */}
 
 
       <DateField
@@ -186,34 +169,7 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
         )}
       />
 
-      {/* <Controller
-        control={control}
-        name="manutencaoProximaData"
-        render={({ field }) => (
-          <>
-            <InputField
-              label="Próxima data de manutenção"
-              icon="calendar"
-              value={formatDate(field.value)}
-              editable={false}
-              placeholder="Selecione a data"
-              onPress={() => !screen.readOnly && setShowDateProxima(true)}
-              error={errors.manutencaoProximaData?.message}
-            />
-
-            {showDateProxima && (
-              <DateTimePicker
-                value={field.value ? new Date(field.value) : new Date()}
-                mode="date"
-                onChange={(_, d) => {
-                  setShowDateProxima(false);
-                  if (d) field.onChange(d);
-                }}
-              />
-            )}
-          </>
-        )}
-      /> */}
+      
       <DateField
         name="manutencaoProximaData"
         label="Próxima data de manutenção"
@@ -277,6 +233,7 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
      
       )} */}
 
+      
       {!screen.isView && (
               <Button
                 label={mode === 'create' ? 'Salvar' : 'Atualizar'}
@@ -293,5 +250,33 @@ export function ManutencaoForm({ route, navigation }: ManutencaoFormProps) {
               />
             )}
     </Form>
+            {/* <Controller
+  control={control}
+  name="manutencaoDocumentos"
+  render={({ field }) => {
+    const files = field.value ?? [];
+
+    return (
+      <View>
+        <Upload
+          onUploaded={(file: StoredFile) => {
+            field.onChange([...files, file]);
+          }}
+        />
+
+        <FileViewer
+          files={files}
+          onRemove={(file: StoredFile) => {
+            field.onChange(
+              files.filter(f => f.url !== file.url)
+            );
+          }}
+        />
+      </View>
+    );
+  }}
+/> */}
+
+    </>
   );
 }

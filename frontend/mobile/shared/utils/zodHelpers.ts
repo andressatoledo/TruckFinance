@@ -1,13 +1,14 @@
 import { z } from 'zod';
+
 export function numberBR(
   requiredMessage: string,
   minValue?: number,
-  minMessage?: string
+  minMessage?: string,
 ) {
   return z.preprocess(
-    (value) => {
+    value => {
       if (value === '' || value === null || value === undefined) {
-        return undefined; 
+        return undefined;
       }
 
       if (typeof value === 'string') {
@@ -26,12 +27,15 @@ export function numberBR(
       return value;
     },
     z
-      .number({
-        required_error: requiredMessage,
-        invalid_type_error: 'Informe um número válido',
-      })
+      .union([
+        z.number({
+          required_error: requiredMessage,
+          invalid_type_error: 'Informe um número válido',
+        }),
+        z.undefined(),
+      ])
       .refine(
-        (val) =>
+        val =>
           val === undefined ||
           (minValue !== undefined ? val >= minValue : true),
         {
@@ -39,8 +43,20 @@ export function numberBR(
             minValue !== undefined
               ? minMessage ?? `Deve ser maior ou igual a ${minValue}`
               : '',
-        }
-      )
-      .optional() 
+        },
+      ),
   );
+}
+
+export function File() {
+  const fileSchema = z.object({
+    uri: z.string().optional(),
+    url: z.string().optional(),
+    nome: z.string(),
+    tipo: z.string(),
+    tamanho: z.number().optional(),
+    dataUpload: z.date().optional(),
+  });
+
+  return fileSchema;
 }

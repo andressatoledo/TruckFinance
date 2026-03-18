@@ -56,8 +56,8 @@ function title(item: TypeManutencao): string {
 
 
   if (item.caminhaoId && item.carretaId){
-    if (item.caminhaoId.caminhaoNome && item.carretaId.carretaNome) {
-          return `${item.manutencaoDescricao} • ${item.caminhaoId.caminhaoNome} - ${item.carretaId.carretaNome}`;
+    if (item.caminhaoId.caminhaoNome && item.carretaId.carretaTipo) {
+          return `${item.manutencaoDescricao} • ${item.caminhaoId.caminhaoNome} • ${item.carretaId.carretaTipo}`;
     }
   }
 
@@ -68,7 +68,7 @@ function title(item: TypeManutencao): string {
   }
 
   if (item.carretaId) {
-    return `${item.manutencaoDescricao} • ${item.carretaId.carretaNome} - ${item.carretaId.carretaPlaca}`;
+    return `${item.manutencaoDescricao} • ${item.carretaId.carretaTipo} - ${item.carretaId.carretaPlaca}`;
   }
 
   return `${item.manutencaoDescricao}`

@@ -10,6 +10,8 @@ import { Button } from '../Form/Button';
 import { useTheme } from '../../theme/themeContext';
 // import {Form} from '../Form/Form'
 
+import { useEffect } from 'react';
+
 interface FilterSheetProps {
   filters: FilterFieldConfig[];
   filtroAtual: Record<string, any>;
@@ -34,10 +36,23 @@ export function FilterSheet({
     onApply(data);
   }
 
-  function limpar() {
-    reset({});
-    onClear();
-  }
+//   function limpar() {
+//   const vazio = {};
+//   reset(vazio);
+//   onClear();
+// }
+function limpar() {
+  const valoresLimpos = Object.fromEntries(
+    filters.map(f => [f.key, ''])
+  );
+
+  reset(valoresLimpos);
+  onClear();
+}
+
+useEffect(() => {
+  reset(filtroAtual);
+}, [filtroAtual, reset]);
 
   return (
    

@@ -75,10 +75,9 @@ export function FilterField({ field, value, onChange }: Props) {
             icon={field.icon}
             placeholder={field.placeholder}
             keyboardType="numeric"
-            value={String(value || '')}
-            onChangeText={v => {
-              if (v === '') onChange(undefined);
-              else onChange(Number(v));
+            value={value ?? ''}
+            onChangeText={(v) => {
+              onChange(v); 
             }}
           />
         </View>

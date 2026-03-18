@@ -10,7 +10,7 @@ type Caminhao = {
 
 type Carreta = {
   _id: string;
-  carretaNome: string;
+  carretaTipo: string;
   carretaPlaca: string;
 };
 

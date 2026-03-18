@@ -2,13 +2,6 @@ import { FilterFieldConfig } from '../../../components/Filtro/types';
 
 export const ManutencaoFiltro: FilterFieldConfig[] = [
   {
-    key: 'manutencaoDescricao',
-    label: 'Descrição',
-    type: 'text',
-    placeholder: 'Filtrar por descrição',
-  },
-
-  {
     key: 'manutencaoValorMin',
     label: 'Valor (mínimo)',
     type: 'number',

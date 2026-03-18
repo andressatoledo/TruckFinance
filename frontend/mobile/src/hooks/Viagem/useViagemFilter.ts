@@ -10,7 +10,7 @@ import { useCaminhaoCombo } from '../Caminhao/useCaminhaoCombo';
 import { useEmpregadoraCombo } from '../Empregadora/useEmpregadoraCombo';
 import { useRotaVinculadaCombo } from '../RotaVinculada/useRotaVinculadaCombo';
 
-import {ViagemFiltro} from '../../../shared/types/Viagem/viagemFiltro';
+import ViagemFiltro from '../../../shared/types/Viagem/viagemFiltro';
 import {
   viagemFiltroSchema,
   ViagemFiltroData,

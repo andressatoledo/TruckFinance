@@ -19,7 +19,7 @@ async function buscarManutencoes(req: Request, res: Response) {
   try {
     const filtro = montarFiltroManutencao(req.query); 
 
-    const manutencoes = await Manutencao.find(filtro).populate('caminhaoId', 'caminhaoNome caminhaoPlaca').populate('carretaId', 'carretaNome carretaPlaca');  
+    const manutencoes = await Manutencao.find(filtro).populate('caminhaoId', 'caminhaoNome caminhaoPlaca').populate('carretaId', 'carretaTipo carretaPlaca');  
 
 
     res.status(200).json(manutencoes); 

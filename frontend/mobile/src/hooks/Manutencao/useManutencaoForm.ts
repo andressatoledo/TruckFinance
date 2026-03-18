@@ -6,7 +6,6 @@ import {
   manutencaoSchema,
   ManutencaoFormData,
 } from '../../../shared/schemas/manutencao.schema';
-
 import { ManutencaoService } from '../../../shared/services/manutencaoService';
 
 import { Mode } from '../../../shared/types/Outros/mode';
@@ -45,6 +44,7 @@ export function useManutencaoForm(
       manutencaoObservacao: '',
       manutencaoData: null,
       manutencaoProximaData: null,
+      manutencaoDocumentos: [], 
       // manutencaoProximoKm: 0,
     },
     shouldUnregister: false,
@@ -58,25 +58,62 @@ export function useManutencaoForm(
     formState: { errors },
   } = form;
   
-  const saveAll = async (data: ManutencaoFormData) => {
-    setLoading(true);
-    try {
-      const dataTratada = convertUndefinedToNull(data);
-      if (isCreate) {
-       await ManutencaoService.criar(dataTratada);
+  // const saveAll = async (data: ManutencaoFormData) => {
+  //   setLoading(true);
+  //   try {
+  //     const dataTratada = convertUndefinedToNull(data);
+  //     if (isCreate) {
+  //      await ManutencaoService.criar(dataTratada);
        
 
-      } else if (manutencaoId) {
-        await ManutencaoService.atualizar(manutencaoId, dataTratada);
+  //     } else if (manutencaoId) {
+  //       await ManutencaoService.atualizar(manutencaoId, dataTratada);
+  //     }
+
+  //     navigation?.goBack();
+  //   } catch (error) {
+  //     console.error("Erro no salvamento unificado:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const saveAll = async (data: ManutencaoFormData) => {
+  setLoading(true);
+
+  try {
+    const documentosTratados = data.manutencaoDocumentos?.map(file => {
+      if (!file.url) {
+        throw new Error('Arquivo ainda não foi enviado');
       }
 
-      navigation?.goBack();
-    } catch (error) {
-      console.error("Erro no salvamento unificado:", error);
-    } finally {
-      setLoading(false);
+      return {
+        nome: file.nome,
+        tipo: file.tipo,
+        tamanho: file.tamanho,
+        url: file.url,
+        dataUpload: file.dataUpload ?? new Date(),
+      };
+    });
+
+    const dataTratada = convertUndefinedToNull({
+      ...data,
+      manutencaoDocumentos: documentosTratados,
+    });
+
+    if (isCreate) {
+      await ManutencaoService.criar(dataTratada);
+    } else if (manutencaoId) {
+      await ManutencaoService.atualizar(manutencaoId, dataTratada);
     }
-  };
+
+    navigation?.goBack();
+  } catch (error) {
+    console.error('Erro no salvamento:', error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
   if (!manutencaoId || isCreate) return;

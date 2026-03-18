@@ -18,15 +18,22 @@ export function mapManutencaoToForm(
 
     manutencaoProximaData:manutencao.manutencaoProximaData
       ? new Date(manutencao.manutencaoProximaData)
-      : undefined,
+      : null, //undefined antes
 
-    caminhaoId: manutencao.caminhaoId,
-    carretaId: manutencao.carretaId,
+    caminhaoId: manutencao.caminhaoId?._id ?? '',
+    carretaId: manutencao.carretaId?._id ?? '',
     manutencaoLocal: manutencao.manutencaoLocal,
     manutencaoObservacao: manutencao.manutencaoObservacao,
 
-    manutencaoDocumentos: manutencao.manutencaoDocumentos?.map(
-      doc => doc.url
-    )
+   manutencaoDocumentos:
+      manutencao.manutencaoDocumentos?.map((doc) => ({
+        nome: doc.nome,
+        tipo: doc.tipo,
+        tamanho: doc.tamanho,
+        url: doc.url,
+        uri: undefined, 
+        dataUpload: doc.dataUpload,
+      })) ?? [],
+    
   };
 }
