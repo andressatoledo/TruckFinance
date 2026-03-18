@@ -3,12 +3,10 @@ import mongoose, { Schema } from 'mongoose';
 const manutencaoDocumentoSchema = new Schema(
   {
     nome: {
-      type: String,
-      required: true,
+      type: String
     },
     url: {
-      type: String,
-      required: true,
+      type: String
     },
     tipo: {
       type: String,
@@ -28,28 +26,22 @@ const manutencaoSchema = new Schema(
   {
     manutencaoDescricao: {
       type: String,
-      required: true,
-      trim: true,
     },
 
     manutencaoTipo: {
       type: String,
-      required: true,
     },
 
     manutencaoCategoria: {
       type: String,
-      required: true,
     },
 
     manutencaoData: {
       type: Date,
-      required: true,
     },
 
     manutencaoKm: {
       type: Number,
-      required: true,
     },
 
     manutencaoValor: {
@@ -76,12 +68,10 @@ const manutencaoSchema = new Schema(
 
     manutencaoLocal: {
       type: String,
-      trim: true,
     },
 
     manutencaoObservacao: {
       type: String,
-      trim: true,
     },
 
     manutencaoDocumentos: [manutencaoDocumentoSchema],

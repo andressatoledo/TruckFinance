@@ -1,4 +1,4 @@
-export interface ViagemFiltro {
+export default interface ViagemFiltro {
   dataInicio?: Date;
   dataFim?: Date;
   status?: string;

@@ -27,6 +27,14 @@ import {CargaForm} from '../screens/Cadastros/Cargas/CargaForm';
 import { Carreta } from '../screens/Cadastros/Carreta';
 import {CarretaForm} from '../screens/Cadastros/Carreta/CarretaForm';
 
+//Empregadora
+import { Empregadora } from '../screens/Cadastros/Empregadora';
+import {EmpregadoraForm} from '../screens/Cadastros/Empregadora/EmpregadoraForm';
+
+//Manutenção
+import { Manutencao } from '../screens/Cadastros/Manutencao';
+import { ManutencaoForm } from '../screens/Cadastros/Manutencao/ManutencaoForm';
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -178,6 +186,58 @@ export function AppStack() {
         name="CarretaForm"
         component={CarretaForm}
         options={{ title: 'Carreta', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="Empregadora"
+        component={Empregadora}
+        options={{ title: 'Empregadora', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="EmpregadoraForm"
+        component={EmpregadoraForm}
+        options={{ title: 'Empregadora', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="Manutencao"
+        component={Manutencao}
+        options={{ title: 'Manutenção', headerStyle: {
+            backgroundColor: theme.colors.backgroundCard
+          },
+          headerShadowVisible:false,
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },}}
+      />
+
+      <Stack.Screen
+        name="ManutencaoForm"
+        component={ManutencaoForm}
+        options={{ title: 'Manutenção', headerStyle: {
             backgroundColor: theme.colors.backgroundCard
           },
           headerShadowVisible:false,

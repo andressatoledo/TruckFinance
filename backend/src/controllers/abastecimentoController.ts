@@ -19,7 +19,9 @@ async function buscarAbastecimentos(req: Request, res: Response) {
   
    try {
     const filtro = montarFiltroAbastecimento(req.query);
-    const abastecimentos = await Abastecimento.find(filtro);
+    const abastecimentos = await Abastecimento.find(filtro).populate('caminhaoId', 'caminhaoNome caminhaoPlaca');
+
+    console.log('Abastecimentos encontrados:', abastecimentos);
     return res.status(200).json(abastecimentos);
   } catch (error) {
     const errorMessage =

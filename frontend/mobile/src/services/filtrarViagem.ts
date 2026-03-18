@@ -1,4 +1,4 @@
-import { opcoesCalendario } from '../../shared/types/opcoesCalendario';
+import { opcoesCalendario } from '../../shared/types/Outros/opcoesCalendario';
 import { capitalize } from '../../shared/utils/capitalize';
 export interface calendarioProps {
   opcao: opcoesCalendario;

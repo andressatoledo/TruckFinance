@@ -2,6 +2,19 @@ import { ManutencaoTipo } from './manutencaoTipo';
 import { ManutencaoCategoria } from './manutencaoCategoria';
 import { ManutencaoDocumento } from './manutencaoDocumento';
 
+type Caminhao = {
+  _id: string;
+  caminhaoNome: string;
+  caminhaoPlaca: string;
+};
+
+type Carreta = {
+  _id: string;
+  carretaNome: string;
+  carretaPlaca: string;
+};
+
+
 export interface Manutencao {
   _id?: string;
   manutencaoDescricao: string;
@@ -12,8 +25,8 @@ export interface Manutencao {
   manutencaoValor?: number;
   manutencaoProximoKm?: number;
   manutencaoProximaData?: string | Date;
-  caminhaoId?: string;
-  carretaId?: string;
+  caminhaoId?: Caminhao;
+  carretaId?: Carreta;
   manutencaoLocal?: string;
   manutencaoObservacao?: string;
    manutencaoDocumentos?: ManutencaoDocumento[];

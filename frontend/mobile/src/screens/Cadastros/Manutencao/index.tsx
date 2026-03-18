@@ -4,46 +4,91 @@ import { Carteira } from '../../../components/Form/Carteira';
 import { CarteiraItem } from '../../../components/Form/CarteiraItem';
 import { FilterSheet } from '../../../components/Filtro/FilterSheet';
 import { FakeBottomSheet } from '../../../components/Form/FakeButtonSheet';
-import { useCarteira } from '../../../hooks/Abastecimento/useAbastecimento';
+import { useCarteira } from '../../../hooks/Manutencao/useManutencao';
 import { useFilterSheet } from '../../../hooks/Filter/useFilterSheet';
 import { useGenericFilter } from '../../../hooks/Filter/useGenericFilter';
-import { AbastecimentoFiltro } from './filtro';
-import type FiltroAbastecimento  from '../../../../shared/types/Abastecimento/abastecimentoFiltro';
+import { ManutencaoFiltro } from './filtro';
+import type FiltroManutencao  from '../../../../shared/types/Manutencao/manutencaoFiltro';
 import { CarteiraHeader } from '../../../components/Form/CarteiraHeader';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../navigation/types'; // ajuste o path
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Abastecimento as TypeAbastecimento } from '../../../../shared/types/Abastecimento/abastecimento';
+import { Manutencao as TypeManutencao } from '../../../../shared/types/Manutencao/manutencao';
 import { EmptyCarteira } from '../../../components/Feedback/EmptyCarteira';
 import { ConfirmDialog } from '../../../components/Feedback/ConfirmDialog';
 import { formatarData } from '../../../../shared/utils/formatarData';
 import { formatarValor } from '../../../../shared/utils/formatarValor';
 
-function description(item: TypeAbastecimento): string {
-  if (item.caminhaoId && item.abastecimentoLitros && item.abastecimentoValor ) {
-    return `${item.caminhaoId.caminhaoNome} - ${item.caminhaoId.caminhaoPlaca} • ${item.abastecimentoLitros} L • ${formatarValor(item.abastecimentoValor)}`;
+
+function description(item: TypeManutencao): string {
+  if (item.manutencaoCategoria && item.manutencaoData && item.manutencaoValor ) {
+    return `${item.manutencaoCategoria} • ${formatarData(item.manutencaoData)} • ${formatarValor(item.manutencaoValor)}`;
+  }
+
+  if (item.manutencaoCategoria && item.manutencaoData ) {
+    return `${item.manutencaoCategoria} • ${formatarData(item.manutencaoData)} `;
+  }
+
+  if (item.manutencaoCategoria  && item.manutencaoValor ) {
+    return `${item.manutencaoCategoria} • ${formatarValor(item.manutencaoValor)}`;
+  }
+
+  if (item.manutencaoData && item.manutencaoValor ) {
+    return `${formatarData(item.manutencaoData)} • ${formatarValor(item.manutencaoValor)}`;
+  }
+
+  if (item.manutencaoCategoria) {
+    return `${item.manutencaoCategoria} `;
+  }
+  if (item.manutencaoData) {
+    return `${formatarData(item.manutencaoData)} `;
+  }
+    if (item.manutencaoValor) {
+    return `${formatarValor(item.manutencaoValor)}`;
   }
 
   return ''
 }
 
+function title(item: TypeManutencao): string {
 
-export function Abastecimento() {
-  type AbastecimentoNavigationProp = NativeStackNavigationProp<
+
+  if (item.caminhaoId && item.carretaId){
+    if (item.caminhaoId.caminhaoNome && item.carretaId.carretaNome) {
+          return `${item.manutencaoDescricao} • ${item.caminhaoId.caminhaoNome} - ${item.carretaId.carretaNome}`;
+    }
+  }
+
+  if(item.caminhaoId){
+    if (item.caminhaoId.caminhaoNome && item.caminhaoId.caminhaoPlaca) {
+      return `${item.manutencaoDescricao} • ${item.caminhaoId.caminhaoNome} - ${item.caminhaoId.caminhaoPlaca}`;
+    }
+  }
+
+  if (item.carretaId) {
+    return `${item.manutencaoDescricao} • ${item.carretaId.carretaNome} - ${item.carretaId.carretaPlaca}`;
+  }
+
+  return `${item.manutencaoDescricao}`
+}
+
+
+export function Manutencao() {
+  type ManutencaoNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
-    'Abastecimento'
+    'Manutencao'
   >;
 
-  const navigation = useNavigation<AbastecimentoNavigationProp>();
+  const navigation = useNavigation<ManutencaoNavigationProp>();
   const { visible, abrir, fechar } = useFilterSheet();
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { filters, setFilters, clearFilters } =
-    useGenericFilter<FiltroAbastecimento>();
+    useGenericFilter<FiltroManutencao>();
 
-  const { dados, buscarCarteira, deleteAbastecimento } = useCarteira();
+  const { dados, buscarCarteira, deleteManutencao } = useCarteira();
 
   const [busca, setBusca] = useState('');
 
@@ -51,21 +96,21 @@ export function Abastecimento() {
     useCallback(() => {
       buscarCarteira({
         ...filters,
-        abastecimentoObservacao: busca,
+        manutencaoDescricao: busca,
       });
     }, [buscarCarteira, filters, busca]),
   );
 
   return (
     <View style={{ flex: 1 }}>
-      <Carteira title="Abastecimento">
+      <Carteira title="Manutencao">
         <CarteiraHeader
-          placeholder="Buscar abastecimento..."
+          placeholder="Buscar manutenção..."
           searchValue={busca}
           onSearchChange={setBusca}
           onFilterPress={abrir}
           onAddPress={() => {
-            navigation.navigate('AbastecimentoForm', { mode: 'create' });
+            navigation.navigate('ManutencaoForm', { mode: 'create' });
           }}
         />
         {dados.length === 0 ? (
@@ -74,12 +119,12 @@ export function Abastecimento() {
           dados.map(item => (
             <CarteiraItem
               key={item._id}
-              icon="fuel"
-             title={formatarData(item.abastecimentoData)}
+              icon="wrench"
+             title={title(item)}
               description={description(item)}
               onPress={() => {
-                navigation.navigate('AbastecimentoForm', {
-                  abastecimentoId: item._id,
+                navigation.navigate('ManutencaoForm', {
+                  manutencaoId: item._id,
                   mode: 'edit',
                 });
               }}
@@ -95,8 +140,8 @@ export function Abastecimento() {
 
       <ConfirmDialog
         visible={confirmVisible}
-        title="Excluir abastecimento"
-        description="Deseja excluir este abastecimento? Essa ação não poderá ser desfeita."
+        title="Excluir manutenção"
+        description="Deseja excluir esta manutenção? Essa ação não poderá ser desfeita."
         confirmText="Excluir"
         cancelText="Cancelar"
         danger
@@ -106,7 +151,7 @@ export function Abastecimento() {
         }}
         onConfirm={() => {
           if (selectedId) {
-            deleteAbastecimento(selectedId);
+            deleteManutencao(selectedId);
           }
           setConfirmVisible(false);
           setSelectedId(null);
@@ -115,19 +160,19 @@ export function Abastecimento() {
 
       <FakeBottomSheet visible={visible} onClose={fechar}>
         <FilterSheet
-          filters={AbastecimentoFiltro}
+          filters={ManutencaoFiltro}
           filtroAtual={filters}
           onApply={data => {
             setFilters(data);
             buscarCarteira({
               ...data,
-              abastecimentoObservacao: busca,
+              manutencaoDescricao: busca,
             });
             fechar();
           }}
           onClear={() => {
             clearFilters();
-            buscarCarteira({ abastecimentoObservacao: busca });
+            buscarCarteira({ manutencaoDescricao: busca });
             fechar();
           }}
         />

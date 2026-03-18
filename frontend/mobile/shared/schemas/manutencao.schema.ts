@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { numberBR } from '../utils/zodHelpers';
 import { ManutencaoTipoOptions } from '../types/Manutencao/manutencaoTipo';
 import { ManutencaoCategoriaOptions } from '../types/Manutencao/manutencaoCategoria';
+import { dateField } from '../types/Outros/dateField';
 
 export const manutencaoSchema = z
   .object({
@@ -24,41 +25,33 @@ export const manutencaoSchema = z
       }),
     ),
 
-    manutencaoData: z.preprocess(
-      val => (val === '' ? undefined : val),
-      z.union([z.string(), z.date()], {
-        required_error: 'Data da manutenção é obrigatória',
-      }),
-    ),
+    manutencaoData: dateField(
+        'Data de manutenção',
+        'obrigatória'
+      ).nullable(),
 
     manutencaoKm: numberBR(
       'KM é obrigatório',
-      0,
+      0.01,
       'KM deve ser maior ou igual a 0',
     ),
 
-    manutencaoValor: z.preprocess(
-      val => (val === '' ? undefined : val),
-      numberBR(
+    manutencaoValor: numberBR(
         'Valor inválido',
         0,
         'Valor deve ser maior ou igual a 0',
-      ).optional(),
-    ),
+      ),
 
-    manutencaoProximoKm: z.preprocess(
-      val => (val === '' ? undefined : val),
-      numberBR(
-        'KM inválido',
-        0,
-        'KM deve ser maior ou igual a 0',
-      ).optional(),
-    ),
+   manutencaoProximoKm: numberBR(
+    'Km inválido',
+    0,
+    'Km deve ser maior ou igual a 0',
+  ),
 
-    manutencaoProximaData: z.preprocess(
-      val => (val === '' ? undefined : val),
-      z.union([z.string(), z.date()]).optional(),
-    ),
+    manutencaoProximaData: dateField(
+        'Data da próxima manutenção',
+        'obrigatória'
+      ).nullable().optional(),
 
     caminhaoId: z.string().optional(),
 
@@ -69,10 +62,10 @@ export const manutencaoSchema = z
       .optional()
       .transform(val => val?.trim()),
 
-    manutencaoObservacao: z
-      .string()
-      .optional()
-      .transform(val => val?.trim()),
+    manutencaoObservacao: z.preprocess(
+  (val) => (val === null ? undefined : val),
+      z.string().optional().transform(val => val?.trim())
+    ),
 
     manutencaoDocumentos: z.array(z.string()).optional(),
   })

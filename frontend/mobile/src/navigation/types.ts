@@ -1,4 +1,4 @@
-import { Mode } from '../../shared/types/mode';
+import { Mode } from '../../shared/types/Outros/mode';
 
 export type RootStackParamList = {
   ViagemForm: {
@@ -50,6 +50,22 @@ export type RootStackParamList = {
   CarretaForm: {
     mode: Mode;
     carretaId?: string;
+    navigation?: undefined;
+  };
+
+  Empregadora: {};
+
+  EmpregadoraForm: {
+    mode: Mode;
+    empregadoraId?: string;
+    navigation?: undefined;
+  };
+
+  Manutencao: {};
+
+  ManutencaoForm: {
+    mode: Mode;
+    manutencaoId?: string;
     navigation?: undefined;
   };
 };

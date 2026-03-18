@@ -1,7 +1,7 @@
 import { ManutencaoTipo } from './manutencaoTipo';
 import { ManutencaoCategoria } from './manutencaoCategoria';
 
-export interface ManutencaoFiltro {
+export default interface ManutencaoFiltro {
   _id?: string;
 
   manutencaoDescricao?: string;

@@ -3,44 +3,37 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
-  abastecimentoSchema,
-  AbastecimentoFormData,
-} from '../../../shared/schemas/abastecimento.schema';
+  empregadoraSchema,
+  EmpregadoraFormData,
+} from '../../../shared/schemas/empregadora.schema';
 
-import { AbastecimentoService } from '../../../shared/services/abastecimentoService';
+import { EmpregadoraService } from '../../../shared/services/empregadoraService';
 
 import { Mode } from '../../../shared/types/Outros/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { useScreenMode } from '../../utils/useScreenMode';
-import { useCaminhaoCombo } from '../Caminhao/useCaminhaoCombo';
 import { convertUndefinedToNull } from '../../../shared/utils/convertUndefinedToNull';
-import {mapAbastecimentoToForm} from '../../../shared/mappers/abastecimentoMapper';
+import {mapEmpregadoraToForm} from '../../../shared/mappers/empregadoraMapper';
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 
-export function useAbastecimentoForm(
+export function useEmpregadoraForm(
   mode: Mode,
-  abastecimentoId?: string,
+  empregadoraId?: string,
   navigation?: Navigation,
 ) {
   const screen = useScreenMode(mode);
   const { isCreate, setLoading } = screen;
-  const { optionsCaminhoes, loadingCaminhoes } = useCaminhaoCombo();
 
-  const form = useForm<AbastecimentoFormData>({
-    resolver: zodResolver(abastecimentoSchema),
+  const form = useForm<EmpregadoraFormData>({
+    resolver: zodResolver(empregadoraSchema),
     defaultValues: {
-      //  abastecimentoKm: 0,
-      // abastecimentoLitros: 0,
-      // abastecimentoValor: 0,
-      caminhaoId: '',
-      abastecimentoTipoPagamento: undefined,
-      abastecimentoPrazoPagamento: undefined,
-      abastecimentoObservacao: '',
-      abastecimentoData: new Date(),
+      empregadoraNome: '',
+      empregadoraStatus: 'Ativo',
+      empregadoraPrazoPagamento: '15 dias'
     },
     shouldUnregister: false,
   });
@@ -53,16 +46,16 @@ export function useAbastecimentoForm(
     formState: { errors },
   } = form;
   
-  const saveAll = async (data: AbastecimentoFormData) => {
+  const saveAll = async (data: EmpregadoraFormData) => {
     setLoading(true);
     try {
       const dataTratada = convertUndefinedToNull(data);
       if (isCreate) {
-       await AbastecimentoService.criar(dataTratada);
+       await EmpregadoraService.criar(dataTratada);
        
 
-      } else if (abastecimentoId) {
-        await AbastecimentoService.atualizar(abastecimentoId, dataTratada);
+      } else if (empregadoraId) {
+        await EmpregadoraService.atualizar(empregadoraId, dataTratada);
       }
 
       navigation?.goBack();
@@ -74,16 +67,16 @@ export function useAbastecimentoForm(
   };
 
   useEffect(() => {
-  if (!abastecimentoId || isCreate) return;
+  if (!empregadoraId || isCreate) return;
 
   let isMounted = true;
 
  setLoading(true);
   
-  AbastecimentoService.buscarPorId(abastecimentoId)
-    .then(abastecimento => {
+  EmpregadoraService.buscarPorId(empregadoraId)
+    .then(empregadora => {
       if (!isMounted) return;
-      reset(mapAbastecimentoToForm(abastecimento));
+      reset(mapEmpregadoraToForm(empregadora));
     })
     .finally(() => {
       if (isMounted) setLoading(false);
@@ -92,7 +85,7 @@ export function useAbastecimentoForm(
   return () => {
     isMounted = false;
   };
-}, [abastecimentoId, isCreate, reset, setLoading]);
+}, [empregadoraId, isCreate, reset, setLoading]);
 
 
   return {
@@ -100,8 +93,6 @@ export function useAbastecimentoForm(
     errors,
     loading: screen.loading,
     screen,
-    optionsCaminhoes,
-    loadingCaminhoes,
     handleSubmit,
     saveAll,
     setValue,

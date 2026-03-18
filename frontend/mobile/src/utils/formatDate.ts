@@ -1,2 +1,9 @@
- export const formatDate = (date?: Date) =>
-    date ? date.toLocaleDateString('pt-BR') : '';
+export const formatDate = (date?: Date | string) => {
+  if (!date) return '';
+
+  const parsed = new Date(date);
+
+  return isNaN(parsed.getTime())
+    ? ''
+    : parsed.toLocaleDateString('pt-BR');
+};

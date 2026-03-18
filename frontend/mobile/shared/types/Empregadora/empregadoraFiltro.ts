@@ -1,6 +1,6 @@
 import { EmpregadoraStatus } from './empregadoraStatus';
 
-export interface EmpregadoraFiltro {
+export default interface EmpregadoraFiltro {
   _id?: string;
   empregadoraNome?: string;
   empregadoraHasAdiantamento?: boolean;

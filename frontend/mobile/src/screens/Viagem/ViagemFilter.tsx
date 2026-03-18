@@ -11,7 +11,7 @@ import {Button } from '../../components/Form/Button';
 
 import { useTheme } from '../../theme/themeContext';
 import { useViagemFilter } from '../../hooks/Viagem/useViagemFilter';
-import ViagemFiltro from '../../../shared/types/Viagem/viagemFiltro';
+import {ViagemFiltro} from '../../../shared/types/Viagem/viagemFiltro';
 
 interface Props {
   onClose: () => void;

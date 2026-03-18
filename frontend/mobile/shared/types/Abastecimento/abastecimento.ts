@@ -1,4 +1,9 @@
 
+type Caminhao = {
+  _id: string;
+  caminhaoNome: string;
+  caminhaoPlaca: string;
+};
 
 export interface Abastecimento {
   _id?: string;                 
@@ -9,5 +14,5 @@ export interface Abastecimento {
   abastecimentoTipoPagamento?: string;
   abastecimentoPrazoPagamento?: string;
   abastecimentoObservacao?: string;
-  caminhaoId: string;
+  caminhaoId: Caminhao;
 }

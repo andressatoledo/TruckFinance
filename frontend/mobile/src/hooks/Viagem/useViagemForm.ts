@@ -19,13 +19,13 @@ import { RootStackParamList } from '../../navigation/types';
 
 // import { useRotaVinculadaCombo } from '../../src/hooks/useRotaVinculadaCombo';
 import { useMotoristaCombo } from '../Motorista/useMotoristaCombo';
-import { useCarretaCombo } from '../../src/hooks/useCarretaCombo';
+import { useCarretaCombo } from '../../hooks/Carreta/useCarretaCombo';
 import { useCaminhaoCombo } from '../Caminhao/useCaminhaoCombo';
-import { useEmpregadoraCombo } from '../../src/hooks/useEmpregadoraCombo';
-import { useRotaVinculadaCombo } from '../useRotaVinculadaCombo';
+import { useEmpregadoraCombo } from '../../hooks/Empregadora/useEmpregadoraCombo';
+import { useRotaVinculadaCombo } from '../../hooks/RotaVinculada/useRotaVinculadaCombo';
 import { CaminhaoService } from '../../../shared/services/caminhaoService';
 import { CarretaService } from '../../../shared/services/carretaService';
-import {Mode} from '../../shared/types/mode'
+import {Mode} from '../../../shared/types/Outros/mode'
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 

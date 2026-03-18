@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CarretaService } from '../../shared/services/carretaService';
+import { CarretaService } from '../../../shared/services/carretaService';
 
 interface ComboOption {
   label: string;

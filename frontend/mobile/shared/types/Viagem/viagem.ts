@@ -74,6 +74,7 @@ export interface Viagem {
 
   viagemTotais?: ViagemTotais;
   
+  
 }
 
 export type ViagemPayload = Partial<Omit<Viagem, '_id'>>;

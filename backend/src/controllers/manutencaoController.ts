@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Manutencao } from '../models/index';
+import { montarFiltroManutencao } from '../filters/manutencao';
 
 async function criarManutencao(req: Request, res: Response) {
   try {
@@ -16,9 +17,9 @@ async function criarManutencao(req: Request, res: Response) {
 
 async function buscarManutencoes(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
+    const filtro = montarFiltroManutencao(req.query); 
 
-    const manutencoes = await Manutencao.find(filtro);  
+    const manutencoes = await Manutencao.find(filtro).populate('caminhaoId', 'caminhaoNome caminhaoPlaca').populate('carretaId', 'carretaNome carretaPlaca');  
 
 
     res.status(200).json(manutencoes); 

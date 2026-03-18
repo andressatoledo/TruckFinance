@@ -5,17 +5,19 @@ import { InputField } from '../../../components/Form/InputField';
 import { Button } from '../../../components/Form/Button';
 import { Form } from '../../../components/Form/Form';
 import { InputCombo } from '../../../components/Form/InputCombo';
-import { CarretaFormData } from '../../../../shared/schemas/carreta.schema';
-import { useCarretaForm } from '../../../hooks/Carreta/useCarretaForm';
-import {CarretaStatusOptions} from '../../../../shared/types/Carreta/carretaStatus';
-import {CarretaTipos} from '../../../../shared/types/Carreta/carretaTipo';
-type CarretaFormProps = NativeStackScreenProps<
+import { EmpregadoraFormData } from '../../../../shared/schemas/empregadora.schema';
+import { useEmpregadoraForm } from '../../../hooks/Empregadora/useEmpregadoraForm';
+import {EmpregadoraStatusOptions} from '../../../../shared/types/Empregadora/empregadoraStatus';
+import { EmpregadoraPrazoPagamentoOptions } from '../../../../shared/types/Empregadora/empregadoraPrazoPagamento';
+import { BooleanField } from "../../../components/Form/BooleanField";
+
+type EmpregadoraFormProps = NativeStackScreenProps<
   RootStackParamList,
-  'CarretaForm'
+  'EmpregadoraForm'
 >;
 
-export function CarretaForm({ route, navigation }: CarretaFormProps) {
-  const { mode, carretaId } = route.params;
+export function EmpregadoraForm({ route, navigation }: EmpregadoraFormProps) {
+  const { mode, empregadoraId } = route.params;
 
   const {
     control,
@@ -23,9 +25,9 @@ export function CarretaForm({ route, navigation }: CarretaFormProps) {
     screen,
     handleSubmit,
     saveAll,
-  } = useCarretaForm(mode, carretaId, navigation);
+  } = useEmpregadoraForm(mode, empregadoraId, navigation);
 
-  const onSubmitFinal = (data: CarretaFormData) => {
+  const onSubmitFinal = (data: EmpregadoraFormData) => {
     saveAll(data);
   };
 
@@ -35,84 +37,83 @@ export function CarretaForm({ route, navigation }: CarretaFormProps) {
 
       <Controller
         control={control}
-        name="carretaPlaca"
+        name="empregadoraNome"
         render={({ field }) => (
           <InputField
-            label="Placa *"
+            label="Nome *"
             value={field.value}
             onChangeText={text => field.onChange(text.toUpperCase())}
             editable={!screen.readOnly}
-            error={errors.carretaPlaca?.message}
+            error={errors.empregadoraNome?.message}
           />
         )}
       />
-
-        <Controller
-        control={control}
-        name="carretaQuantidadeEixosVazio"
-        render={({ field }) => (
-          <InputField
-            label="Quantidade de eixos vazio *"
-            keyboardType="numeric"
-            value={field.value?.toString() ?? ''}
-            onChangeText={field.onChange}
-            editable={!screen.readOnly}
-            error={errors.carretaQuantidadeEixosVazio?.message}
-          />
-        )}
-      />
-
-
+      {/* RadioButton para adiantamento */}
+     
       <Controller
         control={control}
-        name="carretaQuantidadeEixosCheio"
+        name="empregadoraHasAdiantamento"
         render={({ field }) => (
-          <InputField
-            label="Quantidade de eixos cheio *"
-            keyboardType="numeric"
-            value={field.value?.toString() ?? ''}
-            onChangeText={field.onChange}
-            editable={!screen.readOnly}
-            error={errors.carretaQuantidadeEixosCheio?.message}
+          <BooleanField
+            label="Possui adiantamento"
+            value={field.value}
+            onChange={field.onChange}
+            disabled={screen.readOnly}
+            error={errors.empregadoraHasAdiantamento?.message}
+            variant="switch"
           />
         )}
       />
 
       <Controller
         control={control}
-        name="carretaTipo"
+        name="empregadoraValorAdiantamento"
+        render={({ field }) => (
+          <InputField
+            label="Valor do adiantamento (R$)"
+            keyboardType="numeric"
+            value={field.value?.toString() ?? ''}
+            onChangeText={field.onChange}
+            editable={!screen.readOnly}
+            error={errors.empregadoraValorAdiantamento?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="empregadoraPrazoPagamento"
         render={({ field }) => (
           <InputCombo
-            label="Tipo da carreta *"
+            label="Prazo de pagamento *"
             value={field.value}
-            options={CarretaTipos.map(tipo => ({
-              label: tipo,
-              value: tipo,
+            options={EmpregadoraPrazoPagamentoOptions.map(prazo => ({
+              label: prazo,
+              value: prazo,
             }))}
             onChange={field.onChange}
-            error={errors.carretaTipo?.message}
+            error={errors.empregadoraPrazoPagamento?.message}
           />
         )}
       />
 
-      
-        <Controller
+      <Controller
         control={control}
-        name="carretaStatus"
+        name="empregadoraStatus"
         render={({ field }) => (
           <InputCombo
-            label="Status da carreta *"
+            label="Status da empregadora *"
             value={field.value}
-            options={CarretaStatusOptions.map(status => ({
+            options={EmpregadoraStatusOptions.map(status => ({
               label: status,
               value: status,
             }))}
             onChange={field.onChange}
-            error={errors.carretaStatus?.message}
+            error={errors.empregadoraStatus?.message}
           />
         )}
       />
-     
+
 
       {!screen.isView && (
         <Button

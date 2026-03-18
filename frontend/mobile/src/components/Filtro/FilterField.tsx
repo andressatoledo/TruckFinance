@@ -2,7 +2,7 @@ import { View, Text, TextInput } from 'react-native';
 import { FilterFieldConfig } from './types';
 import { InputField } from '../Form/InputField';
 import { InputCombo } from '../Form/InputCombo';
-import {useComboOptions} from '../../hooks/combo/useComboOptions'
+import { useComboOptions } from '../../hooks/combo/useComboOptions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 
@@ -13,10 +13,8 @@ interface Props {
 }
 
 function DateFilterField({ field, value, onChange }: Props) {
- 
   const [showDate, setShowDate] = useState(false);
 
-  
   function formatDate(date?: Date) {
     if (!date) return '';
     return date.toLocaleDateString('pt-BR');
@@ -50,9 +48,9 @@ function DateFilterField({ field, value, onChange }: Props) {
 }
 
 export function FilterField({ field, value, onChange }: Props) {
-  console.log(field.source)
+  console.log(field.source);
   const { options, loading } = useComboOptions(field.source ?? undefined);
-  console.log('options',options)
+  console.log('options', options);
 
   switch (field.type) {
     case 'text':
@@ -78,7 +76,10 @@ export function FilterField({ field, value, onChange }: Props) {
             placeholder={field.placeholder}
             keyboardType="numeric"
             value={String(value || '')}
-            onChangeText={v => onChange(Number(v))}
+            onChangeText={v => {
+              if (v === '') onChange(undefined);
+              else onChange(Number(v));
+            }}
           />
         </View>
       );
@@ -97,6 +98,35 @@ export function FilterField({ field, value, onChange }: Props) {
             onChange={v => onChange(v)}
             options={options}
             loading={loading}
+          />
+        </View>
+      );
+    case 'boolean':
+      return (
+        <View>
+          <InputCombo
+            label={field.label}
+            icon={field.icon}
+            value={
+              value === true
+                ? 'true'
+                : value === false
+                ? 'false'
+                : value === 'all'
+                ? 'all'
+                : undefined
+            }
+            onChange={v => {
+              if (v === 'all') onChange('all');
+              else if (v === 'true') onChange(true);
+              else if (v === 'false') onChange(false);
+            }}
+            options={[
+              { label: 'Todos', value: 'all' },
+              { label: 'Sim', value: 'true' },
+              { label: 'Não', value: 'false' },
+            ]}
+            loading={false}
           />
         </View>
       );

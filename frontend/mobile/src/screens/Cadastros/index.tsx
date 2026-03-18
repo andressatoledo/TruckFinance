@@ -37,14 +37,14 @@ export function Cadastros() {
         title="Empregadoras"
         subtitle="Empresas contratantes"
         count={1}
-         routeName='Pedagio'
+         routeName='Empregadora'
       />
       <CardCadastro
         icon="wrench"
         title="Manutenções"
         subtitle="Registros de manutenções"
         count={5}
-         routeName='Pedagio'
+         routeName='Manutencao'
       />
       <CardCadastro
         icon="steering"

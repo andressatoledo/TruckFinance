@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Empregadora } from '../models/index';
+import {montarFiltroEmpregadora} from '../filters/empregadora';
 
 interface EmpregadoraPopulada {
   _id: string;
@@ -20,9 +21,9 @@ async function criarEmpregadora(req: Request, res: Response) {
 }
 
 
-async function buscarEmpreguradoras(req: Request, res: Response) {
+async function buscarEmpregadoras(req: Request, res: Response) {
   try {
-    const filtro = req.query; 
+    const filtro = montarFiltroEmpregadora(req.query);
 
     const empreguradoras = await Empregadora.find(filtro);  
 
@@ -115,7 +116,7 @@ async function excluirEmpregadora(req: Request, res: Response) {
 
 export const empregadoraController = {
   criarEmpregadora,
-  buscarEmpreguradoras,
+  buscarEmpregadoras,
   buscarEmpregadora,
   atualizarEmpregadora,
   excluirEmpregadora,

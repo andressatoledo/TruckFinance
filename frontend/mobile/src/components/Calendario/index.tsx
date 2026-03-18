@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import { useTheme } from '../../theme/themeContext';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { opcoesCalendario } from '../../../shared/types/opcoesCalendario';
+import { opcoesCalendario } from '../../../shared/types/Outros/opcoesCalendario';
 import { Tag } from '../Tag';
 import { Row } from '../Form/Row';
 import { styles } from './styles';

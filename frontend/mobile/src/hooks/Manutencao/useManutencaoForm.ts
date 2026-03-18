@@ -3,44 +3,49 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
-  abastecimentoSchema,
-  AbastecimentoFormData,
-} from '../../../shared/schemas/abastecimento.schema';
+  manutencaoSchema,
+  ManutencaoFormData,
+} from '../../../shared/schemas/manutencao.schema';
 
-import { AbastecimentoService } from '../../../shared/services/abastecimentoService';
+import { ManutencaoService } from '../../../shared/services/manutencaoService';
 
 import { Mode } from '../../../shared/types/Outros/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { useScreenMode } from '../../utils/useScreenMode';
-import { useCaminhaoCombo } from '../Caminhao/useCaminhaoCombo';
 import { convertUndefinedToNull } from '../../../shared/utils/convertUndefinedToNull';
-import {mapAbastecimentoToForm} from '../../../shared/mappers/abastecimentoMapper';
+import {mapManutencaoToForm} from '../../../shared/mappers/manutencaoMapper';
+
+import { useCarretaCombo } from '../Carreta/useCarretaCombo';
+import { useCaminhaoCombo } from '../Caminhao/useCaminhaoCombo';
+
 
 type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 
-export function useAbastecimentoForm(
+export function useManutencaoForm(
   mode: Mode,
-  abastecimentoId?: string,
+  manutencaoId?: string,
   navigation?: Navigation,
 ) {
   const screen = useScreenMode(mode);
   const { isCreate, setLoading } = screen;
   const { optionsCaminhoes, loadingCaminhoes } = useCaminhaoCombo();
+  const { optionsCarretas, loadingCarretas } = useCarretaCombo();
 
-  const form = useForm<AbastecimentoFormData>({
-    resolver: zodResolver(abastecimentoSchema),
+  const form = useForm<ManutencaoFormData>({
+    resolver: zodResolver(manutencaoSchema),
     defaultValues: {
-      //  abastecimentoKm: 0,
-      // abastecimentoLitros: 0,
-      // abastecimentoValor: 0,
+      manutencaoDescricao: '',
+      // manutencaoValor: 0,
       caminhaoId: '',
-      abastecimentoTipoPagamento: undefined,
-      abastecimentoPrazoPagamento: undefined,
-      abastecimentoObservacao: '',
-      abastecimentoData: new Date(),
+      carretaId: '',
+      manutencaoLocal: '',
+      manutencaoObservacao: '',
+      manutencaoData: null,
+      manutencaoProximaData: null,
+      // manutencaoProximoKm: 0,
     },
     shouldUnregister: false,
   });
@@ -53,16 +58,16 @@ export function useAbastecimentoForm(
     formState: { errors },
   } = form;
   
-  const saveAll = async (data: AbastecimentoFormData) => {
+  const saveAll = async (data: ManutencaoFormData) => {
     setLoading(true);
     try {
       const dataTratada = convertUndefinedToNull(data);
       if (isCreate) {
-       await AbastecimentoService.criar(dataTratada);
+       await ManutencaoService.criar(dataTratada);
        
 
-      } else if (abastecimentoId) {
-        await AbastecimentoService.atualizar(abastecimentoId, dataTratada);
+      } else if (manutencaoId) {
+        await ManutencaoService.atualizar(manutencaoId, dataTratada);
       }
 
       navigation?.goBack();
@@ -74,16 +79,16 @@ export function useAbastecimentoForm(
   };
 
   useEffect(() => {
-  if (!abastecimentoId || isCreate) return;
+  if (!manutencaoId || isCreate) return;
 
   let isMounted = true;
 
  setLoading(true);
   
-  AbastecimentoService.buscarPorId(abastecimentoId)
-    .then(abastecimento => {
+  ManutencaoService.buscarPorId(manutencaoId)
+    .then(manutencao => {
       if (!isMounted) return;
-      reset(mapAbastecimentoToForm(abastecimento));
+      reset(mapManutencaoToForm(manutencao));
     })
     .finally(() => {
       if (isMounted) setLoading(false);
@@ -92,7 +97,7 @@ export function useAbastecimentoForm(
   return () => {
     isMounted = false;
   };
-}, [abastecimentoId, isCreate, reset, setLoading]);
+}, [manutencaoId, isCreate, reset, setLoading]);
 
 
   return {
@@ -100,8 +105,10 @@ export function useAbastecimentoForm(
     errors,
     loading: screen.loading,
     screen,
-    optionsCaminhoes,
-    loadingCaminhoes,
+     loadingCaminhoes,
+    loadingCarretas,
+     optionsCaminhoes,
+    optionsCarretas,
     handleSubmit,
     saveAll,
     setValue,

@@ -9,7 +9,7 @@ import {
 
 import { CargaService } from '../../../shared/services/cargaService';
 
-import { Mode } from '../../../shared/types/mode';
+import { Mode } from '../../../shared/types/Outros/mode';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';

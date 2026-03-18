@@ -1,4 +1,4 @@
-import { ComboSource } from '../../../shared/types/comboOptions';
+import { ComboSource } from '../../../shared/types/Outros/comboOptions';
 
 export type FilterType =
   | 'text'
@@ -7,6 +7,7 @@ export type FilterType =
   | 'number'
   | 'async-select'
   | 'combo'
+  | 'boolean'
   | 'date';
 
 // export interface FilterOption {

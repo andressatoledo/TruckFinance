@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { dateField } from '../types/dateField';
+import { dateField } from '../types/Outros/dateField';
 import { numberBR } from '../utils/zodHelpers';
 import {
   TipoPagamentoEnum,
   ParcelamentoEnum,
-} from '../types/financeiroEnum';
+} from '../types/Outros/financeiroEnum';
 
 export const abastecimentoSchema = z
   .object({
